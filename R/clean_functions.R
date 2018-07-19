@@ -44,6 +44,18 @@ uis_clean <- function(df) {
     gather(key = "ind", value = "value", -iso2c, -year, -val_status) %>%
     filter(!is.na(value))
 
+  free_comp <- clean1 %>%
+    filter(str_detect(var_concat, "FREE_EDU|COMP_EDU")) %>%
+    group_by(iso2c, year) %>%
+    spread(key = var_concat, value = value) %>%
+    mutate(Comp.02 = ifelse(COMP_EDU_YR_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA >= 1, 1, 0),
+           Free.02 = ifelse(FREE_EDU_YR_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA >= 1, 1, 0),
+           Comp.2t3 = ifelse(COMP_EDU_YR_L1T3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA >= 9, 1, 0),
+           Free.2t3 = ifelse(FREE_EDU_YR_L1T3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA >= 12, 1, 0)) %>%
+    select(iso2c, year, !contains("_"), val_status) %>%
+    gather(key = "ind", value = "value", -iso2c, -year, -val_status) %>%
+    filter(!is.na(value))
+
   parity_indices <- list(df = list("clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1"),
                          col = list("var_concat",  "var_concat", "var_concat", "var_concat", "var_concat",  "var_concat", "var_concat", "var_concat"),
                          a = list("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
@@ -68,7 +80,8 @@ uis_clean <- function(df) {
     pmap(parity_adj) %>%
     reduce(bind_rows)
 
-  cleaned <- bind_rows(clean1, admin_assessment, parity_indices) %>%
+
+  cleaned <- bind_rows(clean1, admin_assessment, free_comp, parity_indices) %>%
     mutate(source = "UIS")
 
 }
@@ -106,7 +119,7 @@ cedar_clean <- function(df) {
                            indicator == "comp_upsec_v2_m" & wealth_id == 10 & is.na(sex_id) ~ "CR.3.q5",
                            indicator == "comp_upsec_v2_m" & wealth_id == 6 & sex_id == 1 ~ "CR.3.q1.f",
                            indicator == "comp_upsec_v2_m" & wealth_id == 10 & sex_id == 2 ~ "CR.3.q1.m",
-                           indicator == "u5_posit_home_learn"  ~ "home.lrn.env.u5",
+                           indicator == "u5_posit_home_learn"  ~ "home.lrn.env.3t7",
                            indicator == "u5_child_book"  ~ "home.book.u5",
                            indicator == "school_child_track"  ~ "OnTrack.three.domains",
                            indicator == "stu_exper_violence_13_17" & sex_id ==4  ~ "stu.viol.13t17",
@@ -178,7 +191,9 @@ wb_clean <- function(df) {
   cleaned <- bind_rows(clean2, parity_indices) %>%
     group_by(iso2c, ind) %>%
     filter(year == max(year)) %>%
-    mutate(val_sataus = "A")
+    mutate(val_status = "A",
+           year = as.numeric(year)) %>%
+    select(iso2c, year, ind, value, val_status, source)
 
 }
 
@@ -188,9 +203,10 @@ eurostat_clean <- function(df) {
 
   cleaned <- df %>%
     mutate(ind = case_when(TRAINING == "FE_NFE" ~ "prya.fnfe",
-                           INDIC_IS == "I_CCPY"  ~ "yadult.porcentICTskill.copi")) %>%
-    mutate(source = "eurostat",
-           val_status = "A") %>%
+                           INDIC_IS == "I_CCPY"  ~ "yadult.porcentICTskill.copi"),
+           source = "eurostat",
+           val_status = "A",
+           obsTime = as.numeric(obsTime)) %>%
     select(iso2c = GEO, year = obsTime, ind, source, value = obsValue, val_status ) %>%
     group_by(iso2c, ind) %>%
     filter(year == max(year))
@@ -227,10 +243,11 @@ oecd_clean <- function(df) {
     select(iso2c, year, ind, value)
 
  cleaned <- bind_rows(schol, sal1, sal2) %>%
+   mutate(source = "OECD",
+          val_status = "A",
+          year = as.numeric(year)) %>%
    group_by(iso2c, ind) %>%
    filter(year == max(year)) %>%
-   mutate(source = "OECD",
-          val_status = "A") %>%
    filter(!is.na(iso2c), !is.na(value))
 
 }
@@ -242,9 +259,10 @@ un_aids_clean <- function(df) {
 
   cleaned <- df %>%
     mutate(year = paste0(stri_extract_first(source, regex ="[0-9]{2}"), stri_extract_last(source, regex ="[0-9]{2}"), sep =""),
-           year = ifelse(year == "NANA", NA, year),
+           year = suppressWarnings(ifelse(year == "NANA", NA, as.numeric(year))),
            survey = str_replace_all(source, "Source: |[^A-Za-z ]+", ""),
            source = "UNAIDS",
+           value = as.numeric(value),
            ind = "hiv.prev.15t24",
            iso2c = countrycode(sourcevar = df$Country, origin = "country.name", destination = "iso2c"),
            val_status = "A") %>%
@@ -276,15 +294,36 @@ gcpea_clean <- function(df) {
 
 }
 
+#function to clean ecce dataframes (information on survey used per observation is removed)
+
+unicef_ecce_clean <- function(df, ind, source) {
+
+  cleaned <- df %>%
+    mutate(year = paste0(stri_extract_first(survey, regex ="[0-9]{2}"), stri_extract_last(survey, regex ="[0-9]{2}"), sep =""),
+           year = suppressWarnings(ifelse(year == "NANA", NA, as.numeric(year))),
+           value = str_replace(value, "-|\\?", ""), value = suppressWarnings(as.numeric(value)),
+           survey = str_replace_all(survey, "Source: |[^A-Za-z ]+", ""),
+           source = source,
+           ind = ind,
+           iso2c = suppressWarnings(countrycode(sourcevar = df$Country, origin = "country.name", destination = "iso2c")),
+           val_status = "A") %>%
+    filter(!is.na(year)) %>%
+    select(iso2c, year, ind, value, val_status, source) %>%
+    group_by(iso2c, ind) %>%
+    filter(year == max(year))
+
+}
+
 #function to clean unicef_wash_data
 
-unicef_clean <- function(df) {
+unicef_wash_clean <- function(df) {
 
   cleaned <- df %>%
     gather(key = "ind", value = "value", - Country, - year) %>%
     mutate(value = str_replace(value, "-", ""),
            value = as.numeric(value),
            iso2c = countrycode(sourcevar = .$Country, origin = "country.name", destination = "iso2c", warn = FALSE),
+           year = as.numeric(year),
            ind = case_when(str_detect(ind, "drinking") ~ "SchBSP.WPoWat",
                            str_detect(ind, "sanitation") ~ "SchBSP.WToilssx",
                            str_detect(ind, "handwashing")~ "SchBSP.WHwash"),
@@ -300,7 +339,8 @@ unicef_clean <- function(df) {
 weights_clean <- function(df) {
 
   clean1 <- df %>%
-    mutate(wt_var = case_when(AGE =="SCH_AGE_GROUP" ~ EDU_LEVEL,
+    mutate(wt_var = case_when(AGE =="SCH_AGE_GROUP" & SEX == "_T" ~ EDU_LEVEL,
+                              AGE =="SCH_AGE_GROUP" & SEX != "_T" ~ paste(EDU_LEVEL, SEX, sep = "_"),
                               AGE == "TH_ENTRY_GLAST" ~ paste(EDU_LEVEL, "GLAST", sep = "_"),
                               is.na(EDU_LEVEL) | EDU_LEVEL == "_T"  ~ AGE,
                               STAT_UNIT == "TEACH" ~ paste(STAT_UNIT, EDU_LEVEL, sep = "_"),
@@ -323,7 +363,13 @@ weights_clean <- function(df) {
     spread(key = wt_var, value = wt_value) %>%
     summarise(Y25T65 = `_T` - (Y_LT5 + Y10T14 + Y15T24 + Y_GE65),
               Y_GE25 = `_T` - (Y_LT5 + Y10T14 + Y15T24),
-              Y15T64 =  `_T` - (Y_LT5 + Y10T14 + Y_GE65)) %>%
+              Y15T64 =  `_T` - (Y_LT5 + Y10T14 + Y_GE65),
+              L1_Q1_F = L1_F * .2,
+              L1_Q1_M = L1_M * .2,
+              L2_Q1_F = L2_F * .2,
+              L2_Q1_M = L2_M * .2,
+              L3_Q1_F = L3_F * .2,
+              L3_Q1_M = L3_M * .2) %>%
     gather(key = "wt_var", value = "wt_value", -iso2c, -year)
 
   cleaned <- bind_rows(clean1, clean2) %>%
