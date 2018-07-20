@@ -1,4 +1,4 @@
-gemrtables <- function(region = "SDG", export = FALSE, format = "wide", key, password) {
+gemrtables <- function(region = "SDG", ref_year, export = FALSE, format = "wide", key, password) {
 
   pkg.env <- new.env(parent = emptyenv())
 
@@ -13,6 +13,8 @@ gemrtables <- function(region = "SDG", export = FALSE, format = "wide", key, pas
   } else {
     pkg.env$password <- as.character(password)
   }
+
+  ref_year <- ifelse(missing(ref_year), year(Sys.Date())-2, as.numeric(ref_year))
 
   region = as.name(region)
 

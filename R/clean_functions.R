@@ -12,7 +12,7 @@ parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
     filter(n()==2 ) %>%
     {if(val_status == FALSE) summarise(., value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]))
        else
-         summarise(indice, value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]),
+         summarise(., value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]),
                   val_status = ifelse(val_status[!!col == !!a] == "E" | val_status[!!col == !!b] == "E", "E", "A")) } %>%
     mutate(ind = varname) %>%
     filter(!is.na(value))
@@ -29,8 +29,11 @@ uis_clean <- function(df) {
           EXPENDITURE_TYPE, SOURCE_FUND, FUND_FLOW) %>%
     select(iso2c = REF_AREA, var_concat, year = TIME_PERIOD, value = OBS_VALUE, val_status = OBS_STATUS) %>%
     mutate(value = as.numeric(value),
-           value = ifelse(val_status == Z, NA, value)) %>%
+           value = ifelse(val_status == "Z", NA, value)) %>%
     unique()
+
+  clean2 <- clean1 %>%
+    inner_join(indicators[, 1:2], by = "var_concat")
 
   admin_assessment <- clean1 %>%
     filter(str_detect(var_concat, "ADMIN_NB")) %>%
@@ -52,7 +55,7 @@ uis_clean <- function(df) {
            Free.02 = ifelse(FREE_EDU_YR_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA >= 1, 1, 0),
            Comp.2t3 = ifelse(COMP_EDU_YR_L1T3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA >= 9, 1, 0),
            Free.2t3 = ifelse(FREE_EDU_YR_L1T3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA >= 12, 1, 0)) %>%
-    select(iso2c, year, !contains("_"), val_status) %>%
+    select(iso2c, year, contains("."), val_status) %>%
     gather(key = "ind", value = "value", -iso2c, -year, -val_status) %>%
     filter(!is.na(value))
 
@@ -76,14 +79,15 @@ uis_clean <- function(df) {
                                   "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA"),
                          varname = list("Read.Primary.GPIA", "Math.Primary.GPIA", "Read.LowerSec.GPIA", "Math.LowerSec.GPIA",
                                         "LR.Ag15t24.GPIA", "LR.Ag15t99.GPIA", "Read.Primary.WPIA", "Math.Primary.WPIA"),
-                         val_status = list("val_status", "val_status", "val_status", "val_status", "val_status", "val_status", "val_status", "val_status")) %>%
+                         val_status = list(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)) %>%
     pmap(parity_adj) %>%
     reduce(bind_rows)
 
 
-  cleaned <- bind_rows(clean1, admin_assessment, free_comp, parity_indices) %>%
-    mutate(source = "UIS")
-
+  cleaned <- bind_rows(clean2, admin_assessment, free_comp, parity_indices) %>%
+    mutate(source = "UIS") %>%
+    inner_join(indicators[, 1:2], by = "ind") %>%
+    select(iso2c, year, ind, value, val_status, source)
 }
 
 #function to clean cedar data
