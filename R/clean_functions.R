@@ -1,22 +1,24 @@
 # function to calculate adjusted parity index
 
-parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
+adjustGPI <- function(gpi) ifelse(gpi <= 1, gpi, 2 - 1/gpi)
 
-  df <- dynGet(df)
-  col <- as.name(col)
-
-  indice <- df %>%
-    filter(!!col %in% c(a, b))
-
-  indice <- group_by(indice, iso2c, year) %>%
-    filter(n()==2 ) %>%
-    {if(val_status == FALSE) summarise(., value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]))
-       else
-         summarise(indice, value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]),
-                  val_status = ifelse(val_status[!!col == !!a] == "E" | val_status[!!col == !!b] == "E", "E", "A")) } %>%
-    mutate(ind = varname) %>%
-    filter(!is.na(value))
-}
+# parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
+#
+#   df <- dynGet(df)
+#   col <- as.name(col)
+#
+#   indice <- df %>%
+#     filter(!!col %in% c(a, b))
+#
+#   indice <- group_by(indice, iso2c, year) %>%
+#     filter(n()==2 ) %>%
+#     {if(val_status == FALSE) summarise(., value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]))
+#        else
+#          summarise(indice, value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]),
+#                   val_status = ifelse(val_status[!!col == !!a] == "E" | val_status[!!col == !!b] == "E", "E", "A")) } %>%
+#     mutate(ind = varname) %>%
+#     filter(!is.na(value))
+# }
 
 
 #function to clean uis_data
@@ -161,21 +163,43 @@ wb_clean <- function(df) {
   clean2 <- clean1 %>%
     filter(str_detect(indicatorID, "PISA|PIAAC")) %>%
     group_by(source, iso2c, ind, date) %>%
+    # combine <L1 and L1
     summarise(value = 100 - (sum(value)))  %>%
+    ungroup %>%
     bind_rows(clean1) %>%
     filter(indicatorID %in% c("SH.STA.STNT.ZS", "LO.TIMSS.SCI8.LOW", NA)) %>%
     select(iso2c, ind, year = date, value, source)
 
-  parity_indices <- list(df = list("clean2","clean2"),
-                         col = list("ind",  "ind"),
-                         a = list("adult.profiliteracy.f","adult.profinumeracy.f"),
-                         b = list("adult.profiliteracy.m", "adult.profinumeracy.m"),
-                         varname = list("adult.profiliteracy.gpia", "adult.profinumeracy.gpia")) %>%
-                       pmap(parity_adj) %>%
-                       reduce(bind_rows) %>%
-                       mutate(source = "PIAAC")
+  clean3 <- clean2 %>%
+    mutate(
+      gender = case_when(
+        str_detect(ind, fixed(".f")) ~ 'F',
+        str_detect(ind, fixed(".m")) ~ 'M',
+        TRUE ~ 'T'
+      )) %>%
+    mutate(
+      ind = str_replace(ind, c("\\.[fm]"), "")
+      ) %>%
+    spread(gender, value) %>%
+    mutate(
+      GPI = F/M,
+      GPIadj = adjustGPI(GPI)) %>%
+    gather(gender, value, F:GPIadj, na.rm = TRUE) %>%
+    mutate(ind = paste(ind, gender, sep = ".")) %>%
+    select(-gender)
 
-  cleaned <- bind_rows(clean2, parity_indices) %>%
+  # parity_indices <- list(df = list("clean2","clean2"),
+  #                        col = list("ind",  "ind"),
+  #                        a = list("adult.profiliteracy.f","adult.profinumeracy.f"),
+  #                        b = list("adult.profiliteracy.m", "adult.profinumeracy.m"),
+  #                        varname = list("adult.profiliteracy.gpia", "adult.profinumeracy.gpia")) %>%
+  #                      pmap(parity_adj) %>%
+  #                      reduce(bind_rows) %>%
+  #                      mutate(source = "PIAAC")
+
+  cleaned <-
+    # bind_rows(clean2, parity_indices) %>%
+    clean3 %>%
     group_by(iso2c, ind) %>%
     filter(year == max(year)) %>%
     mutate(val_sataus = "A")
