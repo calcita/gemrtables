@@ -26,7 +26,7 @@ read_cedar <- function(sc, table, ind, level = 1) {
   cedar_con <- dbConnect(RMariaDB::MariaDB(), host = "77.104.134.109",
                          dbname = "cedardat_cedar",
                          port = "3306",
-                         user = "cedardat_user", password = pkg.env$password)
+                         user = "cedardat_user", password = "PKHPyxQKarBBQRyTtHlz")
 
   sc <- tbl(cedar_con, sc)
   dims <- colnames(sc)

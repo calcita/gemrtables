@@ -1,23 +1,23 @@
-other_data <- function() {
+other <- function() {
 
   wb_data <-  wb(country = "countries_only", indicator = c("SH.STA.STNT.ZS",
                                                            "LO.TIMSS.SCI8.LOW", "LO.PISA.SCI.0.MA", "LO.PISA.SCI.1B.MA", "LO.PISA.SCI.1A.MA",
                                                            "LO.PIAAC.LIT.YOU.BE", "LO.PIAAC.LIT.YOU.1", "LO.PIAAC.LIT.BE", "LO.PIAAC.LIT.1",
-                                                          "LO.PIAAC.NUM.YOU.BE", "LO.PIAAC.NUM.YOU.1", "LO.PIAAC.NUM.BE", "LO.PIAAC.NUM.1",
+                                                           "LO.PIAAC.NUM.YOU.BE", "LO.PIAAC.NUM.YOU.1", "LO.PIAAC.NUM.BE", "LO.PIAAC.NUM.1",
                                                            "LO.PIAAC.LIT.FE.BE", "LO.PIAAC.LIT.FE.1", "LO.PIAAC.LIT.MA.BE", "LO.PIAAC.LIT.MA.1",
                                                            "LO.PIAAC.NUM.FE.BE", "LO.PIAAC.NUM.FE.1", "LO.PIAAC.NUM.MA.BE", "LO.PIAAC.NUM.MA.1")) %>%
-                wb_clean()
+    wb_clean()
 
   eurostat_data <- list("http://ec.europa.eu/eurostat/SDMX/diss-web/rest/data/trng_aes_100/.T.FE_NFE.PC../?startperiod=2010&endPeriod=2050",
                         "ec.europa.eu/eurostat/SDMX/diss-web/rest/data/isoc_sk_cskl_i/A.I_CCPY.IND_TOTAL.PC_IND./?startperiod=2010&endPeriod=2050") %>%
-                     read_urls() %>%
-                     eurostat_clean()
+    read_urls() %>%
+    eurostat_clean()
 
   oecd_data <- list("https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/CRS1/20005..1000.100.100.D.112.E+E01/all?startTime=2016&endTime=2050",
-                   "https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/EAG_TS_ACT/..L0+L1+L2_C4+L3_C4.Y25T64.T.RATIO_ACTL_TER/all?",
-                  "https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/EDU_PERS_INST/.T.INST_T.T.L2+L3.T.TEACH.PER/all?startTime=2010&endTime=2050") %>%
-                 read_urls(bind = FALSE) %>%
-                 oecd_clean()
+                    "https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/EAG_TS_ACT/..L0+L1+L2_C4+L3_C4.Y25T64.T.RATIO_ACTL_TER/all?",
+                    "https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/EDU_PERS_INST/.T.INST_T.T.L2+L3.T.TEACH.PER/all?startTime=2010&endTime=2050") %>%
+    read_urls(bind = FALSE) %>%
+    oecd_clean()
 
   un_aids_data <- read.csv("https://drive.google.com/uc?export=download&id=1S6E4WwosJHjpu-d557tUjlJ6awMAwLsa", stringsAsFactors = FALSE) %>%
     un_aids_clean()
@@ -36,7 +36,7 @@ other_data <- function() {
 
   other_data <- bind_rows(wb_data, eurostat_data, oecd_data, un_aids_data, gcpea_data, unicef_wash_data, unicef_ecce_learn_data, unicef_ecce_books_data )
 
-  }
+}
 
 
 
