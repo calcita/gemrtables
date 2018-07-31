@@ -403,8 +403,8 @@ format_wide <- function(df) {
 
  wide_data <- df %>%
     mutate(value = case_when(str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel", ignore_case = TRUE)) ~ round(value, digits = 2),
-                             str_detect(ind, regex("XGDP", ignore_case = TRUE)) ~ round(value, digits = 1),
-                             !str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel|XGDP", ignore_case = TRUE)) ~ round(value)),
+                             str_detect(ind, regex("XGDP|scholarship", ignore_case = TRUE)) ~ round(value, digits = 1),
+                             !str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel|XGDP|scholarship", ignore_case = TRUE)) ~ round(value)),
          value = ifelse(is.na(value), "", value),
          value = ifelse(entity == "country" & aggregation == "pc_true", ifelse(value==1, "Yes", "No"), value),
          val_status = ifelse(val_status == "A", "", tolower(val_status)),
