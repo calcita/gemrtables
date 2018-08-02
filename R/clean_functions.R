@@ -146,7 +146,10 @@ cedar_clean <- function(df) {
                            indicator == "esd_gced_sus_dev"  ~ "esd.sus.dev",
                            indicator == "child_chores_more_28_12_14" & sex_id == 4 ~ "chores.28plus.12t14",
                            indicator == "child_chores_more_28_12_14" & sex_id == 1 ~ "chores.28plus.12t14.f",
-                           indicator == "child_chores_more_28_12_14" & sex_id == 2 ~ "chores.28plus.12t14.m")) %>%
+                           indicator == "child_chores_more_28_12_14" & sex_id == 2 ~ "chores.28plus.12t14.m"),
+           value = case_when(str_detect(ind, "esd") & value >=2 ~ 1,
+                             str_detect(ind, "esd") & value <2 ~ 0,
+                             !str_detect(ind, "esd") ~ value)) %>%
     inner_join(regions, by = c("country_code" = "iso3c")) %>%
     filter(!is.na(ind))
 
@@ -162,7 +165,9 @@ cedar_clean <- function(df) {
   cleaned <- bind_rows(clean1, parity_indices) %>%
     ungroup() %>%
     select(iso2c, year, ind, value) %>%
-    mutate(source = "cedar")
+    mutate(source = "cedar") %>%
+    filter(!is.na(value)) %>%
+    unique()
 
 }
 
@@ -206,7 +211,7 @@ wb_clean <- function(df) {
 
   cleaned <- bind_rows(clean2, parity_indices) %>%
     group_by(iso2c, ind) %>%
-    filter(year == max(year)) %>%
+    filter(year == max(year), !is.na(value)) %>%
     mutate(val_status = "A",
            year = as.numeric(year)) %>%
     select(iso2c, year, ind, value, val_status, source)
@@ -401,30 +406,33 @@ weights_clean <- function(df) {
 
 format_wide <- function(df) {
 
- wide_data <- df %>%
+  wide_data <- df %>%
     mutate(value = case_when(str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel", ignore_case = TRUE)) ~ round(value, digits = 2),
                              str_detect(ind, regex("XGDP|scholarship", ignore_case = TRUE)) ~ round(value, digits = 1),
                              !str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel|XGDP|scholarship", ignore_case = TRUE)) ~ round(value)),
-         value = ifelse(is.na(value), "", value),
-         value = ifelse(entity == "country" & aggregation == "pc_true", ifelse(value==1, "Yes", "No"), value),
-         val_status = ifelse(val_status == "A", "", tolower(val_status)),
-         year_diff = year - ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
-         val_status_utf = case_when(val_status == "e" ~ "\u1d62",
-                                    val_status == "m" ~ "\u2099"),
-         year_diff_utf = case_when(year_diff == 1 ~ "\u208A\u2081",
-                                   year_diff == -1 ~ "\u208B\u2081",
-                                   year_diff == -2 ~ "\u208B\u2082",
-                                   year_diff == -3 ~ "\u208B\u2083",
-                                   year_diff == -4 ~ "\u208B\u2084"),
-         val_utf = paste0(value, year_diff_utf, val_status_utf, sep = "")) %>%
-  select(sheet, annex_name, SDG.region, ind, val_utf, entity) %>%
-  mutate(ind = factor(ind, levels = unique(ind)),
-         is_aggregate = ifelse(entity == "country", "country", "aggregate"),
-         sheet = paste("sheet", sheet),
-         val_utf = str_replace_all(val_utf, "NA", "")) %>%
-  split(list(.$is_aggregate, .$sheet)) %>%
-  map(spread, key=ind, value = val_utf) %>%
-  map(function(.) arrange(., SDG.region, entity, annex_name)) %>%
-  map(function(.) select(., -sheet, - entity, -is_aggregate))
+           value = ifelse(is.na(value), "", value),
+           value = ifelse(entity == "country" & aggregation == "pc_true", ifelse(value==1, "Yes", "No"), value),
+           val_status = ifelse(val_status == "A", "", tolower(val_status)),
+           year_diff = year - ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
+           val_status_utf = case_when(val_status == "e" ~ "\u1d62",
+                                      val_status == "m" ~ "\u2099"),
+           year_diff_utf = case_when(year_diff == 1 ~ "\u208A\u2081",
+                                     year_diff == -1 ~ "\u208B\u2081",
+                                     year_diff == -2 ~ "\u208B\u2082",
+                                     year_diff == -3 ~ "\u208B\u2083",
+                                     year_diff == -4 ~ "\u208B\u2084"),
+           val_utf = paste0(value, year_diff_utf, val_status_utf, sep = "")) %>%
+    select(sheet, annex_name, SDG.region, ind, val_utf, entity) %>%
+    mutate(ind = factor(ind, levels = unique(ind)),
+           is_aggregate = ifelse(entity == "country", "country", "aggregate"),
+           sheet = paste("sheet", sheet),
+           val_utf = str_replace_all(val_utf, "NA", "")) %>%
+    split(list(.$is_aggregate, .$sheet)) %>%
+    map(spread, key=ind, value = val_utf) %>%
+    map(function(.) arrange(., SDG.region, entity, annex_name)) %>%
+    map(mutate_all, as.character) %>%
+    map(function(.) setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
+    map(function(.) setDT(.)[.[, c(.I, NA), SDG.region]$V1][!.N]) %>%
+    map(function(.) select(., -sheet, - entity, -is_aggregate, -SDG.region))
 
 }

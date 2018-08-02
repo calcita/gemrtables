@@ -35,9 +35,9 @@ gemrtables <- function(region = "SDG", ref_year, export = FALSE, path, format = 
   c_data <- function() {
 
     uis_data <- uis()
-    #cedar_data <- cedar()
+    cedar_data <- cedar()
     other_data <- other()
-    bind_rows(uis_data,  other_data)
+    bind_rows(uis_data, cedar_data, other_data)
   }
 
   load_data <- function(df) {
@@ -46,11 +46,11 @@ gemrtables <- function(region = "SDG", ref_year, export = FALSE, path, format = 
     key <- list(df)
     data <- loadCache(key)
     if (!is.null(data)) {
-      cat("Loaded cached data\n")
+      cat(paste("Loaded cached", df, "\n", sep = " " ))
       return(data);
     }
     # 2. If not available, generate it.
-    cat(paste("Generating", df, "from scratch...", sep = " "))
+    cat(paste("Generating", df, "from scratch...\n", sep = " "))
     if(df == "country_data") {
       data <- c_data()
     }
@@ -93,14 +93,14 @@ gemrtables <- function(region = "SDG", ref_year, export = FALSE, path, format = 
     inner_join(indicators_unique, by = c("ind", "aggregation"))
 
   long_data <- bind_rows(country_data2, regional_aggregates) %>%
-    mutate(entity = factor(entity, levels = c("country", "region", "income_group"))) %>%
+    mutate(entity = factor(entity, levels = c("country", "world", "region", "income_group"))) %>%
     arrange(sheet, position, SDG.region, entity, annex_name)
 
   wide_data <- long_data %>%
     format_wide()
 
   if(nrow(unmatched > 0)) {
-    cat(paste("the following variables are missing:"))
+    cat(paste("The following variables are missing:\n"))
     cat(paste(capture.output(print(unmatched)), collapse = "\n"))
   }
 

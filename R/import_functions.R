@@ -51,7 +51,7 @@ read_cedar <- function(sc, table, ind, level = 1) {
     select_if(~sum(!is.na(.)) > 0) %>%
     mutate(year = as.numeric(year)) %>%
     filter(year == max(year), value != 0) %>%
-    {if(is.character(.$value)) mutate(., value = case_when(value == "0" ~ NA_real_, value == "LOW" ~ 1, value == "MEDIUM" ~ 2, value == "HIGH" ~ 3)) else . } %>%
+    {if(is.character(.$value)) mutate(., value = case_when(value == "0" ~ 0, value == "LOW" ~ 1, value == "MEDIUM" ~ 2, value == "HIGH" ~ 3)) else . } %>%
     unique()
 
   dbDisconnect(cedar_con)

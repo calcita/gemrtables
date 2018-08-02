@@ -11,7 +11,7 @@ aggregates <- function(df, cut = .5) {
               pc_true = (sum(value)/n())*100,
               count2 = n()) %>%
     mutate(annex_name = "World", pc_comp = round(count2/count1, digits = 2),
-           entity = "region") %>%
+           entity = "world") %>%
     gather(key = "aggregation", value = "value", -ind, - annex_name, -pc_comp, -entity)
 
   regional <- df %>%

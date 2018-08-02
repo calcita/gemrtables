@@ -12,6 +12,8 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     countrycode,
+    data.table,
+    dbplyr,
     dplyr,
     purrr,
     lubridate,
