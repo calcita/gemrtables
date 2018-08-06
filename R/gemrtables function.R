@@ -4,7 +4,7 @@ gemrtables <- function(region = "SDG", ref_year, export = FALSE, path, format = 
   ref_year <- ifelse(missing(ref_year), year(Sys.Date())-2, as.numeric(ref_year))
   region_type = as.name(region)
 
-    #define new environment for api and db keys
+    #define new environment for api and db keys. Set directory for cache (users current working directory)
 
   pkg.env <<- new.env(parent = emptyenv())
   dir.create(path="~/.Rcache", showWarnings=FALSE)

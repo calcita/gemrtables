@@ -70,8 +70,9 @@ uis_clean <- function(df) {
     mutate(ind = "IE.5t8.40510") %>%
     select(iso2c, year, ind, value, val_status)
 
-  parity_indices <- list(df = list("clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1"),
-                         col = list("var_concat",  "var_concat", "var_concat", "var_concat", "var_concat",  "var_concat", "var_concat", "var_concat"),
+  parity_indices <- list(df = list("clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1"),
+                         col = list("var_concat",  "var_concat", "var_concat", "var_concat", "var_concat",  "var_concat", "var_concat",
+                                    "var_concat", "var_concat", "var_concat"),
                          a = list("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
@@ -79,7 +80,9 @@ uis_clean <- function(df) {
                                   "LR_PT__Z__Z_F_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
                                   "LR_PT__Z__Z_F_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
-                                  "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA"),
+                                  "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+                                  "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+                                  "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA"),
                          b = list("STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L2__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
@@ -87,10 +90,13 @@ uis_clean <- function(df) {
                                   "LR_PT__Z__Z_M_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
                                   "LR_PT__Z__Z_M_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
-                                  "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA"),
+                                  "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+                                  "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+                                  "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA"),
                          varname = list("Read.Primary.GPIA", "Math.Primary.GPIA", "Read.LowerSec.GPIA", "Math.LowerSec.GPIA",
-                                        "LR.Ag15t24.GPIA", "LR.Ag15t99.GPIA", "Read.Primary.WPIA", "Math.Primary.WPIA"),
-                         val_status = list(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)) %>%
+                                        "LR.Ag15t24.GPIA", "LR.Ag15t99.GPIA", "Read.Primary.WPIA", "Math.Primary.WPIA",
+                                        "Read.LowerSec.WPIA", "Math.LowerSec.WPIA"),
+                         val_status = list(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)) %>%
     pmap(parity_adj) %>%
     reduce(bind_rows)
 
@@ -239,7 +245,7 @@ eurostat_clean <- function(df) {
 oecd_clean <- function(df) {
 
   schol <- df[[1]] %>%
-    mutate(ind = case_when(AIDTYPE == "E" ~ "odaflow.volumescholarshipimputecost",
+    mutate(ind = case_when(AIDTYPE == "E02" ~ "odaflow.imputecost",
                            AIDTYPE == "E01"  ~ "odaflow.volumescholarship"),
            RECIPIENT = as.numeric(RECIPIENT)) %>%
     left_join(regions, by = c("RECIPIENT" = "oecd.crs.recipientcode")) %>%

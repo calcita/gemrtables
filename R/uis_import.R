@@ -14,7 +14,7 @@ uis <- function() {
     #vars 6:9
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/TH_DUR.YR.L02+L1+L2+L3...._T.INST_T.............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 10:12
-    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/SAP.PER.L02+L1+L2_3._T._T.SCH_AGE_GROUP._T.INST_T.............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/SAP.PER.L02+L1+L2_3+L5T8._T._T.SCH_AGE_GROUP._T.INST_T.............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 13:16
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/STU.PER.L02+L1+L2_3+L5T8._T._T._T._T.INST_T...._T.........?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 17:18
@@ -71,7 +71,7 @@ uis <- function() {
     #vars 8:10
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/ICT_SKILL_CONNECT+ICT_SKILL_COPY+ICT_SKILL_CREATE.PT._Z._Z._T._T...............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 11:14
-    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/EA.PT._Z._Z._T.Y_GE25._T.INST_T.L1T8+L2T8+L3T8+L5T8............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/EA.PT._Z._Z._T.Y_GE25._T.INST_T.L1T8+L2T8+L3T8+L4T8............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 15:18
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/FUNCT_LIT+FUNCT_NUM.PT._Z._Z._T._T._Z._Z._Z._Z...........?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 19:20
@@ -95,7 +95,7 @@ uis <- function() {
     #vars 22:23, 26:27, 30:31
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/CR.PT.._T.F+M._T.GLAST.INST_T..Q1._T.._T........?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 32:33 (WPIA to be calculated)
-    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/STU.PT.L1._T._T..GLAST...Q1+Q5._T...MATH+READING.......?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/STU.PT.L1+L2._T._T..GLAST...Q1+Q5._T...MATH+READING.......?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
 
     #table 6
     #vars 5,
