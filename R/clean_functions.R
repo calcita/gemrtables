@@ -1,4 +1,28 @@
-# function to calculate adjusted parity index
+#' parity_adj
+#'
+#' \code{parity_adj} calculates adjusted parity ratios.
+#'
+#' @param df a data frame with a key / value columns.
+#' @param col indicator key column.
+#' @param a indicator for 'disadvantaged' group (numerator).
+#' @param b indicator for 'advantaged' group  (denominator).
+#' @param varname name for calculated indice (character).
+#' @param val_status For use with data with flags for estimated observations. If
+#'   `TRUE` will calculate flag for indice (requires flag column to be named
+#'   `val_status` and estimates lablled as `E`.
+#' @return A data frame.
+#' @export
+#' @family summarise function
+#' @examples
+#'
+#' parity_adj(df, indicator, ger.female, ger.male, "ger.gpia", val_status = FALSE)
+#'
+#' parity_indices <- list(df = list("df","df"),
+#' col = list("ind",  "ind"),
+#' a = list("adult.profiliteracy.f","adult.profinumeracy.f"),
+#' b = list("adult.profiliteracy.m", "adult.profinumeracy.m"),
+#' varname = list("adult.profiliteracy.gpia", "adult.profinumeracy.gpia")) %>%
+#' pmap(parity_adj) %>%
 
 parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
 
@@ -18,8 +42,16 @@ parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
     filter(!is.na(value))
 }
 
-
-#function to clean uis_data
+#' uis_clean
+#'
+#' \code{uis_clean} is a function to clean UIS data.
+#'
+#' Cleans data from UIS api queries and computes several variables
+#' (admi.grade2or3prim, admi.endofprim, admi.endoflowersec, Comp.02, Free.02,
+#' Comp.2t3, Free.2t3, Read.Primary.GPIA, Math.Primary.GPIA, Read.LowerSec.GPIA,
+#' Math.LowerSec.GPIA, LR.Ag15t24.GPIA, LR.Ag15t99.GPIA, Read.Primary.WPIA,
+#' Math.Primary.WPIA, Read.LowerSec.WPIA, Math.LowerSec.WPIA)
+#'@family clean function
 
 uis_clean <- function(df) {
 
@@ -108,7 +140,15 @@ uis_clean <- function(df) {
 
 }
 
-#function to clean cedar data
+#' cedar_clean
+#'
+#' \code{cedar_clean} is a function to clean data imported by \code{read_cedar}.
+#'
+#' Cleans data imported from cedar database and computes several variables
+#' (CR.1.GPIA, CR.1.LPIA, CR.1.WPIA, CR.2.GPIA, CR.2.LPIA, CR.2.WPIA, CR.3.GPIA,
+#' CR.3.LPIA, CR.3.WPIA, chores.28plus.12t14.GPIA)
+#'@family clean function
+#'@seealso \code{\link{read_cedar}}
 
 cedar_clean <- function(df) {
 
@@ -177,8 +217,14 @@ cedar_clean <- function(df) {
 
 }
 
-
-#function to clean wb_data
+#' wb_clean
+#'
+#' \code{wb_clean} is a function to clean data imported by \code{[wbstats]{wb}} within \code{\link{other}} .
+#'
+#' Cleans data imported by \code{[wbstats]{wb}} and computes two variables
+#' (adult.profiliteracy.gpia, adult.profinumeracy.gpia)
+#'@family clean function
+#'@seealso \code{\link[wbstats]{wb}}, \code{\link{other}}
 
 wb_clean <- function(df) {
 
@@ -224,7 +270,13 @@ wb_clean <- function(df) {
 
 }
 
-#function to clean wb_data
+#' eurostat_clean
+#'
+#' \code{eurostat_clean} is a function to clean data from eurostat API queries
+#' defined in \code{other}.
+#'
+#'@family clean function
+#'@seealso \code{\link{other}}
 
 eurostat_clean <- function(df) {
 
@@ -240,7 +292,16 @@ eurostat_clean <- function(df) {
 
 }
 
-#function to clean oecd_data (list of dataframes indexed by indicator)
+#' oecd_clean
+#'
+#' \code{oecd_clean} is a function to clean data from OECD API queries defined
+#' in \code{other}.
+#'
+#' Cleans data from OECD api queries and computes one variable.
+#' (sal.rel.2t3,)
+#'
+#'@family clean function
+#'@seealso \code{\link{other}}
 
 oecd_clean <- function(df) {
 
@@ -279,8 +340,16 @@ oecd_clean <- function(df) {
 
 }
 
-#function to clean un_aids data (information on survey used per observation is removed)
 
+#' un_aids_clean
+#'
+#' \code{un_aids_clean} is a function to clean data from the UN AIDS spreadsheet
+#' on google drive.
+#'
+#' Information on survey used per observation is removed.
+#'
+#'@family clean function
+#'@seealso \code{\link{other}}
 
 un_aids_clean <- function(df) {
 
@@ -300,7 +369,16 @@ un_aids_clean <- function(df) {
 
 }
 
-#function to clean gcpea_data data ('m' val_status indicates observationcomes from a multi-year period and does not reflect the number of attacks on education in a single year period )
+#' gcpea_clean
+#'
+#' \code{gcpea_clean} is a function to clean data from Global Campaign to
+#' protect education from attack (GCPEA) on google drive.
+#'
+#' 'm' val_status indicates observation comes from a multi-year period and does
+#' not reflect the number of attacks on education in a single year period).
+#'
+#'@family clean function
+#'@seealso \code{\link{other}}
 
 gcpea_clean <- function(df) {
 
@@ -321,7 +399,21 @@ gcpea_clean <- function(df) {
 
 }
 
-#function to clean ecce dataframes (information on survey used per observation is removed)
+#' unicef_ecce_clean
+#'
+#' \code{unicef_ecce_clean} is a function to clean UNICEF ECCE survey data on
+#' google drive.
+#'
+#' Information on survey used per observation is removed.
+#'@param df a datadrame in the same format as
+#'  \url{https://drive.google.com/uc?export=download&id=1JzOo7rt8O3ZE9eSAL3v1jKexLwbICtM3}
+#'
+#'@param ind name of the indicator of the `value` column in the csv file
+#'  (character).
+#'@param source name of the source of the data (i.e. UNICEF)
+#'@family clean function
+#'@seealso \code{\link{other}}
+
 
 unicef_ecce_clean <- function(df, ind, source) {
 
@@ -341,7 +433,14 @@ unicef_ecce_clean <- function(df, ind, source) {
 
 }
 
-#function to clean unicef_wash_data
+#' unicef_wash_clean
+#'
+#' \code{unicef_wash_clean} is a function to clean data from the UNICEF WASH
+#' file on google drive.
+#'
+#'@family clean function
+#'@seealso \code{\link{other}}
+
 
 unicef_wash_clean <- function(df) {
 
@@ -361,7 +460,15 @@ unicef_wash_clean <- function(df) {
 
 }
 
-#function to clean pop_data
+#' weights_clean
+#'
+#' \code{weights_clean} is a function to clean weights data imported from SDMX
+#' queries in `weights` function.
+#'
+#' Several variables are calculated (Y25T65, Y_GE25, Y15T64, L1_GLAST_Q1_F,
+#' L1_GLAST_Q1_M, L2_GLAST_Q1_F, L2_GLAST_Q1_M, L3_Q1_F = L3_F, L3_Q1_M = L3_M).
+#'@family clean function
+#'@seealso \code{\link{weights}}
 
 weights_clean <- function(df) {
 
@@ -408,7 +515,14 @@ weights_clean <- function(df) {
 
 }
 
-#function to format long_data (final values) data and convert to wide for export
+
+#' format_wide
+#'
+#' \code{format_wide} is a function to format stat table data to 'wide' format.
+#'
+#' Rounds values, converts binary values to 'Yes/No'; converts value to unicode
+#' with subscript flags; converts to list of dataframs for export to xlsx.
+#'@family clean function
 
 format_wide <- function(df) {
 

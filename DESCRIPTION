@@ -1,11 +1,11 @@
 Package: gemrtables
 Type: Package
-Title: Produce the Global Education Monitoring Report statistical tables
-Version: 0.1.0
-Author: Alasdair McWilliam,
-        Bilal Barakat
-Maintainer: Alasdair McWilliam <a.mc-william@unesco.org>,
-            Bilal Barakat <b.barakat@unesco.org>
+Title: Generate the Global Education Monitoring Report statistical tables
+Version: 0.0.0.9000
+Authors@R: as.person(c(
+    "Alasdair McWilliam <a.mc-william@unesco.org> [aut, cre]",
+    "Bilal Barakat <b.barakat@unesco.org> [aut]"
+  ))
 Description: This package imports, transforms and exports data for use in the GEMR statistical tables
 License: GPL-3 
 Encoding: UTF-8
@@ -21,6 +21,8 @@ Imports:
     R.cache,
     rsdmx,
     stringi,
+    stringr,
     tidyr,
     wbstats,
     writexl
+RoxygenNote: 6.1.0

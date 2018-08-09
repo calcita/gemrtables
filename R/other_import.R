@@ -1,3 +1,13 @@
+#' other
+#'
+#' \code{other} is a function to import and clean miscellaneous data.
+#'
+#' Defines  queries to the Eurostat, OECD and World Bank APIs, miscellaneous
+#' spreadsheets, and applies respective `clean` functions.
+#'@family import/clean function
+#'@seealso #'\code{\link{eurostat_clean}},  '\code{\link{gcpea_clean}},  '\code{\link{un_aids_clean}},
+#'  '\code{\link{unicef_ecce_clean}},  \code{\link{unicef_wash_clean}},  \code{\link{wb_clean}},
+
 other <- function() {
 
   wb_data <-  wb(country = "countries_only", indicator = c("SH.STA.STNT.ZS",

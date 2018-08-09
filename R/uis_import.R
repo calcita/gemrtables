@@ -1,11 +1,16 @@
-#function to import and clean UIS data
+#' uis
+#'
+#' \code{uis} is a function to import and clean UIS data.
+#'
+#' Defines SDMX queries to the UIS API and applies the `uis_clean` function
+#'@family import/clean function
+#'@seealso \code{\link{uis_clean}}
 
 uis <- function() {
 
   uis_urls <- list(
 
     # UIS api REST API urls
-
 
     #table 1
 
@@ -116,7 +121,7 @@ uis <- function() {
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/QUTP+TRTP+TISP+TATTRR.PT.L02+L1+L2_3._T._T._T..INST_T......_T..._T._T...?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=")
 
 
-  uis_data <- read_urls(uis_urls, key = "43ef903b32e74ebabe916007e9cf89e9") %>%
+  uis_data <- read_urls(uis_urls, key = pkg.env$key) %>%
     uis_clean()
 }
 
