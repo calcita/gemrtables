@@ -10,12 +10,8 @@ Description: This package imports, transforms and exports data for use in the GE
 License: GPL-3 
 Encoding: UTF-8
 LazyData: true
-<<<<<<< HEAD
-Depends: 
-  tidyverse,
-  DBI,
-  wbstats
-=======
+Depends:
+    dplyr
 Imports:
     countrycode,
     data.table,
@@ -32,4 +28,4 @@ Imports:
     wbstats,
     writexl
 RoxygenNote: 6.1.0
->>>>>>> e5ac0a95c0d51864e7e7314150665ff08179288e
+

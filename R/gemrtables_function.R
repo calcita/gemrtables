@@ -10,7 +10,7 @@
 #'   years prior to the current year.
 #' @param export If `TRUE` returns an xlsx workbook in 'wide' format, with
 #'   seperate worksheets per table.
-#' If `FALSE` (the default) returns an data frame in 'long' format.
+#' If `FALSE` (the default) returns a data frame in 'long' format.
 #' @param path File path to write xlsx workbook (character). Overwrites existing
 #'   file.
 #' @param key UIS api subcription key.
@@ -123,6 +123,12 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
 
   long_data <- dplyr::bind_rows(country_data2, regional_aggregates) %>%
     dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "income_group"))) %>%
+    # Assuming we have no indicators with no data whatsoever (for any country/region),
+    # and no countries/regions with no data whatsoever (for any indicator),
+    # the following single command should be sufficient to avoid dropping empty rows/cols:
+    tidyr::complete(nesting(ind, aggregation), nesting(sheet, annex_name, SDG.region, entity),
+             fill = list(value = NA, val_status = "", year_diff = 0)) %>%
+    #
     dplyr::arrange(sheet, position, SDG.region, entity, annex_name)
 
   wide_data <- long_data %>%
@@ -132,10 +138,13 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     cat(paste("The following variables are missing:\n"))
     cat(paste(capture.output(print(unmatched)), collapse = "\n"))
   }
+  # Similarly:
+  # if (min(count(regional_aggregates, annex_name, ind)$n) < [INSERT EXPECTED NUMBER OF AGGREGATES])
+  #        print('WARNING: aggregates have been dropped!')}
 
   if(isTRUE(export)) {
     writex::write_xlsx(wide_data, path = path)
-  }else {
+  } else {
     return(long_data)
   }
 

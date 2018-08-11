@@ -24,27 +24,7 @@
 #' varname = list("adult.profiliteracy.gpia", "adult.profinumeracy.gpia")) %>%
 #' pmap(parity_adj) %>%
 
-<<<<<<< HEAD
-adjustGPI <- function(gpi) ifelse(gpi <= 1, gpi, 2 - 1/gpi)
 
-# parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
-#
-#   df <- dynGet(df)
-#   col <- as.name(col)
-#
-#   indice <- df %>%
-#     filter(!!col %in% c(a, b))
-#
-#   indice <- group_by(indice, iso2c, year) %>%
-#     filter(n()==2 ) %>%
-#     {if(val_status == FALSE) summarise(., value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]))
-#        else
-#          summarise(indice, value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]),
-#                   val_status = ifelse(val_status[!!col == !!a] == "E" | val_status[!!col == !!b] == "E", "E", "A")) } %>%
-#     mutate(ind = varname) %>%
-#     filter(!is.na(value))
-# }
-=======
 parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
 
   df <- dynGet(df)
@@ -62,7 +42,7 @@ parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
     mutate(ind = varname) %>%
     filter(!is.na(value))
 }
->>>>>>> e5ac0a95c0d51864e7e7314150665ff08179288e
+
 
 #' uis_clean
 #'
@@ -276,38 +256,7 @@ wb_clean <- function(df) {
     filter(indicatorID %in% c("SH.STA.STNT.ZS", "LO.TIMSS.SCI8.LOW", NA)) %>%
     select(iso2c, ind, year = date, value, source)
 
-<<<<<<< HEAD
-  clean3 <- clean2 %>%
-    mutate(
-      gender = case_when(
-        str_detect(ind, fixed(".f")) ~ 'F',
-        str_detect(ind, fixed(".m")) ~ 'M',
-        TRUE ~ 'T'
-      )) %>%
-    mutate(
-      ind = str_replace(ind, c("\\.[fm]"), "")
-      ) %>%
-    spread(gender, value) %>%
-    mutate(
-      GPI = F/M,
-      GPIadj = adjustGPI(GPI)) %>%
-    gather(gender, value, F:GPIadj, na.rm = TRUE) %>%
-    mutate(ind = paste(ind, gender, sep = ".")) %>%
-    select(-gender)
 
-  # parity_indices <- list(df = list("clean2","clean2"),
-  #                        col = list("ind",  "ind"),
-  #                        a = list("adult.profiliteracy.f","adult.profinumeracy.f"),
-  #                        b = list("adult.profiliteracy.m", "adult.profinumeracy.m"),
-  #                        varname = list("adult.profiliteracy.gpia", "adult.profinumeracy.gpia")) %>%
-  #                      pmap(parity_adj) %>%
-  #                      reduce(bind_rows) %>%
-  #                      mutate(source = "PIAAC")
-
-  cleaned <-
-    # bind_rows(clean2, parity_indices) %>%
-    clean3 %>%
-=======
   parity_indices <- list(df = list("clean2","clean2"),
                          col = list("ind",  "ind"),
                          a = list("adult.profiliteracy.f","adult.profinumeracy.f"),
@@ -318,7 +267,6 @@ wb_clean <- function(df) {
     mutate(source = "PIAAC")
 
   cleaned <- bind_rows(clean2, parity_indices) %>%
->>>>>>> e5ac0a95c0d51864e7e7314150665ff08179288e
     group_by(iso2c, ind) %>%
     filter(year == max(year), !is.na(value)) %>%
     mutate(val_status = "A",
@@ -587,7 +535,7 @@ format_wide <- function(df) {
     mutate(value = case_when(str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel", ignore_case = TRUE)) ~ round(value, digits = 2),
                              str_detect(ind, regex("XGDP|scholarship", ignore_case = TRUE)) ~ round(value, digits = 1),
                              !str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel|XGDP|scholarship", ignore_case = TRUE)) ~ round(value)),
-           value = ifelse(is.na(value), "", value),
+           value = ifelse(is.na(value), "\u2026", value),
            value = ifelse(entity == "country" & aggregation == "pc_true", ifelse(value==1, "Yes", "No"), value),
            val_status = ifelse(val_status == "A", "", tolower(val_status)),
            year_diff = year - ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
