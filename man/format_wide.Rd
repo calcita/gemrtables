@@ -14,12 +14,11 @@ Rounds values, converts binary values to 'Yes/No'; converts value to unicode
 with subscript flags; converts to list of dataframs for export to xlsx.
 }
 \seealso{
-Other clean function: \code{\link{cedar_clean}},
-  \code{\link{eurostat_clean}}, \code{\link{gcpea_clean}},
-  \code{\link{oecd_clean}}, \code{\link{uis_clean}},
-  \code{\link{un_aids_clean}},
+Other clean: \code{\link{cedar_clean}},
+  \code{\link{gcpea_clean}}, \code{\link{oecd_clean}},
+  \code{\link{uis_clean}}, \code{\link{un_aids_clean}},
   \code{\link{unicef_ecce_clean}},
   \code{\link{unicef_wash_clean}}, \code{\link{wb_clean}},
   \code{\link{weights_clean}}
 }
-\concept{clean function}
+\concept{clean}

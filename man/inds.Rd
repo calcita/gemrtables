@@ -15,8 +15,8 @@ It's purpose is to filter, rename and order variables, and define methods of
 aggregation.
 }
 \seealso{
-Other import/clean function: \code{\link{cedar}},
+Other import/clean: \code{\link{cedar}},
   \code{\link{other}}, \code{\link{region_groups}},
   \code{\link{uis}}, \code{\link{weights}}
 }
-\concept{import/clean function}
+\concept{import/clean}

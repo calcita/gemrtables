@@ -3,3 +3,5 @@
 export(gemrtables)
 export(parity_adj)
 export(read_urls)
+import(utils)
+importFrom(magrittr,"%>%")

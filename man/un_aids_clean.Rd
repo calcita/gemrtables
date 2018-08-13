@@ -16,11 +16,11 @@ Information on survey used per observation is removed.
 \seealso{
 \code{\link{other}}
 
-Other clean function: \code{\link{cedar_clean}},
-  \code{\link{eurostat_clean}}, \code{\link{format_wide}},
-  \code{\link{gcpea_clean}}, \code{\link{oecd_clean}},
-  \code{\link{uis_clean}}, \code{\link{unicef_ecce_clean}},
+Other clean: \code{\link{cedar_clean}},
+  \code{\link{format_wide}}, \code{\link{gcpea_clean}},
+  \code{\link{oecd_clean}}, \code{\link{uis_clean}},
+  \code{\link{unicef_ecce_clean}},
   \code{\link{unicef_wash_clean}}, \code{\link{wb_clean}},
   \code{\link{weights_clean}}
 }
-\concept{clean function}
+\concept{clean}

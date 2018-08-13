@@ -11,7 +11,7 @@
 #'   queries into a single data frame.
 #' @return A data frame.
 #' @export
-#' @family import functions
+#' @family import
 #' @seealso \code{\link[rsdmx]{readSDMX}}
 #' @examples
 #' read_urls("https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/COMP_EDU.YR.L1..................?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
@@ -36,13 +36,13 @@ read_urls <- function(urls, key = NULL, bind = TRUE) {
 
   if(length(urls) == 1) {
     {if(str_detect(urls, "key=")) paste(urls, key, sep = "") else urls } %>%
-      readSDMX() %>%
-      as_data_frame()
+      rsdmx::readSDMX() %>%
+      dplyr::as_data_frame()
   } else {
-    modify_if(.x = urls, .p = str_detect(urls, "key="), .f = paste, key, sep = "") %>%
-      map(readSDMX) %>%
-      map(as_data_frame) %>%
-      {if(bind == TRUE) reduce(., bind_rows) else . }
+    purrr::modify_if(.x = urls, .p = stringr::str_detect(urls, "key="), .f = paste, key, sep = "") %>%
+    purrr::map(readSDMX) %>%
+    purrr::map(as_data_frame) %>%
+    {if(bind == TRUE) purrr::reduce(., dplyr::bind_rows) else . }
   }
 }
 
@@ -60,7 +60,7 @@ read_urls <- function(urls, key = NULL, bind = TRUE) {
 #' @param ind Character vector of variables to select.
 #' @param password Password to connect to cedar SQL database.
 #' @return A data frame.
-#' @family import functions
+#' @family import
 #' @seealso codebook for WIDE indicators:
 #'   \url{https://drive.google.com/file/d/0B5qc8r9eSwe4LUhWajNwTS10TDA/view}.
 #'   Codebook for GEM2030 indicators:
@@ -100,35 +100,35 @@ read_cedar <- function(sc, level = 1, table, ind, password) {
     password <- pkg.env$key
   }
 
-  cedar_con <- dbConnect(RMariaDB::MariaDB(), host = "77.104.134.109",
-                         dbname = "cedardat_cedar",
-                         port = "3306",
-                         user = "cedardat_user", password = password)
+  cedar_con <- RMariaDB::dbConnect(RMariaDB::MariaDB(), host = "77.104.134.109",
+                                   dbname = "cedardat_cedar",
+                                   port = "3306",
+                                   user = "cedardat_user", password = password)
 
-  sc <- tbl(cedar_con, sc)
+  sc <- dplyr::tbl(cedar_con, sc)
   dims <- colnames(sc)
 
-  table <- tbl(cedar_con, table) %>%
-    select(-id)
+  table <- dplyr::tbl(cedar_con, table) %>%
+    dplyr::select(-id)
 
   df <- sc %>%
     purrr::when(
-      sc$ops$x == "wide_dimension" ~ filter(., category_id %in% level),
+      sc$ops$x == "wide_dimension" ~ dplyr::filter(., category_id %in% level),
       sc$ops$x == "other_dimension" ~ .
     ) %>%
-    inner_join(table, by = c("id" = "dim_id")) %>%
-    select(dims, !!!ind) %>%
-    collect() %>%
-    gather(indicator, value, !!!ind) %>%
+    dplyr::inner_join(table, by = c("id" = "dim_id")) %>%
+    dplyr::select(dims, !!!ind) %>%
+    dplyr::collect() %>%
+    tidyr::gather(indicator, value, !!!ind) %>%
     purrr::when(
-      sc$ops$x == "wide_dimension" ~  group_by(., country_code, indicator, level_id, grade_id),
-      sc$ops$x == "other_dimension" ~ group_by(., country_code, indicator, sex_id, ISCED_id, competence_id)
+      sc$ops$x == "wide_dimension" ~  dplyr::group_by(., country_code, indicator, level_id, grade_id),
+      sc$ops$x == "other_dimension" ~ dplyr::group_by(., country_code, indicator, sex_id, ISCED_id, competence_id)
     ) %>%
-    filter(!is.na(value)) %>%
-    select_if(~sum(!is.na(.)) > 0) %>%
-    mutate(year = as.numeric(year)) %>%
-    filter(year == max(year), value != 0) %>%
-    {if(is.character(.$value)) mutate(., value = case_when(value == "0" ~ 0, value == "LOW" ~ 1, value == "MEDIUM" ~ 2, value == "HIGH" ~ 3)) else . } %>%
+    dplyr::filter(!is.na(value)) %>%
+    dplyr::select_if(~sum(!is.na(.)) > 0) %>%
+    dplyr::mutate(year = as.numeric(year)) %>%
+    dplyr::filter(year == max(year), value != 0) %>%
+    {if(is.character(.$value)) dplyr::mutate(., value = dplyr::case_when(value == "0" ~ 0, value == "LOW" ~ 1, value == "MEDIUM" ~ 2, value == "HIGH" ~ 3)) else . } %>%
     unique()
 
   dbDisconnect(cedar_con)

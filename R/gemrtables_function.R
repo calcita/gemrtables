@@ -134,7 +134,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   }
 
   if(isTRUE(export)) {
-    writex::write_xlsx(wide_data, path = path)
+    writexl::write_xlsx(wide_data, path = path)
   }else {
     return(long_data)
   }

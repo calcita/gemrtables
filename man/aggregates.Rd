@@ -20,6 +20,6 @@ of the \code{gemrtables} function) as an argument.
 \seealso{
 \code{\link{gemrtables}}
 
-Other summarise function: \code{\link{parity_adj}}
+Other summarise: \code{\link{parity_adj}}
 }
-\concept{summarise function}
+\concept{summarise}

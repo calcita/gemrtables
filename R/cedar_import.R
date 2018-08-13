@@ -3,7 +3,7 @@
 #' \code{uis} is a function to import and clean cedar data
 #'
 #' Defines relvent tables and filters for cedar sql tables and applies the `cedar_clean` function
-#'@family import/clean function
+#'@family import/clean
 #'@seealso \code{\link{cedar_clean}}
 
 cedar <- function() {
@@ -32,8 +32,8 @@ cedar <- function() {
                                 c("stu_exper_bully_13_17", "stu_exper_violence_13_17"),
                                 "child_chores_more_28_12_14",
                                 c("esd_gced_curr_ge", "esd_gced_curr_hr", "esd_gced_glo_cit", "esd_gced_sus_dev"))) %>%
-    pmap(read_cedar) %>%
-    bind_rows() %>%
+    purrr::pmap(read_cedar) %>%
+    dplyr::bind_rows() %>%
     cedar_clean()
 
 }

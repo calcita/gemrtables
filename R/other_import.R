@@ -4,18 +4,18 @@
 #'
 #' Defines  queries to the Eurostat, OECD and World Bank APIs, miscellaneous
 #' spreadsheets, and applies respective `clean` functions.
-#'@family import/clean function
+#'@family import/clean
 #'@seealso #'\code{\link{eurostat_clean}},  '\code{\link{gcpea_clean}},  '\code{\link{un_aids_clean}},
 #'  '\code{\link{unicef_ecce_clean}},  \code{\link{unicef_wash_clean}},  \code{\link{wb_clean}},
 
 other <- function() {
 
-  wb_data <-  wb(country = "countries_only", indicator = c("SH.STA.STNT.ZS",
-                                                           "LO.TIMSS.SCI8.LOW", "LO.PISA.SCI.0.MA", "LO.PISA.SCI.1B.MA", "LO.PISA.SCI.1A.MA",
-                                                           "LO.PIAAC.LIT.YOU.BE", "LO.PIAAC.LIT.YOU.1", "LO.PIAAC.LIT.BE", "LO.PIAAC.LIT.1",
-                                                           "LO.PIAAC.NUM.YOU.BE", "LO.PIAAC.NUM.YOU.1", "LO.PIAAC.NUM.BE", "LO.PIAAC.NUM.1",
-                                                           "LO.PIAAC.LIT.FE.BE", "LO.PIAAC.LIT.FE.1", "LO.PIAAC.LIT.MA.BE", "LO.PIAAC.LIT.MA.1",
-                                                           "LO.PIAAC.NUM.FE.BE", "LO.PIAAC.NUM.FE.1", "LO.PIAAC.NUM.MA.BE", "LO.PIAAC.NUM.MA.1")) %>%
+  wb_data <-  wbstats::wb(country = "countries_only", indicator = c("SH.STA.STNT.ZS",
+                                                                    "LO.TIMSS.SCI8.LOW", "LO.PISA.SCI.0.MA", "LO.PISA.SCI.1B.MA", "LO.PISA.SCI.1A.MA",
+                                                                    "LO.PIAAC.LIT.YOU.BE", "LO.PIAAC.LIT.YOU.1", "LO.PIAAC.LIT.BE", "LO.PIAAC.LIT.1",
+                                                                    "LO.PIAAC.NUM.YOU.BE", "LO.PIAAC.NUM.YOU.1", "LO.PIAAC.NUM.BE", "LO.PIAAC.NUM.1",
+                                                                    "LO.PIAAC.LIT.FE.BE", "LO.PIAAC.LIT.FE.1", "LO.PIAAC.LIT.MA.BE", "LO.PIAAC.LIT.MA.1",
+                                                                    "LO.PIAAC.NUM.FE.BE", "LO.PIAAC.NUM.FE.1", "LO.PIAAC.NUM.MA.BE", "LO.PIAAC.NUM.MA.1")) %>%
     wb_clean()
 
   eurostat_data <- list("http://ec.europa.eu/eurostat/SDMX/diss-web/rest/data/trng_aes_100/.T.FE_NFE.PC../?startperiod=2010&endPeriod=2050",
@@ -44,7 +44,7 @@ other <- function() {
   unicef_ecce_books_data <- read.csv("https://drive.google.com/uc?export=download&id=15oDSTYqYm4Z4lHx7nQi31k_G1tjHfcGz", stringsAsFactors = FALSE) %>%
     unicef_ecce_clean(ind = "home.book.u5", source = "UNICEF")
 
-  other_data <- bind_rows(wb_data, eurostat_data, oecd_data, un_aids_data, gcpea_data, unicef_wash_data, unicef_ecce_learn_data, unicef_ecce_books_data )
+  other_data <- dplyr::bind_rows(wb_data, eurostat_data, oecd_data, un_aids_data, gcpea_data, unicef_wash_data, unicef_ecce_learn_data, unicef_ecce_books_data )
 
 }
 

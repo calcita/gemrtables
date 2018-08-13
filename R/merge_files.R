@@ -5,12 +5,12 @@
 #' This dataframe defines indicators to be included in the statistical tables.
 #' It's purpose is to filter, rename and order variables, and define methods of
 #' aggregation.
-#'@family import/clean function
+#'@family import/clean
 
 inds <- function() {
   read.csv("https://drive.google.com/uc?export=download&id=1_VGBQ3x4DDrcmEO_5192oPP4xjOuz12I", stringsAsFactors = FALSE) %>%
-    mutate(var_concat = ifelse(var_concat == "", NA, var_concat)) %>%
-    as_tibble()
+    dplyr::mutate(var_concat = ifelse(var_concat == "", NA, var_concat)) %>%
+    dplyr::as_tibble()
 }
 
 #' region_groups
@@ -19,7 +19,7 @@ inds <- function() {
 #'
 #' This dataframe defines various country names, iso / OECD CRS codes, and
 #' regional groupings on which to calculate aggregates.
-#'@family import/clean function
+#'@family import/clean
 #'
 region_groups <- function() {
   read.csv("https://drive.google.com/uc?export=download&id=13-dMaPNS6-DwzMTxhIR4OKP2zrm5s_dx", stringsAsFactors = FALSE)
@@ -32,7 +32,7 @@ region_groups <- function() {
 #'
 #' Defines SDMX queries to the UIS / UN APIs and applies the `weights_clean`
 #' function
-#'@family import/clean function
+#'@family import/clean
 #'@seealso \code{\link{weights_clean}}
 #'
 weights <- function() {

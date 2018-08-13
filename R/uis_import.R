@@ -3,7 +3,7 @@
 #' \code{uis} is a function to import and clean UIS data.
 #'
 #' Defines SDMX queries to the UIS API and applies the `uis_clean` function
-#'@family import/clean function
+#'@family import/clean
 #'@seealso \code{\link{uis_clean}}
 
 uis <- function() {
@@ -14,18 +14,20 @@ uis <- function() {
 
     #table 1
 
-    #vars 1:5
+    #vars 1:4
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/COMP_EDU+FREE_EDU.YR.L1T3+L02+L1+L2_3._T._T.._T..............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
-    #vars 6:9
+    #var 5
+    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/TH_ENTRY_AGE.YR.L1.._T.TH_ENTRY_AGE.G1..............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    #vars 6:8
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/TH_DUR.YR.L02+L1+L2+L3...._T.INST_T.............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
-    #vars 10:12
+    #vars 9:12
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/SAP.PER.L02+L1+L2_3+L5T8._T._T.SCH_AGE_GROUP._T.INST_T.............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 13:16
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/STU.PER.L02+L1+L2_3+L5T8._T._T._T._T.INST_T...._T.........?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 17:18
-    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_FINANCE,1.0/EDU_EXP.GDP+GOV_EXP_T._T._T._T._T.GOV._T...?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_FINANCE,1.0/EDU_EXP.GDP+GOV_EXP_T._T._T._T._T.GOV.....?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 19:26
-    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_FINANCE,1.0/XUNIT.PPP_CONST+GDP_CAP.L02+L1+L2_3+L5T8._T._T._T.GOV.FFNTP...?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_FINANCE,1.0/XUNIT.PPP_CONST+GDP_CAP.L02+L1+L2_3+L5T8._T._T._T.GOV.FFNTR...?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #var 27
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_FINANCE,1.0/EDU_EXP.GDP._T.._T..HH._T...?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
 

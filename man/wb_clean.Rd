@@ -16,12 +16,12 @@ Cleans data imported by \code{[wbstats]{wb}} and computes two variables
 \seealso{
 \code{\link[wbstats]{wb}}, \code{\link{other}}
 
-Other clean function: \code{\link{cedar_clean}},
-  \code{\link{eurostat_clean}}, \code{\link{format_wide}},
-  \code{\link{gcpea_clean}}, \code{\link{oecd_clean}},
-  \code{\link{uis_clean}}, \code{\link{un_aids_clean}},
+Other clean: \code{\link{cedar_clean}},
+  \code{\link{format_wide}}, \code{\link{gcpea_clean}},
+  \code{\link{oecd_clean}}, \code{\link{uis_clean}},
+  \code{\link{un_aids_clean}},
   \code{\link{unicef_ecce_clean}},
   \code{\link{unicef_wash_clean}},
   \code{\link{weights_clean}}
 }
-\concept{clean function}
+\concept{clean}

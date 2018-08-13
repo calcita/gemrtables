@@ -62,6 +62,6 @@ codebook for WIDE indicators:
   Codebook for GEM2030 indicators:
   \url{https://sites.google.com/view/codebooks/home/gem-2030}
 
-Other import functions: \code{\link{read_urls}}
+Other import: \code{\link{read_urls}}
 }
-\concept{import functions}
+\concept{import}
