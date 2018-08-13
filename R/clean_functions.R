@@ -24,6 +24,7 @@
 #' varname = list("adult.profiliteracy.gpia", "adult.profinumeracy.gpia")) %>%
 #' pmap(parity_adj) %>%
 
+
 parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
 
   df <- dynGet(df)
@@ -41,6 +42,7 @@ parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
     dplyr::mutate(ind = varname) %>%
     dplyr::filter(!is.na(value))
 }
+
 
 #' uis_clean
 #'
@@ -121,7 +123,7 @@ uis_clean <- function(df) {
     purrr::reduce(dplyr::bind_rows)
 
 
-  cleaned <- dplyr::bind_rows(clean2, admin_assessment, free_comp, inbound_stu, parity_indices) %>%
+  cleaned <- dplyr::bind_rows(clean2, admin_assessment, inbound_stu, parity_indices) %>%
     dplyr::mutate(source = "UIS", year = as.numeric(year)) %>%
     dplyr::select(iso2c, year, ind, value, val_status, source) %>%
     dplyr::filter(!is.na(value))
@@ -233,6 +235,7 @@ wb_clean <- function(df) {
     dplyr::filter(stringr::str_detect(indicatorID, "PISA|PIAAC")) %>%
     dplyr::group_by(source, iso2c, ind, date) %>%
     dplyr::summarise(value = 100 - (sum(value)))  %>%
+    dplyr::ungroup() %>%
     dplyr::bind_rows(clean1) %>%
     dplyr::filter(indicatorID %in% c("SH.STA.STNT.ZS", "LO.TIMSS.SCI8.LOW", NA)) %>%
     dplyr::select(iso2c, ind, year = date, value, source)
@@ -368,12 +371,12 @@ un_aids_clean <- function(df) {
 gcpea_clean <- function(df) {
 
   cleaned <- df %>%
-    stringr::gather(key = "year", value = "value", - Country) %>%
-    dplyr::mutate(year =  str_replace(year, pattern = "X", replacement = ""),
+    tidyr::gather(key = "year", value = "value", - Country) %>%
+    dplyr::mutate(year =  stringr::str_replace(year, pattern = "X", replacement = ""),
                   year = as.numeric(year),
                   ind = "edattacks",
                   val_status = ifelse(stringr::str_detect(value, "\\*"), "m", "A"),
-                  value = str_replace(value, pattern = "\\*|-", replacement = ""),
+                  value = stringr::str_replace(value, pattern = "\\*|-", replacement = ""),
                   value = as.numeric(value),
                   source = "GCPEA",
                   iso2c = countrycode::countrycode(sourcevar = .$Country, origin = "country.name", destination = "iso2c", warn = FALSE)) %>%
@@ -431,7 +434,7 @@ unicef_wash_clean <- function(df) {
 
   cleaned <- df %>%
     tidyr::gather(key = "ind", value = "value", - Country, - year) %>%
-    dplyr::mutate(value = str_replace(value, "-", ""),
+    dplyr::mutate(value = stringr::str_replace(value, "-", ""),
                   value = as.numeric(value),
                   iso2c = countrycode::countrycode(sourcevar = .$Country, origin = "country.name", destination = "iso2c", warn = FALSE),
                   year = as.numeric(year),
@@ -443,6 +446,53 @@ unicef_wash_clean <- function(df) {
     dplyr::filter(!is.na(iso2c), !is.na(value)) %>%
     dplyr::select(iso2c, year, ind, value, val_status, source)
 
+}
+
+#' bullying_clean
+#'
+#' \code{bullying_clean} is a function to clean the Innocenti bullying data on
+#' google drive.
+#'
+#' Information on survey used per observation is removed.
+#'
+#'@family clean
+#'@seealso \code{\link{other}}
+
+bullying_clean <- function(df) {
+
+  cleaned <- df %>%
+    dplyr::mutate(iso2c = countrycode::countrycode(sourcevar = .$Country, origin = "country.name", destination = "iso2c", warn = FALSE),
+                  ind = "stu.bully",
+                  value = stu.bully,
+                  val_status = "A",
+                  source = "Innocenti",
+                  iso2c =  dplyr::case_when(Country == "Dominicana" ~ "DO",
+                                            Country == "United Arab" ~ "AE",
+                                            TRUE ~ iso2c),
+                  value =  dplyr::case_when(value == "Low" ~ 1,
+                                    value == "Medium" ~ 2,
+                                    value == "High" ~ 3)) %>%
+    dplyr::filter(!is.na(iso2c), !is.na(value)) %>%
+    dplyr::select(iso2c, year, ind, value, val_status, source)
+}
+
+#' ict_skills_clean
+#'
+#' \code{ict_skills_clean} is a function to clean the ITU ICT data on
+#' google drive.
+#'
+#'@family clean
+#'@seealso \code{\link{other}}
+
+ict_skills_clean <- function(df) {
+
+  cleaned <- df %>%
+    tidyr::gather(key = "ind", value = "value", -Country, -year) %>%
+    dplyr::mutate(iso2c = countrycode::countrycode(sourcevar = .$Country, origin = "country.name", destination = "iso2c"),
+                  val_status = "A",
+                  source = "ITU") %>%
+    dplyr::filter(!is.na(iso2c), !is.na(value)) %>%
+    dplyr::select(iso2c, year, ind, value, val_status, source)
 }
 
 #' weights_clean
@@ -512,21 +562,21 @@ weights_clean <- function(df) {
 format_wide <- function(df) {
 
   wide_data <- df %>%
-    dplyr::mutate(value = dplyr::case_when(stringr::str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel", ignore_case = TRUE)) ~ round(value, digits = 2),
-                                           stringr::str_detect(ind, regex("XGDP|scholarship", ignore_case = TRUE)) ~ round(value, digits = 1),
-                                           !stringr::str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel|XGDP|scholarship", ignore_case = TRUE)) ~ round(value)),
-                  value = ifelse(is.na(value), "", value),
-                  value = ifelse(entity == "country" & aggregation == "pc_true", ifelse(value==1, "Yes", "No"), value),
-                  val_status = ifelse(val_status == "A", "", tolower(val_status)),
-                  year_diff = year - ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
-                  val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
-                                                    val_status == "m" ~ "\u2099"),
-                  year_diff_utf = dplyr::case_when(year_diff == 1 ~ "\u208A\u2081",
-                                                   year_diff == -1 ~ "\u208B\u2081",
-                                                   year_diff == -2 ~ "\u208B\u2082",
-                                                   year_diff == -3 ~ "\u208B\u2083",
-                                                   year_diff == -4 ~ "\u208B\u2084"),
-                  val_utf = paste0(value, year_diff_utf, val_status_utf, sep = "")) %>%
+    dplyr:: mutate(value = dplyr::case_when(stringr::str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel", ignore_case = TRUE)) ~ round(value, digits = 2),
+                                            stringr::str_detect(ind, regex("XGDP|scholarship", ignore_case = TRUE)) ~ round(value, digits = 1),
+                                            !stringr::str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel|XGDP|scholarship", ignore_case = TRUE)) ~ round(value)),
+                   value = ifelse(is.na(value), "\u2026", value),
+                   value = ifelse(entity == "country" & aggregation == "pc_true", ifelse(value==1, "Yes", "No"), value),
+                   val_status = ifelse(val_status == "A", "", tolower(val_status)),
+                   year_diff = year - ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
+                   val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
+                                                     val_status == "m" ~ "\u2099"),
+                   year_diff_utf = dplyr::case_when(year_diff == 1 ~ "\u208A\u2081",
+                                                    year_diff == -1 ~ "\u208B\u2081",
+                                                    year_diff == -2 ~ "\u208B\u2082",
+                                                    year_diff == -3 ~ "\u208B\u2083",
+                                                    year_diff == -4 ~ "\u208B\u2084"),
+                   val_utf = paste0(value, year_diff_utf, val_status_utf, sep = "")) %>%
     dplyr::select(sheet, annex_name, SDG.region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),

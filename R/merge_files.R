@@ -1,6 +1,6 @@
 #' inds
 #'
-#' \code{other} is a function to import statistical table indicators.
+#' \code{inds} is a function to import statistical table indicators.
 #'
 #' This dataframe defines indicators to be included in the statistical tables.
 #' It's purpose is to filter, rename and order variables, and define methods of

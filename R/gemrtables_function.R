@@ -10,7 +10,7 @@
 #'   years prior to the current year.
 #' @param export If `TRUE` returns an xlsx workbook in 'wide' format, with
 #'   seperate worksheets per table.
-#' If `FALSE` (the default) returns an data frame in 'long' format.
+#' If `FALSE` (the default) returns a data frame in 'long' format.
 #' @param path File path to write xlsx workbook (character). Overwrites existing
 #'   file.
 #' @param key UIS api subcription key.
@@ -25,7 +25,7 @@
 gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, key, password) {
 
   ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
-  region_type = as.name(region)
+  region = as.name(region)
 
     #define new environment for api and db keys. Set directory for cache (users current working directory)
 
@@ -104,7 +104,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::select(ind, source, sheet, position)
 
   country_data2 <- country_data1 %>%
-    dplyr::select(iso2c, annex_name, SDG.region, income_group, year, ind, value, val_status, source) %>%
+    dplyr::select(iso2c, annex_name, !!region, income_group, year, ind, value, val_status, source) %>%
     dplyr::right_join(indicators, by = c("ind", "source")) %>%
     dplyr::group_by(iso2c, ind, source) %>%
     dplyr::filter(year == max(year)) %>%
@@ -117,13 +117,15 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     ungroup()
 
   regional_aggregates <- country_data2 %>%
-    aggregates() %>%
+    aggregates(region = region) %>%
     dplyr::filter(!is.na(annex_name)) %>%
     dplyr::inner_join(indicators_unique, by = c("ind", "aggregation"))
 
   long_data <- dplyr::bind_rows(country_data2, regional_aggregates) %>%
     dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "income_group"))) %>%
-    dplyr::arrange(sheet, position, SDG.region, entity, annex_name)
+    tidyr::complete(nesting(ind, aggregation), nesting(sheet, annex_name, !!region, entity),
+             fill = list(value = NA, val_status = "", year_diff = 0)) %>%
+    dplyr::arrange(sheet, position, !!region, entity, annex_name)
 
   wide_data <- long_data %>%
     format_wide()
@@ -133,10 +135,12 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     cat(paste(capture.output(print(unmatched)), collapse = "\n"))
   }
 
+  #if(min(count(regional_aggregates, annex_name, ind)$n) < [INSERT EXPECTED NUMBER OF AGGREGATES])
+  #        print('WARNING: aggregates have been dropped!')}
+
   if(isTRUE(export)) {
     writexl::write_xlsx(wide_data, path = path)
   }else {
     return(long_data)
   }
-
 }

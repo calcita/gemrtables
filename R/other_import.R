@@ -44,7 +44,13 @@ other <- function() {
   unicef_ecce_books_data <- read.csv("https://drive.google.com/uc?export=download&id=15oDSTYqYm4Z4lHx7nQi31k_G1tjHfcGz", stringsAsFactors = FALSE) %>%
     unicef_ecce_clean(ind = "home.book.u5", source = "UNICEF")
 
-  other_data <- dplyr::bind_rows(wb_data, eurostat_data, oecd_data, un_aids_data, gcpea_data, unicef_wash_data, unicef_ecce_learn_data, unicef_ecce_books_data )
+  bullying_data <- read.csv("https://drive.google.com/uc?export=download&id=1QgrTGKWuhlgd_oYtCKAiUw4SSgdj4xts", stringsAsFactors = FALSE) %>%
+    bullying_clean()
+
+  ict_skills_data <- read.csv("https://drive.google.com/uc?export=download&id=1dV4T7RSDbJmYvhy7ydUzLCkLCTcUkZzl", stringsAsFactors = FALSE) %>%
+    ict_skills_clean()
+
+  other_data <- dplyr::bind_rows(wb_data, eurostat_data, oecd_data, un_aids_data, gcpea_data, unicef_wash_data, unicef_ecce_learn_data, unicef_ecce_books_data, bullying_data, ict_skills_data)
 
 }
 
