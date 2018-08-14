@@ -35,7 +35,7 @@ read_urls <- function(urls, key = NULL, bind = TRUE) {
   key = as.character(key)
 
   if(length(urls) == 1) {
-    {if(str_detect(urls, "key=")) paste(urls, key, sep = "") else urls } %>%
+    {if(stringr::str_detect(urls, "key=")) paste(urls, key, sep = "") else urls } %>%
       rsdmx::readSDMX() %>%
       dplyr::as_data_frame()
   } else {

@@ -52,9 +52,9 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   }
 
   #import / generate other merge files
-  indicators <- inds()
-  regions <- region_groups()
-  indicators_unique <- indicators %>%
+  pkg.env$indicators <- inds()
+  pkg.env$regions <- region_groups()
+  indicators_unique <- pkg.env$indicators %>%
     dplyr::select(-source, -var_concat, - priority, -ind_lab) %>%
     unique()
 
@@ -97,15 +97,15 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
 
   country_data1 <- country_data %>%
     dplyr::right_join(regions, by = "iso2c") %>%
-    dplyr::left_join(indicators, by = c("ind", "source")) %>%
+    dplyr::left_join(pkg.env$indicators, by = c("ind", "source")) %>%
     dplyr::filter(year >= ref_year - year_cut)
 
-  unmatched <- dplyr::anti_join(indicators, country_data1, by = c("ind", "source")) %>%
+  unmatched <- dplyr::anti_join(pkg.env$indicators, country_data1, by = c("ind", "source")) %>%
     dplyr::select(ind, source, sheet, position)
 
   country_data2 <- country_data1 %>%
-    dplyr::select(iso2c, annex_name, !!region, income_group, year, ind, value, val_status, source) %>%
-    dplyr::right_join(indicators, by = c("ind", "source")) %>%
+    dplyr::select(iso2c, annex_name, !!region, World, SDG.subregion, income_group, year, ind, value, val_status, source) %>%
+    dplyr::right_join(pkg.env$indicators, by = c("ind", "source")) %>%
     dplyr::group_by(iso2c, ind, source) %>%
     dplyr::filter(year == max(year)) %>%
     dplyr::ungroup() %>%
@@ -123,8 +123,8 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
 
   long_data <- dplyr::bind_rows(country_data2, regional_aggregates) %>%
     dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "income_group"))) %>%
-    tidyr::complete(nesting(ind, aggregation), nesting(sheet, annex_name, !!region, entity),
-             fill = list(value = NA, val_status = "", year_diff = 0)) %>%
+    tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, iso2c, SDG.region, entity),
+    fill = list(value = NA, val_status = "", year_diff = 0)) %>%
     dplyr::arrange(sheet, position, !!region, entity, annex_name)
 
   wide_data <- long_data %>%

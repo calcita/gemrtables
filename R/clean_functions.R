@@ -68,7 +68,7 @@ uis_clean <- function(df) {
     unique()
 
   clean2 <- clean1 %>%
-    dplyr::inner_join(indicators[, 1:2], by = "var_concat")
+    dplyr::inner_join(pkg.env$indicators[, 1:2], by = "var_concat")
 
   admin_assessment <- clean1 %>%
     dplyr::filter(stringr::str_detect(var_concat, "ADMIN_NB")) %>%
@@ -123,7 +123,7 @@ uis_clean <- function(df) {
     purrr::reduce(dplyr::bind_rows)
 
 
-  cleaned <- dplyr::bind_rows(clean2, admin_assessment, inbound_stu, parity_indices) %>%
+  cleaned <- dplyr::bind_rows(clean2, inbound_stu, parity_indices) %>%
     dplyr::mutate(source = "UIS", year = as.numeric(year)) %>%
     dplyr::select(iso2c, year, ind, value, val_status, source) %>%
     dplyr::filter(!is.na(value))
@@ -183,7 +183,7 @@ cedar_clean <- function(df) {
                            indicator == "child_chores_more_28_12_14" & sex_id == 4 ~ "chores.28plus.12t14",
                            indicator == "child_chores_more_28_12_14" & sex_id == 1 ~ "chores.28plus.12t14.f",
                            indicator == "child_chores_more_28_12_14" & sex_id == 2 ~ "chores.28plus.12t14.m")) %>%
-    dplyr::inner_join(regions, by = c("country_code" = "iso3c")) %>%
+    dplyr::inner_join(pkg.env$regions, by = c("country_code" = "iso3c")) %>%
     dplyr::filter(!is.na(ind))
 
   parity_indices <- list(df = list("clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1"),
@@ -297,7 +297,7 @@ oecd_clean <- function(df) {
     dplyr::mutate(ind = dplyr::case_when(AIDTYPE == "E02" ~ "odaflow.imputecost",
                                          AIDTYPE == "E01"  ~ "odaflow.volumescholarship"),
                   RECIPIENT = as.numeric(RECIPIENT)) %>%
-    dplyr::left_join(regions, by = c("RECIPIENT" = "oecd.crs.recipientcode")) %>%
+    dplyr::left_join(pkg.env$regions, by = c("RECIPIENT" = "oecd.crs.recipientcode")) %>%
     dplyr::select(iso2c, year = REFERENCEPERIOD, ind, value = obsValue)
 
   sal1 <- df[[2]] %>%
@@ -305,13 +305,13 @@ oecd_clean <- function(df) {
                                          ISC11 == "L1" ~ "sal.rel.1",
                                          ISC11 == "L2_C4" ~ "sal.rel.2",
                                          ISC11 == "L3_C4" ~ "sal.rel.3")) %>%
-    dplyr::inner_join(regions, by = c("COUNTRY" = "iso3c")) %>%
+    dplyr::inner_join(pkg.env$regions, by = c("COUNTRY" = "iso3c")) %>%
     dplyr::select(iso2c, year = YEAR, ind, value = obsValue)
 
   sal2 <- df[[3]] %>%
     dplyr::mutate(ind = dplyr::case_when(ISC11_LEVEL == "L2" ~ "teachers.2",
                                          ISC11_LEVEL == "L3" ~ "teachers.3")) %>%
-    dplyr::inner_join(regions, by = c("COUNTRY" = "iso3c")) %>%
+    dplyr::inner_join(pkg.env$regions, by = c("COUNTRY" = "iso3c")) %>%
     dplyr::select(iso2c, year = obsTime, ind, value = obsValue) %>%
     dplyr::bind_rows(sal1)  %>%
     tidyr::spread(key = ind, value = value) %>%
@@ -523,7 +523,7 @@ weights_clean <- function(df) {
                  wt_value = dplyr::case_when(is.na(OBS_VALUE) ~ obsValue,
                                              is.na(obsValue) ~ as.numeric(OBS_VALUE)),
            iso3n = suppressWarnings(ifelse(stringr::str_detect(REF_AREA, "[0-9]"), as.numeric(REF_AREA), NA))) %>%
-    dplyr::left_join(regions, by = "iso3n") %>%
+    dplyr::left_join(pkg.env$regions, by = "iso3n") %>%
     dplyr::mutate(iso2c = ifelse(is.na(iso2c) & !stringr::str_detect(REF_AREA, "[0-9]"), REF_AREA, iso2c),
                   wt_value = ifelse(STAT_UNIT == "SAP", wt_value/1000, wt_value)) %>%
     dplyr::select(iso2c, year, wt_var, wt_value) %>%
@@ -562,9 +562,9 @@ weights_clean <- function(df) {
 format_wide <- function(df) {
 
   wide_data <- df %>%
-    dplyr:: mutate(value = dplyr::case_when(stringr::str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel", ignore_case = TRUE)) ~ round(value, digits = 2),
-                                            stringr::str_detect(ind, regex("XGDP|scholarship", ignore_case = TRUE)) ~ round(value, digits = 1),
-                                            !stringr::str_detect(ind, regex("wpia|gpia|lpia|sal\\.rel|XGDP|scholarship", ignore_case = TRUE)) ~ round(value)),
+    dplyr:: mutate(value = dplyr::case_when(stringr::str_detect(ind, stringr::regex("wpia|gpia|lpia|sal\\.rel", ignore_case = TRUE)) ~ round(value, digits = 2),
+                                            stringr::str_detect(ind, stringr::regex("XGDP|scholarship", ignore_case = TRUE)) ~ round(value, digits = 1),
+                                            !stringr::str_detect(ind, stringr::regex("wpia|gpia|lpia|sal\\.rel|XGDP|scholarship", ignore_case = TRUE)) ~ round(value)),
                    value = ifelse(is.na(value), "\u2026", value),
                    value = ifelse(entity == "country" & aggregation == "pc_true", ifelse(value==1, "Yes", "No"), value),
                    val_status = ifelse(val_status == "A", "", tolower(val_status)),

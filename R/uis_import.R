@@ -29,7 +29,7 @@ uis <- function() {
     #vars 19:26
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_FINANCE,1.0/XUNIT.PPP_CONST+GDP_CAP.L02+L1+L2_3+L5T8._T._T._T.GOV.FFNTR...?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #var 27
-    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_FINANCE,1.0/EDU_EXP.GDP._T.._T..HH._T...?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_FINANCE,1.0/EDU_EXP.GDP._T._T.._T.HH.FFNTR...?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
 
     #table 2
 
