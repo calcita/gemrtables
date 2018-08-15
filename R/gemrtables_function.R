@@ -24,12 +24,25 @@
 
 gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, key, password) {
 
-  ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
-  region = as.name(region)
-
-    #define new environment for api and db keys. Set directory for cache (users current working directory)
-
   pkg.env <<- new.env(parent = emptyenv())
+
+  #define regions and ref_year
+
+  ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
+
+  pkg.env$region = as.name(region)
+
+  if(region == "SDG.region") {
+    pkg.env$subregion <- as.name("SDG.subregion")
+  }else if(region == "UIS.region") {
+    pkg.env$subregion <- as.name("UIS.subregion")
+  }else if(region == "GEMR.region") {
+    pkg.env$subregion <- as.name("GEMR.subregion")
+  }
+
+
+  #define api and db keys. Set directory for cache (users current working directory)
+
   dir.create(path="~/.Rcache", showWarnings=FALSE)
   R.cache::setCacheRootPath(path="./.Rcache")
 
@@ -51,12 +64,15 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     path <- as.character(path)
   }
 
+
   #import / generate other merge files
   pkg.env$indicators <- inds()
   pkg.env$regions <- region_groups()
   indicators_unique <- pkg.env$indicators %>%
     dplyr::select(-source, -var_concat, - priority, -ind_lab) %>%
     unique()
+  regions2 <- region_groups2() %>%
+    dplyr::filter(grouping == as.character(pkg.env$region))
 
   #load/ cache for imported/cleaned country data and weights
 
@@ -104,7 +120,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::select(ind, source, sheet, position)
 
   country_data2 <- country_data1 %>%
-    dplyr::select(iso2c, annex_name, !!region, World, SDG.subregion, income_group, year, ind, value, val_status, source) %>%
+    dplyr::select(iso2c, annex_name, World, !!pkg.env$region, !!pkg.env$subregion, income_group, year, ind, value, val_status, source) %>%
     dplyr::right_join(pkg.env$indicators, by = c("ind", "source")) %>%
     dplyr::group_by(iso2c, ind, source) %>%
     dplyr::filter(year == max(year)) %>%
@@ -117,15 +133,15 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     ungroup()
 
   regional_aggregates <- country_data2 %>%
-    aggregates(region = region) %>%
+    aggregates() %>%
     dplyr::filter(!is.na(annex_name)) %>%
     dplyr::inner_join(indicators_unique, by = c("ind", "aggregation"))
 
   long_data <- dplyr::bind_rows(country_data2, regional_aggregates) %>%
     dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "income_group"))) %>%
-    tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, iso2c, SDG.region, entity),
+    tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, iso2c, !!pkg.env$region, !!pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
-    dplyr::arrange(sheet, position, !!region, entity, annex_name)
+    dplyr::arrange(sheet, position, !!pkg.env$region, entity, annex_name)
 
   wide_data <- long_data %>%
     format_wide()

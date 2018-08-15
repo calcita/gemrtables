@@ -5,12 +5,13 @@ agg_preprocess <- function(df) {
        ind == "Comp.2t3" ~ as.numeric(value >= 9),
        ind == "Free.2t3" ~ as.numeric(value >= 12),
        ind ==  "stu.bully" ~ as.numeric(value == 3),
-       stringr::str_detect(ind, "esd") ~ as.numeric(value >= 2)))
+       stringr::str_detect(ind, "esd") ~ as.numeric(value >= 2),
+       TRUE ~ value))
 }
 
 compute_aggregate <- function(df, region, entity) {
 
-  region <- enquo(region)
+  region <- as.name(region)
   entity <- as.character(entity)
 
   computed <- df %>%
@@ -30,45 +31,20 @@ compute_aggregate <- function(df, region, entity) {
     dplyr::select(annex_name = !!region, ind, aggregation, value, pc_comp, pc_comp_cut, entity)
 }
 
-aggregates <- function(df, region) {
+aggregates <- function(df) {
 
-<<<<<<< HEAD
-  region <- as.character(region)
-
- #if(region == "SDG.region") {
- #  subregion == as.name("SDG.subregion")
- #}else if(region == "UIS.region") {
-  # subregion == as.name("UIS.subregion")
-# }else if(region == "GEMR.region") {
- #  subregion == as.name("GEMR.subregion")
-# }
+  region <- as.character(pkg.env$region)
+  subregion <- as.character(pkg.env$subregion)
 
   world <- compute_aggregate(df, region = "World", entity = "world")
   regional <- compute_aggregate(df, region = region, entity = "region")
-  #subregional <- compute_aggregate(df, region = subregion, entity = "subregion")
-=======
-  region <- enquo(region)
-
- if(!!region == "SDG.region") {
-   subregion == as.name("SDG.subregion")
- }else if(!!region == "UIS.region") {
-   subregion == as.name("UIS.subregion")
- }else if(!!region == "GEMR.region") {
-   subregion == as.name("GEMR.subregion")
- }
-
-  world <- compute_aggregate(df, region = "World", entity = "world")
-  regional <- compute_aggregate(df, region = !!region, entity = "region")
-  subregional <- compute_aggregate(df, region = !!subregion, entity = "subregion")
->>>>>>> 51e2fc7cdfbfc61077ec36e1cc82ac8f6631edcb
+  subregional <- compute_aggregate(df, region = subregion, entity = "subregion")
   income <- compute_aggregate(df, region = "income_group", entity = "income_group")
 
-  aggregates <- dplyr::bind_rows(world, regional, income) %>%
+  aggregates <- dplyr::bind_rows(world, regional, subregional, income) %>%
     dplyr::semi_join(pkg.env$indicators, by = c("ind", "aggregation")) %>%
     dplyr::mutate(year = ref_year) %>%
-<<<<<<< HEAD
     mutate(value = ifelse(pc_comp >= pc_comp_cut, value, NA))
-=======
-    dplyr::filter(pc_comp >= pc_comp_cut)
->>>>>>> 51e2fc7cdfbfc61077ec36e1cc82ac8f6631edcb
 }
+
+

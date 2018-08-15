@@ -67,6 +67,8 @@ uis_clean <- function(df) {
     dplyr::filter(!is.na(value)) %>%
     unique()
 
+  pkg.env$uis_comp <- clean1
+
   clean2 <- clean1 %>%
     dplyr::inner_join(pkg.env$indicators[, 1:2], by = "var_concat")
 
@@ -584,10 +586,10 @@ format_wide <- function(df) {
                   val_utf = stringr::str_replace_all(val_utf, "NA", "")) %>%
     split(list(.$is_aggregate, .$sheet)) %>%
     purrr::map(tidyr::spread, key=ind, value = val_utf) %>%
-    purrr::map(function(.) dplyr::arrange(., SDG.region, entity, annex_name)) %>%
+    purrr::map(function(.) dplyr::arrange(., !!pkg.env$region, entity, annex_name)) %>%
     purrr::map(mutate_all, as.character) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
-    purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), SDG.region]$V1][!.N]) %>%
-    purrr::map(function(.) dplyr::select(., -sheet, - entity, -is_aggregate, -SDG.region))
+    purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(pkg.env$region)]$V1][!.N]) %>%
+    purrr::map(function(.) dplyr::select(., -sheet, - entity, -is_aggregate, !!pkg.env$region))
 
 }

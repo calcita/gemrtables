@@ -25,6 +25,16 @@ region_groups <- function() {
   read.csv("https://drive.google.com/uc?export=download&id=13-dMaPNS6-DwzMTxhIR4OKP2zrm5s_dx", stringsAsFactors = FALSE)
 }
 
+#' region_groups2
+#'
+#' \code{region_groups2} is a function import regional groupings, ordering, and REF_AREA api codes.
+#'
+#'@family import/clean
+#'
+region_groups <- function() {
+  read.csv("https://drive.google.com/uc?export=download&id=1Izklg_r1eNPN-ECLGkagRnp5u9K2EfYt", stringsAsFactors = FALSE)
+}
+
 
 #' weights
 #'
