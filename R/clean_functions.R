@@ -63,11 +63,12 @@ uis_clean <- function(df) {
           EXPENDITURE_TYPE, SOURCE_FUND, FUND_FLOW) %>%
     dplyr::select(iso2c = REF_AREA, var_concat, year = TIME_PERIOD, value = OBS_VALUE, val_status = OBS_STATUS) %>%
     dplyr::mutate(value = as.numeric(value),
-           value = ifelse(val_status == "Z", NA, value)) %>%
+           value = ifelse(val_status == "Z", NA, value),
+           year = as.numeric(year)) %>%
     dplyr::filter(!is.na(value)) %>%
     unique()
 
-  pkg.env$uis_comp <- clean1
+  uis_comp <<- clean1
 
   clean2 <- clean1 %>%
     dplyr::inner_join(pkg.env$indicators[, 1:2], by = "var_concat")
@@ -579,17 +580,20 @@ format_wide <- function(df) {
                                                     year_diff == -3 ~ "\u208B\u2083",
                                                     year_diff == -4 ~ "\u208B\u2084"),
                    val_utf = paste0(value, year_diff_utf, val_status_utf, sep = "")) %>%
-    dplyr::select(sheet, annex_name, SDG.region, ind, val_utf, entity) %>%
+    dplyr::select(sheet, annex_name, !!pkg.env$region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),
                   sheet = paste("sheet", sheet),
-                  val_utf = stringr::str_replace_all(val_utf, "NA", "")) %>%
+                  val_utf = stringr::str_replace_all(val_utf, "NA", ""),
+                  regionx = !!pkg.env$region,
+                  regionx = ifelse(is_aggregate == "aggregate", annex_name, regionx)) %>%
+    dplyr::left_join(pkg.env$regions2[, c(1,4)], by = c("regionx" = "annex_name")) %>%
     split(list(.$is_aggregate, .$sheet)) %>%
     purrr::map(tidyr::spread, key=ind, value = val_utf) %>%
-    purrr::map(function(.) dplyr::arrange(., !!pkg.env$region, entity, annex_name)) %>%
     purrr::map(mutate_all, as.character) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(pkg.env$region)]$V1][!.N]) %>%
-    purrr::map(function(.) dplyr::select(., -sheet, - entity, -is_aggregate, !!pkg.env$region))
-
+    purrr::map(function(.) dplyr::arrange(., region_order, annex_name)) %>%
+    purrr::map(function(.) dplyr::mutate(., annex_name = ifelse(entity == "subregion", paste("  ", annex_name), annex_name))) %>%
+    purrr::map(function(.) dplyr::select(., -sheet, - entity, -is_aggregate, -!!pkg.env$region, - regionx, -region_order))
 }

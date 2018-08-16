@@ -71,7 +71,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   indicators_unique <- pkg.env$indicators %>%
     dplyr::select(-source, -var_concat, - priority, -ind_lab) %>%
     unique()
-  regions2 <- region_groups2() %>%
+  pkg.env$regions2 <- region_groups2() %>%
     dplyr::filter(grouping == as.character(pkg.env$region))
 
   #load/ cache for imported/cleaned country data and weights
@@ -112,7 +112,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   #clean country data and export statistical tables
 
   country_data1 <- country_data %>%
-    dplyr::right_join(regions, by = "iso2c") %>%
+    dplyr::right_join(pkg.env$regions, by = "iso2c") %>%
     dplyr::left_join(pkg.env$indicators, by = c("ind", "source")) %>%
     dplyr::filter(year >= ref_year - year_cut)
 
@@ -128,18 +128,24 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::group_by(iso2c, ind) %>%
     dplyr::filter(priority == min(priority)) %>%
     dplyr::left_join(weights_data[, -2], by = c("iso2c", "wt_var")) %>%
-    dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 0, wt_value),
-           entity = "country") %>%
+    dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 0, wt_value), entity = "country") %>%
     ungroup()
 
-  regional_aggregates <- country_data2 %>%
+  computed_aggregates <- country_data2 %>%
     aggregates() %>%
     dplyr::filter(!is.na(annex_name)) %>%
     dplyr::inner_join(indicators_unique, by = c("ind", "aggregation"))
 
-  long_data <- dplyr::bind_rows(country_data2, regional_aggregates) %>%
-    dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "income_group"))) %>%
-    tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, iso2c, !!pkg.env$region, !!pkg.env$subregion, entity),
+  uis_aggregates <- uis_comp %>%
+    dplyr::inner_join(pkg.env$indicators, by = "var_concat") %>%
+    dplyr::filter(aggregation %in% c("w_mean", "sum") & year >= (ref_year - 4)) %>%
+    dplyr::inner_join(pkg.env$regions2[, 1:3], by = c("iso2c" = "code")) %>%
+    dplyr::select(-iso2c) %>%
+    dplyr::anti_join(computed_aggregates, by = c("annex_name", "ind"))
+
+  long_data <- dplyr::bind_rows(country_data2, computed_aggregates)  %>%
+    dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "subregion", "income_group"))) %>%
+    tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!pkg.env$region, !!pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
     dplyr::arrange(sheet, position, !!pkg.env$region, entity, annex_name)
 
