@@ -40,8 +40,8 @@ read_urls <- function(urls, key = NULL, bind = TRUE) {
       dplyr::as_data_frame()
   } else {
     purrr::modify_if(.x = urls, .p = stringr::str_detect(urls, "key="), .f = paste, key, sep = "") %>%
-    purrr::map(readSDMX) %>%
-    purrr::map(as_data_frame) %>%
+    purrr::map(rsdmx::readSDMX) %>%
+    purrr::map(dplyr::as_data_frame) %>%
     {if(bind == TRUE) purrr::reduce(., dplyr::bind_rows) else . }
   }
 }
@@ -131,7 +131,7 @@ read_cedar <- function(sc, level = 1, table, ind, password) {
     {if(is.character(.$value)) dplyr::mutate(., value = dplyr::case_when(value == "0" ~ 0, value == "LOW" ~ 1, value == "MEDIUM" ~ 2, value == "HIGH" ~ 3)) else . } %>%
     unique()
 
-  dbDisconnect(cedar_con)
+  RMariaDB::dbDisconnect(cedar_con)
 
   return(df)
 

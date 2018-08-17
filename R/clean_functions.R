@@ -125,9 +125,13 @@ uis_clean <- function(df) {
     purrr::pmap(parity_adj) %>%
     purrr::reduce(dplyr::bind_rows)
 
+  redenominate <- c("IE.5t8.40510", "IllPop.Ag15t24", "IllPop.Ag15t99", "odaflow.volumescholarship", "odaflow.volumescholarshipimputecost",
+                    "OE.5t8.40510", "OFST.1.cp", "OFST.2.cp", "OFST.3.cp", "SAP.02", "SAP.1", "SAP.2t3", "stu.per.02", "stu.per.1",
+                    "stu.per.2t3", "stu.per.5t8", "teach.per.02", "teach.per.1", "teach.per.2t3")
 
   cleaned <- dplyr::bind_rows(clean2, inbound_stu, parity_indices) %>%
     dplyr::mutate(source = "UIS", year = as.numeric(year)) %>%
+    dplyr::mutate(value = ifelse(ind %in% redenominate, value/1000, value)) %>%
     dplyr::select(iso2c, year, ind, value, val_status, source) %>%
     dplyr::filter(!is.na(value))
 
@@ -301,7 +305,8 @@ oecd_clean <- function(df) {
                                          AIDTYPE == "E01"  ~ "odaflow.volumescholarship"),
                   RECIPIENT = as.numeric(RECIPIENT)) %>%
     dplyr::left_join(pkg.env$regions, by = c("RECIPIENT" = "oecd.crs.recipientcode")) %>%
-    dplyr::select(iso2c, year = REFERENCEPERIOD, ind, value = obsValue)
+    dplyr::select(iso2c, year = REFERENCEPERIOD, ind, value = obsValue) %>%
+    dplyr::mutate(value = value*1000)
 
   sal1 <- df[[2]] %>%
     dplyr::mutate(ind = dplyr::case_when(ISC11 == "L0" ~ "sal.rel.02",
@@ -498,6 +503,26 @@ ict_skills_clean <- function(df) {
     dplyr::select(iso2c, year, ind, value, val_status, source)
 }
 
+#' chores_clean
+#'
+#' \code{chores_clean} is a function to clean the child chores data on
+#' google drive.
+#'
+#'@family clean
+#'@seealso \code{\link{other}}
+
+  chores_clean <- function(df) {
+    cleaned <- df %>%
+      dplyr::mutate(chores.28plus.12t14 = total,
+                    chores.28plus.12t14.GPIA = ifelse(GPI > 1, 1+(1-(1/GPI)), GPI),
+                    iso2c = countrycode::countrycode(sourcevar = .$country, origin = "country.name", destination = "iso2c", warn = T),
+                    year = 2016,
+                    val_status = "A",
+                    source = "UNICEF") %>%
+      tidyr::gather(key = "ind", value = "value", -total, - source, - GPI, -iso2c, -val_status, -country, -year, -variable) %>%
+      dplyr::select(-country, -total, -GPI, -variable)
+  }
+
 #' weights_clean
 #'
 #' \code{weights_clean} is a function to clean weights data imported from SDMX
@@ -566,12 +591,18 @@ format_wide <- function(df) {
 
   wide_data <- df %>%
     dplyr:: mutate(value = dplyr::case_when(stringr::str_detect(ind, stringr::regex("wpia|gpia|lpia|sal\\.rel", ignore_case = TRUE)) ~ round(value, digits = 2),
-                                            stringr::str_detect(ind, stringr::regex("XGDP|scholarship", ignore_case = TRUE)) ~ round(value, digits = 1),
-                                            !stringr::str_detect(ind, stringr::regex("wpia|gpia|lpia|sal\\.rel|XGDP|scholarship", ignore_case = TRUE)) ~ round(value)),
+                                            stringr::str_detect(ind, stringr::regex("XGDP", ignore_case = TRUE)) ~ round(value, digits = 1),
+                                            !stringr::str_detect(ind, stringr::regex("wpia|gpia|lpia|sal\\.rel|XGDP", ignore_case = TRUE)) ~ round(value)),
+                   value = as.character(value),
+                   value = dplyr::case_when(stringr::str_detect(ind, stringr::regex("esd|bully|attack", ignore_case = TRUE)) & value == 1 ~ "Low",
+                                            stringr::str_detect(ind, stringr::regex("esd|bully|attack", ignore_case = TRUE)) & value == 2 ~ "Medium",
+                                            stringr::str_detect(ind, stringr::regex("esd|bully|attack", ignore_case = TRUE)) & value == 3 ~ "High",
+                                            stringr::str_detect(ind, stringr::regex("attack", ignore_case = TRUE)) & value == 3 ~ "Extreme",
+                                            TRUE ~ value),
+                   value = ifelse(entity == "country" & stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)), ifelse(value==1, "Yes", "No"), value),
                    value = ifelse(is.na(value), "\u2026", value),
-                   value = ifelse(entity == "country" & aggregation == "pc_true", ifelse(value==1, "Yes", "No"), value),
                    val_status = ifelse(val_status == "A", "", tolower(val_status)),
-                   year_diff = year - ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
+                   year_diff = year - pkg.env$ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
                    val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
                                                      val_status == "m" ~ "\u2099"),
                    year_diff_utf = dplyr::case_when(year_diff == 1 ~ "\u208A\u2081",
@@ -590,10 +621,11 @@ format_wide <- function(df) {
     dplyr::left_join(pkg.env$regions2[, c(1,4)], by = c("regionx" = "annex_name")) %>%
     split(list(.$is_aggregate, .$sheet)) %>%
     purrr::map(tidyr::spread, key=ind, value = val_utf) %>%
+    purrr::map(function(.) dplyr::mutate(., annex_name = ifelse(entity == "subregion", paste("  ", annex_name), annex_name))) %>%
+    purrr::map(function(.) dplyr::mutate(., entity = ifelse(entity == "subregion", "3", entity))) %>%
+    purrr::map(function(.) dplyr::arrange(., region_order, annex_name)) %>%
     purrr::map(mutate_all, as.character) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(pkg.env$region)]$V1][!.N]) %>%
-    purrr::map(function(.) dplyr::arrange(., region_order, annex_name)) %>%
-    purrr::map(function(.) dplyr::mutate(., annex_name = ifelse(entity == "subregion", paste("  ", annex_name), annex_name))) %>%
-    purrr::map(function(.) dplyr::select(., -sheet, - entity, -is_aggregate, -!!pkg.env$region, - regionx, -region_order))
+    purrr::map(function(.) dplyr::select(., -sheet, -entity, -is_aggregate, -!!pkg.env$region, - regionx, -region_order))
 }

@@ -28,7 +28,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
 
   #define regions and ref_year
 
-  ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
+  pkg.env$ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
 
   pkg.env$region = as.name(region)
 
@@ -69,8 +69,10 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   pkg.env$indicators <- inds()
   pkg.env$regions <- region_groups()
   indicators_unique <- pkg.env$indicators %>%
-    dplyr::select(-source, -var_concat, - priority, -ind_lab) %>%
+    dplyr::select(-source, -var_concat, -priority, -ind_lab) %>%
     unique()
+  indicators_uis <- pkg.env$indicators %>%
+    filter(source == "UIS")
   pkg.env$regions2 <- region_groups2() %>%
     dplyr::filter(grouping == as.character(pkg.env$region))
 
@@ -137,13 +139,13 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::inner_join(indicators_unique, by = c("ind", "aggregation"))
 
   uis_aggregates <- uis_comp %>%
-    dplyr::inner_join(pkg.env$indicators, by = "var_concat") %>%
+    dplyr::inner_join(indicators_uis, by = "var_concat") %>%
     dplyr::filter(aggregation %in% c("w_mean", "sum") & year >= (ref_year - 4)) %>%
     dplyr::inner_join(pkg.env$regions2[, 1:3], by = c("iso2c" = "code")) %>%
     dplyr::select(-iso2c) %>%
     dplyr::anti_join(computed_aggregates, by = c("annex_name", "ind"))
 
-  long_data <- dplyr::bind_rows(country_data2, computed_aggregates)  %>%
+  long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "subregion", "income_group"))) %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!pkg.env$region, !!pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
@@ -156,9 +158,6 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     cat(paste("The following variables are missing:\n"))
     cat(paste(capture.output(print(unmatched)), collapse = "\n"))
   }
-
-  #if(min(count(regional_aggregates, annex_name, ind)$n) < [INSERT EXPECTED NUMBER OF AGGREGATES])
-  #        print('WARNING: aggregates have been dropped!')}
 
   if(isTRUE(export)) {
     writexl::write_xlsx(wide_data, path = path)

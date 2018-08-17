@@ -50,7 +50,11 @@ other <- function() {
   ict_skills_data <- read.csv("https://drive.google.com/uc?export=download&id=1dV4T7RSDbJmYvhy7ydUzLCkLCTcUkZzl", stringsAsFactors = FALSE) %>%
     ict_skills_clean()
 
-  other_data <- dplyr::bind_rows(wb_data, eurostat_data, oecd_data, un_aids_data, gcpea_data, unicef_wash_data, unicef_ecce_learn_data, unicef_ecce_books_data, bullying_data, ict_skills_data)
+  chores_data <-  read.csv("https://drive.google.com/uc?export=download&id=1tTQB6CtgGkBwj4SBsjLdfR7l_4mVlFfs", stringsAsFactors = FALSE) %>%
+    chores_clean()
+
+  other_data <- dplyr::bind_rows(wb_data, eurostat_data, oecd_data, un_aids_data, gcpea_data, unicef_wash_data,
+                                 unicef_ecce_learn_data, unicef_ecce_books_data, bullying_data, ict_skills_data, chores_data)
 
 }
 

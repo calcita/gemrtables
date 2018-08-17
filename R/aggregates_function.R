@@ -43,7 +43,7 @@ aggregates <- function(df) {
 
   aggregates <- dplyr::bind_rows(world, regional, subregional, income) %>%
     dplyr::semi_join(pkg.env$indicators, by = c("ind", "aggregation")) %>%
-    dplyr::mutate(year = ref_year) %>%
+    dplyr::mutate(year = pkg.env$ref_year) %>%
     dplyr::filter(pc_comp >= pc_comp_cut) %>%
     dplyr::filter(!is.na(annex_name) | annex_name != "")
 }
