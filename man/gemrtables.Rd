@@ -4,7 +4,8 @@
 \name{gemrtables}
 \alias{gemrtables}
 \alias{gemrtables-package}
-\title{gemrtables: A package for generating the Global Education Monitoring (GEM) Report statistical tables.}
+\title{gemrtables: A package for generating the Global Education Monitoring (GEM)
+Report statistical tables.}
 \usage{
 gemrtables(region = "SDG.region", ref_year, export = FALSE, path, key,
   password)
@@ -18,7 +19,7 @@ years prior to the current year.}
 
 \item{export}{If `TRUE` returns an xlsx workbook in 'wide' format, with
   seperate worksheets per table.
-If `FALSE` (the default) returns an data frame in 'long' format.}
+If `FALSE` (the default) returns a data frame in 'long' format.}
 
 \item{path}{File path to write xlsx workbook (character). Overwrites existing
 file.}
@@ -45,7 +46,8 @@ import, import/clean, clean and summarise.
 }
 \section{import functions}{
 
-The import functions read data from SDMX url queries or the GEM cedar SQL database.
+The import functions read data from SDMX url queries or the GEM cedar SQL
+database.
 }
 
 \section{clean functions}{

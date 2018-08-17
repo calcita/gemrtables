@@ -76,7 +76,7 @@ uis <- function() {
     #var 7
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/GER.PT.L5T8._T._T.SCH_AGE_GROUP._T.INST_T.............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 8:10
-    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/ICT_SKILL_CONNECT+ICT_SKILL_COPY+ICT_SKILL_CREATE.PT._Z._Z._T._T...............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/ICT_SKILL_DUP+ICT_SKILL_FORM+ICT_SKILL_PROG.PT._Z._Z._T._T...............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 11:14
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/EA.PT._Z._Z._T.Y_GE25._T.INST_T.L1T8+L2T8+L3T8+L4T8............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 15:18

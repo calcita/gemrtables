@@ -18,7 +18,8 @@ spreadsheets, and applies respective `clean` functions.
  '\code{\link{unicef_ecce_clean}},  \code{\link{unicef_wash_clean}},  \code{\link{wb_clean}},
 
 Other import/clean: \code{\link{cedar}},
-  \code{\link{inds}}, \code{\link{region_groups}},
-  \code{\link{uis}}, \code{\link{weights}}
+  \code{\link{inds}}, \code{\link{region_groups2}},
+  \code{\link{region_groups}}, \code{\link{uis}},
+  \code{\link{weights}}
 }
 \concept{import/clean}

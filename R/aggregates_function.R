@@ -24,6 +24,7 @@ compute_aggregate <- function(df, region, entity) {
                      median = median(value, na.rm = TRUE),
                      w_mean = sum(value*wt_value, na.rm = TRUE)/sum(wt_value, na.rm = TRUE),
                      pc_true = (sum(value)/dplyr::n())*100,
+                     pc_true2 = (sum(value/count1*100)),
                      count2 = dplyr::n()) %>%
     dplyr::mutate(pc_comp = 100 * round(count2/count1, digits = 2),
                   entity = entity) %>%

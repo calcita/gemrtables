@@ -7,7 +7,7 @@
 inds()
 }
 \description{
-\code{other} is a function to import statistical table indicators.
+\code{inds} is a function to import statistical table indicators.
 }
 \details{
 This dataframe defines indicators to be included in the statistical tables.
@@ -16,7 +16,8 @@ aggregation.
 }
 \seealso{
 Other import/clean: \code{\link{cedar}},
-  \code{\link{other}}, \code{\link{region_groups}},
-  \code{\link{uis}}, \code{\link{weights}}
+  \code{\link{other}}, \code{\link{region_groups2}},
+  \code{\link{region_groups}}, \code{\link{uis}},
+  \code{\link{weights}}
 }
 \concept{import/clean}
