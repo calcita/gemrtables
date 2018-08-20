@@ -571,11 +571,30 @@ weights_clean <- function(df) {
                      L3_Q1_M = L3_M * .2) %>%
     tidyr::gather(key = "wt_var", value = "wt_value", -iso2c, -year)
 
-  cleaned <- dplyr::bind_rows(clean1, clean2) %>%
-    dplyr::group_by(year, wt_var) %>%
-    dplyr::filter(!is.na(wt_value)) %>%
-    dplyr::mutate(wt_value_z = (wt_value - mean(wt_value))/sd(wt_value))
+  clean3 <- dplyr::bind_rows(clean1, clean2)
+  # %>%
+  #   dplyr::group_by(year, wt_var) %>%
+  #   dplyr::filter(!is.na(wt_value)) %>%
+  #   dplyr::mutate(wt_value_z = wt_value / mean(wt_value))
 
+  cleaned <-
+    clean3 %>%
+    filter(between(year, 2006, 2017)) %>%
+    complete(nesting(iso2c, wt_var), year) %>%
+    # Approx insists on at least two values to interpolate;
+    # since anyhow we want the interpolation to hold the latest value constant,
+    # a 2017 value is imputed here to be identical to the latest available.
+    {bind_rows(
+      .,
+      na.omit(.) %>%
+        group_by(iso2c, wt_var) %>%
+        filter(year == max(year)) %>%
+        ungroup %>%
+        mutate(year = 2017)
+    )} %>%
+    group_by(iso2c, wt_var) %>%
+    mutate(wt_value = approx(year, wt_value, xout = year, rule = 2)$y) %>%
+    ungroup
 }
 
 

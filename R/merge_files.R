@@ -73,5 +73,4 @@ weights <- function() {
        "http://data.un.org/ws/rest/data/DF_UNDATA_WPP/SP_POP_TOTL.A.Y_LT5+Y5T10+Y10T14._T.....?startPeriod=2015&endPeriod=2015") %>%
     read_urls(key = pkg.env$key) %>%
     weights_clean()
-
 }
