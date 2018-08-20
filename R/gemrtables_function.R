@@ -146,7 +146,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!pkg.env$region, !!pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
     dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "subregion", "income_group")),
-                  value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & is.na(value), 0, value)) %>%
+                  value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == 1 & is.na(value), 0, value)) %>%
     dplyr::arrange(sheet, position, !!pkg.env$region, entity, annex_name)
 
   wide_data <- long_data %>%
