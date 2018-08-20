@@ -595,10 +595,13 @@ format_wide <- function(df) {
       value = format(value,
                      big.mark = ',', trim = TRUE,
                      zero.print = '-',
-                     nsmall = 1,
+                     nsmall = 0,
                      drop0trailing = TRUE,
                      scientific = FALSE,
-                     digits = ifelse(max(value, na.rm = TRUE) < 30, 2, 1)
+                     digits = case_when(
+                       max(value, na.rm = TRUE) < 10 ~ 2,
+                       max(value, na.rm = TRUE) <= 100 | value < 1 ~ 1,
+                       0)
                      ),
       value = case_when(
         is.na(value) ~ "\u2026",
