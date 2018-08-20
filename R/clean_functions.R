@@ -590,21 +590,41 @@ weights_clean <- function(df) {
 format_wide <- function(df) {
 
   wide_data <- df %>%
-    dplyr:: mutate(value = dplyr::case_when(stringr::str_detect(ind, stringr::regex("wpia|gpia|lpia|sal\\.rel", ignore_case = TRUE)) ~ round(value, digits = 2),
-                                            stringr::str_detect(ind, stringr::regex("XGDP", ignore_case = TRUE)) ~ round(value, digits = 1),
-                                            !stringr::str_detect(ind, stringr::regex("wpia|gpia|lpia|sal\\.rel|XGDP", ignore_case = TRUE)) ~ round(value)),
-                   value = as.character(value),
-                   value = dplyr::case_when(entity == "country" & stringr::str_detect(ind, stringr::regex("esd|bully|attack", ignore_case = TRUE)) & value == 1 ~ "Low",
-                                            entity == "country" & stringr::str_detect(ind, stringr::regex("esd|bully|attack", ignore_case = TRUE)) & value == 2 ~ "Medium",
-                                            entity == "country" & stringr::str_detect(ind, stringr::regex("esd|bully|attack", ignore_case = TRUE)) & value == 3 ~ "High",
-                                            # entity == "country" & stringr::str_detect(ind, stringr::regex("attack", ignore_case = TRUE)) & value == 0 ~ "low or none",
-                                            # entity == "country" & stringr::str_detect(ind, stringr::regex("attack", ignore_case = TRUE)) & value == 1 ~ "some",
-                                            # entity == "country" & stringr::str_detect(ind, stringr::regex("attack", ignore_case = TRUE)) & value == 2 ~ "heavy",
-                                            entity == "country" & stringr::str_detect(ind, stringr::regex("attack", ignore_case = TRUE)) & value == 3 ~ "v. heavy",
-                                            entity == "country" & stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & value == 1 ~ "Yes",
-                                            entity == "country" & stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & value == 0 ~ "No",
-                                            TRUE ~ value),
-                   value = ifelse(is.na(value), "\u2026", value),
+    dplyr::group_by(ind) %>%
+    dplyr:: mutate(
+      value = format(value,
+                     big.mark = ',', trim = TRUE,
+                     zero.print = '-',
+                     nsmall = 1,
+                     drop0trailing = TRUE,
+                     scientific = FALSE,
+                     digits = ifelse(max(value, na.rm = TRUE) < 30, 2, 1)
+                     ),
+      value = case_when(
+        is.na(value) ~ "\u2026",
+        entity == "country" & stringr::str_detect(ind, "esd|bully") ~ c('Low', 'Medium', 'High')[value],
+        entity == "country" & stringr::str_detect(ind, "attack") ~ c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
+        entity == "country" & stringr::str_detect(ind, "admi") ~ c('No', 'Yes')[value + 1],
+        TRUE ~ value
+      )
+      ) %>%
+    dplyr::ungroup %>%
+    dplyr::mutate(
+                  # value = dplyr::case_when(stringr::str_detect(ind, stringr::regex("wpia|gpia|lpia|sal\\.rel", ignore_case = TRUE)) ~ round(value, digits = 2),
+                  #                           stringr::str_detect(ind, stringr::regex("XGDP", ignore_case = TRUE)) ~ round(value, digits = 1),
+                  #                           !stringr::str_detect(ind, stringr::regex("wpia|gpia|lpia|sal\\.rel|XGDP", ignore_case = TRUE)) ~ round(value)),
+                  #  value = as.character(value),
+                  #  value = dplyr::case_when(entity == "country" & stringr::str_detect(ind, stringr::regex("esd|bully|attack", ignore_case = TRUE)) & value == 1 ~ "Low",
+                  #                           entity == "country" & stringr::str_detect(ind, stringr::regex("esd|bully|attack", ignore_case = TRUE)) & value == 2 ~ "Medium",
+                  #                           entity == "country" & stringr::str_detect(ind, stringr::regex("esd|bully|attack", ignore_case = TRUE)) & value == 3 ~ "High",
+                  #                           # entity == "country" & stringr::str_detect(ind, stringr::regex("attack", ignore_case = TRUE)) & value == 0 ~ "low or none",
+                  #                           # entity == "country" & stringr::str_detect(ind, stringr::regex("attack", ignore_case = TRUE)) & value == 1 ~ "some",
+                  #                           # entity == "country" & stringr::str_detect(ind, stringr::regex("attack", ignore_case = TRUE)) & value == 2 ~ "heavy",
+                  #                           entity == "country" & stringr::str_detect(ind, stringr::regex("attack", ignore_case = TRUE)) & value == 3 ~ "v. heavy",
+                  #                           entity == "country" & stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & value == 1 ~ "Yes",
+                  #                           entity == "country" & stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & value == 0 ~ "No",
+                  #                           TRUE ~ value),
+                  #  value = ifelse(is.na(value), "\u2026", value),
                    val_status = ifelse(val_status == "A", "", tolower(val_status)),
                    year_diff = year - pkg.env$ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
                    val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
