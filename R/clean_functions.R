@@ -600,7 +600,7 @@ format_wide <- function(df) {
                      scientific = FALSE,
                      digits = case_when(
                        max(value, na.rm = TRUE) < 10 ~ 2,
-                       max(value, na.rm = TRUE) <= 100 | value < 1 ~ 1,
+                       value < 1 | stringr::str_detect(ind, "XGDP", ignore_case = TRUE) ~ 1,
                        0)
                      ),
       value = case_when(
