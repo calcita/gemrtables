@@ -41,8 +41,9 @@ aggregates <- function(df) {
   regional <- compute_aggregate(df, region = region, entity = "region")
   subregional <- compute_aggregate(df, region = subregion, entity = "subregion")
   income <- compute_aggregate(df, region = "income_group", entity = "income_group")
+  subincome <- compute_aggregate(df, region = "income_subgroup", entity = "income_subgroup")
 
-  aggregates <- dplyr::bind_rows(world, regional, subregional, income) %>%
+  aggregates <- dplyr::bind_rows(world, regional, subregional, income, subincome) %>%
     dplyr::semi_join(pkg.env$indicators, by = c("ind", "aggregation")) %>%
     dplyr::mutate(year = pkg.env$ref_year) %>%
     dplyr::filter(pc_comp >= pc_comp_cut) %>%

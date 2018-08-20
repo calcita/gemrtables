@@ -119,7 +119,8 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::select(ind, source, sheet, position)
 
   country_data2 <- country_data1 %>%
-    dplyr::select(iso2c, annex_name, World, !!pkg.env$region, !!pkg.env$subregion, income_group, year, ind, value, val_status, source) %>%
+    # dplyr::select(iso2c, annex_name, World, !!pkg.env$region, !!pkg.env$subregion, income_group, year, ind, value, val_status, source) %>%
+    dplyr::select(iso2c, annex_name, World, !!pkg.env$region, !!pkg.env$subregion, income_group, income_subgroup, year, ind, value, val_status, source) %>%
     dplyr::right_join(pkg.env$indicators, by = c("ind", "source")) %>%
     dplyr::group_by(iso2c, ind, source) %>%
     dplyr::filter(year == max(year)) %>%
@@ -140,12 +141,15 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::filter(aggregation %in% c("w_mean", "sum") & year >= (ref_year - 4)) %>%
     dplyr::inner_join(pkg.env$regions2[, 1:3], by = c("iso2c" = "code")) %>%
     dplyr::select(-iso2c) %>%
+    ## ALASDAIR, ISN'T THIS THE WRONG WAY AROUND? THIS PRIORITISES OURS OVER THEIRS, NO?
+    ## I THINK THE ANTI-JOIN NEEDS TO BE ON THE SIDE OF 'computed_aggregates'.
     dplyr::anti_join(computed_aggregates, by = c("annex_name", "ind"))
 
   long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!pkg.env$region, !!pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
-    dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "subregion", "income_group")),
+    # dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "subregion", "income_group")),
+    dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "subregion", "income_group", "income_subgroup")),
                   value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == 1 & is.na(value), 0, value)) %>%
     dplyr::arrange(sheet, position, !!pkg.env$region, entity, annex_name)
 
