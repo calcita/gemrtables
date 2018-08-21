@@ -610,24 +610,27 @@ format_wide <- function(df) {
 
   wide_data <- df %>%
     dplyr::group_by(ind) %>%
+    dplyr::mutate(
+      digits = case_when(
+        max(value, na.rm = TRUE) < 10 ~ 2,
+        value < 1 | stringr::str_detect(ind, "XGDP", ignore_case = TRUE) ~ 1,
+        0)) %>%
+    dplyr::rowwise %>%
     dplyr:: mutate(
-      value = format(value,
+      value_str = format(value,
                      big.mark = ',', trim = TRUE,
                      zero.print = '-',
                      nsmall = 0,
                      drop0trailing = TRUE,
                      scientific = FALSE,
-                     digits = case_when(
-                       max(value, na.rm = TRUE) < 10 ~ 2,
-                       value < 1 | stringr::str_detect(ind, "XGDP", ignore_case = TRUE) ~ 1,
-                       0)
+                     digits = digits
                      ),
-      value = case_when(
+      value_str = case_when(
         is.na(value) ~ "\u2026",
         entity == "country" & stringr::str_detect(ind, "esd|bully") ~ c('Low', 'Medium', 'High')[value],
         entity == "country" & stringr::str_detect(ind, "attack") ~ c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
         entity == "country" & stringr::str_detect(ind, "admi") ~ c('No', 'Yes')[value + 1],
-        TRUE ~ value
+        TRUE ~ value_str
       )
       ) %>%
     dplyr::ungroup %>%
@@ -656,7 +659,7 @@ format_wide <- function(df) {
                                                     year_diff == -2 ~ "\u208B\u2082",
                                                     year_diff == -3 ~ "\u208B\u2083",
                                                     year_diff == -4 ~ "\u208B\u2084"),
-                   val_utf = paste0(value, year_diff_utf, val_status_utf, sep = "")) %>%
+                   val_utf = paste0(value_str, year_diff_utf, val_status_utf, sep = "")) %>%
     dplyr::select(sheet, annex_name, !!pkg.env$region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),
