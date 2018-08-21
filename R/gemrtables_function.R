@@ -131,19 +131,18 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 0, wt_value), entity = "country") %>%
     ungroup()
 
-  computed_aggregates <- country_data2 %>%
-    aggregates() %>%
-    dplyr::filter(!is.na(annex_name)) %>%
-    dplyr::inner_join(indicators_unique, by = c("ind", "aggregation"))
-
   uis_aggregates <- uis_comp %>%
     dplyr::inner_join(pkg.env$indicators, by = "var_concat") %>%
     dplyr::filter(aggregation %in% c("w_mean", "sum") & year >= (ref_year - 4)) %>%
     dplyr::inner_join(pkg.env$regions2[, 1:3], by = c("iso2c" = "code")) %>%
-    dplyr::select(-iso2c) %>%
-    ## ALASDAIR, ISN'T THIS THE WRONG WAY AROUND? THIS PRIORITISES OURS OVER THEIRS, NO?
-    ## I THINK THE ANTI-JOIN NEEDS TO BE ON THE SIDE OF 'computed_aggregates'.
-    dplyr::anti_join(computed_aggregates, by = c("annex_name", "ind"))
+    dplyr::select(-iso2c)
+
+  computed_aggregates <- country_data2 %>%
+    aggregates() %>%
+    dplyr::filter(!is.na(annex_name)) %>%
+    dplyr::inner_join(indicators_unique, by = c("ind", "aggregation")) %>%
+    dplyr::anti_join(uis_aggregates, by = c("annex_name", "ind"))
+
 
   long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!pkg.env$region, !!pkg.env$subregion, entity),
