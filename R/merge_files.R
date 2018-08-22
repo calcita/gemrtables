@@ -23,12 +23,7 @@ inds <- function() {
 #'
 region_groups <- function() {
   read.csv("https://drive.google.com/uc?export=download&id=13-dMaPNS6-DwzMTxhIR4OKP2zrm5s_dx", stringsAsFactors = FALSE) %>%
-    dplyr::mutate(iso2c = ifelse(annex_name == "Namibia", "NA", iso2c)) %>%
-    dplyr::mutate(income_subgroup =
-                    ifelse(stringr::str_detect(income_group, stringr::regex("middle")),
-                      stringr::str_replace(income_group, stringr::regex("Lower m|Upper m"), 'M'),
-                      NA)
-                  )
+    dplyr::mutate(iso2c = ifelse(annex_name == "Namibia", "NA", iso2c))
 }
 
 #' region_groups2

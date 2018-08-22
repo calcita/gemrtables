@@ -119,7 +119,6 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::select(ind, source, sheet, position)
 
   country_data2 <- country_data1 %>%
-    # dplyr::select(iso2c, annex_name, World, !!pkg.env$region, !!pkg.env$subregion, income_group, year, ind, value, val_status, source) %>%
     dplyr::select(iso2c, annex_name, World, !!pkg.env$region, !!pkg.env$subregion, income_group, income_subgroup, year, ind, value, val_status, source) %>%
     dplyr::right_join(pkg.env$indicators, by = c("ind", "source")) %>%
     dplyr::group_by(iso2c, ind, source) %>%
@@ -147,9 +146,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!pkg.env$region, !!pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
-    # dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "subregion", "income_group")),
-    dplyr::mutate(entity = factor(entity, levels = c("country", "world", "region", "subregion", "income_group", "income_subgroup")),
-                  value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == 1 & is.na(value), 0, value)) %>%
+    dplyr::mutate(value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == 1 & is.na(value), 0, value)) %>%
     dplyr::arrange(sheet, position, !!pkg.env$region, entity, annex_name)
 
   wide_data <- long_data %>%

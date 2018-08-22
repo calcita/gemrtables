@@ -184,7 +184,8 @@ cedar_clean <- function(df) {
                            indicator == "esd_gced_sus_dev"  ~ "esd.sus.dev",
                            indicator == "child_chores_more_28_12_14" & sex_id == 4 ~ "chores.28plus.12t14",
                            indicator == "child_chores_more_28_12_14" & sex_id == 1 ~ "chores.28plus.12t14.f",
-                           indicator == "child_chores_more_28_12_14" & sex_id == 2 ~ "chores.28plus.12t14.m")) %>%
+                           indicator == "child_chores_more_28_12_14" & sex_id == 2 ~ "chores.28plus.12t14.m"),
+                  value = ifelse(stringr::str_detect(ind, stringr::regex("CR\\.")), value*100, value)) %>%
     dplyr::inner_join(pkg.env$regions, by = c("country_code" = "iso3c")) %>%
     dplyr::filter(!is.na(ind))
 
@@ -200,8 +201,7 @@ cedar_clean <- function(df) {
   cleaned <- dplyr::bind_rows(clean1, parity_indices) %>%
     dplyr::ungroup() %>%
     dplyr::select(iso2c, year, ind, value) %>%
-    dplyr::mutate(source = "cedar",
-                  value = ifelse(stringr::str_detect(ind, "CR//."), value*100, value)) %>%
+    dplyr::mutate(source = "cedar") %>%
     dplyr::filter(!is.na(value)) %>%
     unique()
 
@@ -605,22 +605,21 @@ weights_clean <- function(df) {
 format_wide <- function(df) {
 
   redenominate_6 <- c("IllPop.Ag15t24", "IllPop.Ag15t99", "OFST.1.cp", "OFST.2.cp", "OFST.3.cp", "SAP.02", "SAP.1", "SAP.2t3",
-                      "stu.per.02", "stu.per.1", "stu.per.2t3", "stu.per.5t8", "teach.per.02", "teach.per.1", "teach.per.2t3")
+                      "SAP.5t8", "stu.per.02", "stu.per.1", "stu.per.2t3", "stu.per.5t8", "teach.per.02", "teach.per.1", "teach.per.2t3")
 
   redenominate_3 <- c("IE.5t8.40510", "odaflow.volumescholarship", "odaflow.volumescholarshipimputecost", "teach.per.02",
                       "OE.5t8.40510", "teach.per.1", "teach.per.2t3")
 
   wide_data <- df %>%
-    dplyr::mutate(value = dplyr::case_when(ind %in% redominate_6 ~ value/1000000,
-                                           ind %in% redominate_3 ~ value/1000,
-                                           TRUE ~ value))
+    dplyr::mutate(value = dplyr::case_when(ind %in% redenominate_6 ~ value/1000000,
+                                           ind %in% redenominate_3 ~ value/1000,
+                                           TRUE ~ value)) %>%
     dplyr::group_by(ind) %>%
     dplyr:: mutate(
       digits = case_when(
         max(value, na.rm = TRUE) < 10 ~ 2,
-        value < 1 | stringr::str_detect(ind, "XGDP", ignore_case = TRUE) ~ 1,
-        0)) %>%
-      dplyr::rowwise %>%
+        value < 1 | stringr::str_detect(ind, "XGDP") ~ 1,
+        TRUE ~ 0)) %>%
     dplyr:: mutate(
       value_str = format(value,
                      big.mark = ',', trim = TRUE,
@@ -632,13 +631,13 @@ format_wide <- function(df) {
                      ),
       value_str = case_when(
         is.na(value) ~ "\u2026",
-        entity == "country" & stringr::str_detect(ind, "esd|bully") ~ c('Low', 'Medium', 'High')[value],
+        entity == "country" & stringr::str_detect(ind, "esd|bully") ~ c('Low', 'Medium', 'High')[value + 1],
         entity == "country" & stringr::str_detect(ind, "attack") ~ c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
         entity == "country" & stringr::str_detect(ind, "admi") ~ c('No', 'Yes')[value + 1],
         TRUE ~ value_str
       )
       ) %>%
-    dplyr::ungroup %>%
+    dplyr::ungroup() %>%
     dplyr::mutate(val_status = ifelse(val_status == "A", "", tolower(val_status)),
                   year_diff = year - pkg.env$ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
                   val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
@@ -660,11 +659,12 @@ format_wide <- function(df) {
     split(list(.$is_aggregate, .$sheet)) %>%
     purrr::map(tidyr::spread, key=ind, value = val_utf) %>%
     purrr::map(function(.) dplyr::mutate(., annex_name = ifelse(entity == "subregion" | entity == "income_subgroup", paste("  ", annex_name), annex_name))) %>%
-    purrr::map(function(.) dplyr::mutate(., entity = ifelse(entity == "subregion", "3", entity))) %>%
-    purrr::map(function(.) dplyr::mutate(., entity = ifelse(entity == "income_subgroup", "4", entity))) %>%
+    purrr::map(function(.) dplyr::mutate(., entity = dplyr::case_when(entity == "subregion" ~ "region",
+                                                                      entity == "income_subgroup" ~ "income_group",
+                                                                      TRUE ~ entity))) %>%
     purrr::map(function(.) dplyr::arrange(., region_order, annex_name)) %>%
     purrr::map(mutate_all, as.character) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(pkg.env$region)]$V1][!.N]) %>%
-    purrr::map(function(.) dplyr::select(., -sheet, -entity, -is_aggregate, -!!pkg.env$region, - regionx, -region_order))
+    purrr::map(function(.) dplyr::select(., -sheet, -is_aggregate, -entity, -!!pkg.env$region, - regionx, -region_order))
 }
