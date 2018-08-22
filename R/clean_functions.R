@@ -615,7 +615,7 @@ format_wide <- function(df) {
                                            ind %in% redenominate_3 ~ value/1000,
                                            TRUE ~ value)) %>%
     dplyr::group_by(ind) %>%
-    dplyr:: mutate(
+    dplyr::mutate(
       digits = case_when(
         max(value, na.rm = TRUE) < 10 ~ 2,
         value < 1 | stringr::str_detect(ind, "XGDP") ~ 1,
@@ -647,7 +647,7 @@ format_wide <- function(df) {
                                                     year_diff == -2 ~ "\u208B\u2082",
                                                     year_diff == -3 ~ "\u208B\u2083",
                                                     year_diff == -4 ~ "\u208B\u2084"),
-                  val_utf = paste0(value_str, year_diff_utf, val_status_utf, sep = "")) %>%
+                   val_utf = paste0(value_str, year_diff_utf, val_status_utf, sep = "")) %>%
     dplyr::select(sheet, annex_name, !!pkg.env$region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),
