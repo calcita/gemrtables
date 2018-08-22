@@ -544,15 +544,16 @@ weights_clean <- function(df) {
                                             STAT_UNIT == "TEACH" ~ paste(STAT_UNIT, EDU_LEVEL, sep = "_"),
                                             GRADE == "GLAST" ~ paste(EDU_LEVEL, STAT_UNIT, GRADE, sep = "_"),
                                             STAT_UNIT == "ILLPOP" ~ paste(AGE, STAT_UNIT, sep = "_"),
-                                            STAT_UNIT == "STU" & GRADE == "_T" ~ paste(EDU_LEVEL, STAT_UNIT)),
+                                            STAT_UNIT == "STU" & GRADE == "_T" ~ paste(EDU_LEVEL, STAT_UNIT, sep ="_")),
                  year = dplyr::case_when(is.na(obsTime) ~ as.numeric(TIME_PERIOD),
                                          is.na(TIME_PERIOD) ~ as.numeric(obsTime)),
-                 wt_value = dplyr::case_when(is.na(OBS_VALUE) ~ obsValue,
-                                             is.na(obsValue) ~ as.numeric(OBS_VALUE)),
+                 wt_value = dplyr::case_when(is.na(OBS_VALUE) ~ obsValue*1000,
+                                             is.na(obsValue) & STAT_UNIT == "POP" ~ as.numeric(OBS_VALUE) *1000,
+                                             is.na(obsValue) & STAT_UNIT != "POP" ~ as.numeric(OBS_VALUE)),
+                 wt_value = ifelse(OBS_STATUS == "Z", NA, wt_value),
            iso3n = suppressWarnings(ifelse(stringr::str_detect(REF_AREA, "[0-9]"), as.numeric(REF_AREA), NA))) %>%
     dplyr::left_join(pkg.env$regions, by = "iso3n") %>%
-    dplyr::mutate(iso2c = ifelse(is.na(iso2c) & !stringr::str_detect(REF_AREA, "[0-9]"), REF_AREA, iso2c),
-                  wt_value = ifelse(STAT_UNIT == "SAP", wt_value/1000, wt_value)) %>%
+    dplyr::mutate(iso2c = ifelse(is.na(iso2c) & !stringr::str_detect(REF_AREA, "[0-9]"), REF_AREA, iso2c)) %>%
     dplyr::select(iso2c, year, wt_var, wt_value) %>%
     dplyr::filter(!is.na(iso2c))
 
