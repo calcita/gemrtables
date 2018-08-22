@@ -545,8 +545,8 @@ weights_clean <- function(df) {
                                             GRADE == "GLAST" ~ paste(EDU_LEVEL, STAT_UNIT, GRADE, sep = "_"),
                                             STAT_UNIT == "ILLPOP" ~ paste(AGE, STAT_UNIT, sep = "_"),
                                             STAT_UNIT == "STU" & GRADE == "_T" ~ paste(EDU_LEVEL, STAT_UNIT)),
-                 year = dplyr::case_when(is.na(obsTime) ~ TIME_PERIOD,
-                                         is.na(TIME_PERIOD) ~ obsTime),
+                 year = dplyr::case_when(is.na(obsTime) ~ as.numeric(TIME_PERIOD),
+                                         is.na(TIME_PERIOD) ~ as.numeric(obsTime)),
                  wt_value = dplyr::case_when(is.na(OBS_VALUE) ~ obsValue,
                                              is.na(obsValue) ~ as.numeric(OBS_VALUE)),
            iso3n = suppressWarnings(ifelse(stringr::str_detect(REF_AREA, "[0-9]"), as.numeric(REF_AREA), NA))) %>%
@@ -578,22 +578,22 @@ weights_clean <- function(df) {
 
   cleaned <-
     clean3 %>%
-    filter(between(year, 2006, 2017)) %>%
-    complete(nesting(iso2c, wt_var), year) %>%
+    dplyr::filter(dplyr::between(year, 2006, 2017)) %>%
+    tidyr::complete(tidyr::nesting(iso2c, wt_var), year) %>%
     # Approx insists on at least two values to interpolate;
     # since anyhow we want the interpolation to hold the latest value constant,
     # a 2017 value is imputed here to be identical to the latest available.
-    {bind_rows(
+    {dplyr::bind_rows(
       .,
-      na.omit(.) %>%
-        group_by(iso2c, wt_var) %>%
-        filter(year == max(year)) %>%
-        ungroup %>%
-        mutate(year = 2017)
+      stats::na.omit(.) %>%
+        dplyr::group_by(iso2c, wt_var) %>%
+        dplyr::filter(year == max(year)) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(year = 2017)
     )} %>%
-    group_by(iso2c, wt_var) %>%
-    mutate(wt_value = approx(year, wt_value, xout = year, rule = 2)$y) %>%
-    ungroup
+    dplyr::group_by(iso2c, wt_var) %>%
+    dplyr::mutate(wt_value = stats::approx(year, wt_value, xout = year, rule = 2)$y) %>%
+    dplyr::ungroup()
 }
 
 
