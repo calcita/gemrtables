@@ -24,8 +24,9 @@
 
 gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, key, password) {
 
+  if(!isTRUE(exists("pkg.env", mode="environment"))) {
   pkg.env <<- new.env(parent = emptyenv())
-
+  }
   #define regions and ref_year
 
   pkg.env$ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
@@ -130,7 +131,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 0, wt_value), entity = "country") %>%
     ungroup()
 
-  uis_aggregates <- uis_comp %>%
+  uis_aggregates <- pkg.env$uis_comp %>%
     dplyr::inner_join(pkg.env$indicators, by = "var_concat") %>%
     dplyr::filter(aggregation %in% c("w_mean", "sum") & year >= (ref_year - 4)) %>%
     dplyr::inner_join(pkg.env$regions2[, 1:3], by = c("iso2c" = "code")) %>%
@@ -146,7 +147,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!pkg.env$region, !!pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
-    dplyr::mutate(value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == 1 & is.na(value), 0, value)) %>%
+    dplyr::mutate(value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == "country" & is.na(value), 0, value)) %>%
     dplyr::arrange(sheet, position, !!pkg.env$region, entity, annex_name)
 
   wide_data <- long_data %>%

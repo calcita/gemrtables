@@ -68,7 +68,10 @@ uis_clean <- function(df) {
     dplyr::filter(!is.na(value)) %>%
     unique()
 
-  uis_comp <<- clean1
+  pkg.env$uis_comp <- clean1 %>%
+    group_by(iso2c, var_concat) %>%
+    filter(year == max(year)) %>%
+    ungroup
 
   clean2 <- clean1 %>%
     dplyr::inner_join(pkg.env$indicators[, 1:2], by = "var_concat")
