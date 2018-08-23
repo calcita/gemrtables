@@ -616,10 +616,10 @@ weights_clean <- function(df) {
 format_wide <- function(df) {
 
   redenominate_6 <- c("IllPop.Ag15t24", "IllPop.Ag15t99", "OFST.1.cp", "OFST.2.cp", "OFST.3.cp", "SAP.02", "SAP.1", "SAP.2t3",
-                      "SAP.5t8", "stu.per.02", "stu.per.1", "stu.per.2t3", "stu.per.5t8", "teach.per.02", "teach.per.1", "teach.per.2t3")
+                      "SAP.5t8", "stu.per.02", "stu.per.1", "stu.per.2t3", "stu.per.5t8", "teach.per.02", "teach.per.1",
+                      "teach.per.2t3", "odaflow.volumescholarship", "odaflow.imputecost")
 
-  redenominate_3 <- c("IE.5t8.40510", "odaflow.volumescholarship", "odaflow.volumescholarshipimputecost", "teach.per.02",
-                      "OE.5t8.40510", "teach.per.1", "teach.per.2t3")
+  redenominate_3 <- c("IE.5t8.40510", "teach.per.02", "OE.5t8.40510", "teach.per.1", "teach.per.2t3")
 
   wide_data <- df %>%
     dplyr::mutate(value = dplyr::case_when(ind %in% redenominate_6 ~ value/1000000,
@@ -628,9 +628,12 @@ format_wide <- function(df) {
     dplyr::group_by(ind) %>%
     dplyr::mutate(
       digits = case_when(
-        max(value, na.rm = TRUE) < 10 ~ 2,
+        max(value, na.rm = TRUE) < 2 ~ 2,
+        (ind %in% redenominate_6 | ind %in% redenominate_3) & value >= 1000000 ~ 1,
+        (ind %in% redenominate_6 | ind %in% redenominate_3) & value < 1000000 ~ 3,
         value < 1 | stringr::str_detect(ind, "XGDP") ~ 1,
         TRUE ~ 0)) %>%
+    dplyr::rowwise() %>%
     dplyr:: mutate(
       value_str = format(value,
                      big.mark = ',', trim = TRUE,
@@ -642,7 +645,8 @@ format_wide <- function(df) {
                      ),
       value_str = case_when(
         is.na(value) ~ "\u2026",
-        entity == "country" & stringr::str_detect(ind, "esd|bully") ~ c('Low', 'Medium', 'High')[value + 1],
+        entity == "country" & stringr::str_detect(ind, "bully") ~ c('Low', 'Medium', 'High')[value + 1],
+        entity == "country" & stringr::str_detect(ind, "esd") ~ c('None', 'Low', 'Medium', 'High')[value + 1],
         entity == "country" & stringr::str_detect(ind, "attack") ~ c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
         entity == "country" & stringr::str_detect(ind, "admi") ~ c('No', 'Yes')[value + 1],
         TRUE ~ value_str
