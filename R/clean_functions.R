@@ -534,7 +534,7 @@ ict_skills_clean <- function(df) {
 
 weights_clean <- function(df) {
 
-  clean1 <- df %>%
+  uis <- df[[1]] %>%
     unique() %>%
     dplyr::mutate(wt_var = dplyr::case_when(AGE =="SCH_AGE_GROUP" & SEX == "_T" ~ EDU_LEVEL,
                                             AGE =="SCH_AGE_GROUP" & SEX != "_T" ~ paste(EDU_LEVEL, SEX, sep = "_"),
@@ -545,22 +545,26 @@ weights_clean <- function(df) {
                                             GRADE == "GLAST" ~ paste(EDU_LEVEL, STAT_UNIT, GRADE, sep = "_"),
                                             STAT_UNIT == "ILLPOP" ~ paste(AGE, STAT_UNIT, sep = "_"),
                                             STAT_UNIT == "STU" & GRADE == "_T" ~ paste(EDU_LEVEL, STAT_UNIT, sep ="_")),
-                 year = dplyr::case_when(is.na(obsTime) ~ as.numeric(TIME_PERIOD),
-                                         is.na(TIME_PERIOD) ~ as.numeric(obsTime)),
-                 wt_value = dplyr::case_when(is.na(OBS_VALUE) ~ obsValue*1000,
-                                             is.na(obsValue) & STAT_UNIT == "POP" ~ as.numeric(OBS_VALUE) *1000,
-                                             is.na(obsValue) & STAT_UNIT != "POP" ~ as.numeric(OBS_VALUE)),
-                 wt_value = ifelse(OBS_STATUS == "Z", NA, wt_value),
-           iso3n = suppressWarnings(ifelse(stringr::str_detect(REF_AREA, "[0-9]"), as.numeric(REF_AREA), NA))) %>%
-    dplyr::left_join(pkg.env$regions, by = "iso3n") %>%
-    dplyr::mutate(iso2c = ifelse(is.na(iso2c) & !stringr::str_detect(REF_AREA, "[0-9]"), REF_AREA, iso2c)) %>%
-    dplyr::select(iso2c, year, wt_var, wt_value) %>%
-    dplyr::filter(!is.na(iso2c))
+                 wt_value = dplyr::case_when(STAT_UNIT == "POP" ~ as.numeric(OBS_VALUE) *1000,
+                                             OBS_STATUS == "Z" ~ NA_real_,
+                                             TRUE ~ as.numeric(OBS_VALUE))) %>%
+    dplyr::select(iso2c = REF_AREA, year = TIME_PERIOD, wt_var, wt_value) %>%
+    dplyr::filter(!is.na(iso2c), nchar(iso2c) == 2)
+
+  unpd <- df[[2]] %>%
+    dplyr::mutate(REF_AREA = stringi::stri_replace_all_regex(REF_AREA, "\\b0*(\\d+)\\b", "$1")) %>%
+    dplyr::mutate(wt_value = as.numeric(obsValue) * 1000,
+                  iso2c = countrycode::countrycode(sourcevar = .$REF_AREA, origin = "iso3n", destination = "iso2c")) %>%
+    dplyr::select(iso2c, year = obsTime, wt_var = AGE, wt_value)
+
+  clean1 <- bind_rows(uis, unpd) %>%
+    dplyr::mutate(year = as.numeric(year)) %>%
+    dplyr::filter(!is.na(iso2c), nchar(iso2c) == 2)
 
   clean2 <- clean1 %>%
     dplyr::group_by(iso2c, year) %>%
     tidyr::spread(key = wt_var, value = wt_value) %>%
-    dplyr::summarise(Y25T65 = `_T` - (Y_LT5 + Y10T14 + Y15T24 + Y_GE65),
+    dplyr::summarise(Y25T64 = `_T` - (Y_LT5 + Y10T14 + Y15T24 + Y_GE65),
                      Y_GE25 = `_T` - (Y_LT5 + Y10T14 + Y15T24),
                      Y15T64 =  `_T` - (Y_LT5 + Y10T14 + Y_GE65),
                      L1_GLAST_Q1_F = L1_GLAST_F * .2,
@@ -585,7 +589,7 @@ weights_clean <- function(df) {
     tidyr::complete(tidyr::nesting(iso2c, wt_var), year) %>%
     # Approx insists on at least two values to interpolate;
     # since anyhow we want the interpolation to hold the latest value constant,
-    # a 2017 value is imputed here to be identical to the latest available.
+    # a value two years following the reference year is imputed here to be identical to the latest available.
     {dplyr::bind_rows(
       .,
       stats::na.omit(.) %>%
@@ -596,7 +600,7 @@ weights_clean <- function(df) {
     )} %>%
     dplyr::group_by(iso2c, wt_var) %>% #na.omit %>% filter(n() == 1)
     dplyr::mutate(wt_value = stats::approx(year, wt_value, xout = year, rule = 2)$y) %>%
-    dplyr::filter(year <= pkg.env$ref_year) %>%
+    dplyr::filter(year == pkg.env$ref_year) %>%
     dplyr::ungroup()
 }
 

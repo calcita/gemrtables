@@ -127,7 +127,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::ungroup() %>%
     dplyr::group_by(iso2c, ind) %>%
     dplyr::filter(priority == min(priority)) %>%
-    dplyr::left_join(weights_data[, -2], by = c("iso2c", "wt_var")) %>%
+    dplyr::left_join(weights_data[, -3], by = c("iso2c", "wt_var")) %>%
     dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 0, wt_value), entity = "country") %>%
     ungroup()
 
