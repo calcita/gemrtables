@@ -127,8 +127,9 @@ read_cedar <- function(sc, level = 1, table, ind, password) {
     dplyr::filter(!is.na(value)) %>%
     dplyr::select_if(~sum(!is.na(.)) > 0) %>%
     dplyr::mutate(year = as.numeric(year)) %>%
-    dplyr::filter(year == max(year), value != 0) %>%
     {if(is.character(.$value)) dplyr::mutate(., value = dplyr::case_when(value == "0" ~ 0, value == "LOW" ~ 1, value == "MEDIUM" ~ 2, value == "HIGH" ~ 3)) else . } %>%
+    {if(!stringr::str_detect(.$indicator, "esd")) dplyr::filter(., value != 0) else . } %>%
+    dplyr::filter(year == max(year)) %>%
     unique()
 
   RMariaDB::dbDisconnect(cedar_con)
