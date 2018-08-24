@@ -96,7 +96,10 @@ uis_clean <- function(df) {
     dplyr::summarise(value = value[1] * (value[2]/100),
               val_status = ifelse(val_status[1] == "E" | val_status[2] == "E", "E", "A")) %>%
     dplyr::mutate(ind = "IE.5t8.40510") %>%
-    dplyr::select(iso2c, year, ind, value, val_status)
+    dplyr::select(iso2c, year, ind, value, val_status) %>%
+    group_by(iso2c, ind) %>%
+    filter(year == max(year)) %>%
+    ungroup()
 
   parity_indices <- list(df = list("clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1"),
                          col = list("var_concat",  "var_concat", "var_concat", "var_concat", "var_concat",  "var_concat", "var_concat",
