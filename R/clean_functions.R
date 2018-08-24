@@ -621,7 +621,8 @@ format_wide <- function(df) {
 
   redenominate_3 <- c("IE.5t8.40510", "teach.per.02", "OE.5t8.40510", "teach.per.1", "teach.per.2t3")
 
-  wide_data <- df %>%
+  wide_data <-
+    df %>%
     dplyr::mutate(value = dplyr::case_when(ind %in% redenominate_6 ~ value/1000000,
                                            ind %in% redenominate_3 ~ value/1000,
                                            TRUE ~ value)) %>%
@@ -629,12 +630,12 @@ format_wide <- function(df) {
     dplyr::mutate(
       digits = case_when(
         max(value, na.rm = TRUE) < 2 ~ 2,
-        (ind %in% redenominate_6 | ind %in% redenominate_3) & value >= 1000000 ~ 1,
-        (ind %in% redenominate_6 | ind %in% redenominate_3) & value < 1000000 ~ 3,
+        # (ind %in% redenominate_6 | ind %in% redenominate_3) & value >= 1000000 ~ 1,
+        # (ind %in% redenominate_6 | ind %in% redenominate_3) & value < 1000000 ~ 3,
         value < 1 | stringr::str_detect(ind, "XGDP") ~ 1,
         TRUE ~ 0)) %>%
     dplyr::rowwise() %>%
-    dplyr:: mutate(
+    dplyr::mutate(
       value_str = format(value,
                      big.mark = ',', trim = TRUE,
                      zero.print = '-',
@@ -642,27 +643,32 @@ format_wide <- function(df) {
                      drop0trailing = TRUE,
                      scientific = FALSE,
                      digits = digits
-                     ),
-      value_str = case_when(
-        is.na(value) ~ "\u2026",
-        entity == "country" & stringr::str_detect(ind, "bully") ~ c('Low', 'Medium', 'High')[value + 1],
-        entity == "country" & stringr::str_detect(ind, "esd") ~ c('None', 'Low', 'Medium', 'High')[value + 1],
-        entity == "country" & stringr::str_detect(ind, "attack") ~ c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
-        entity == "country" & stringr::str_detect(ind, "admi") ~ c('No', 'Yes')[value + 1],
+                     )) %>%
+    dplyr::mutate(
+      value_str = ifelse(is.na(value) | entity != "country", value_str,
+        case_when(
+        stringr::str_detect(ind, "bully")  ~ c('Low', 'Medium', 'High')[value],
+        stringr::str_detect(ind, "esd")    ~ c('None', 'Low', 'Medium', 'High')[value],
+        stringr::str_detect(ind, "attack") ~ c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
+        stringr::str_detect(ind, "admi")   ~ c('No', 'Yes')[value + 1],
         TRUE ~ value_str
-      )
-      ) %>%
+      ))) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(val_status = ifelse(val_status == "A", "", tolower(val_status)),
+    dplyr::mutate(
+                  val_status = ifelse(val_status == "A", "", tolower(val_status)),
                   year_diff = year - pkg.env$ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
                   val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
-                                                    val_status == "m" ~ "\u2099"),
-                  year_diff_utf = dplyr::case_when(year_diff == 1 ~ "\u208A\u2081",
+                                                    val_status == "m" ~ "\u2099",
+                                                    TRUE ~ ''),
+                  year_diff_utf = dplyr::case_when(year_diff  ==  1 ~ "\u208A\u2081",
                                                     year_diff == -1 ~ "\u208B\u2081",
                                                     year_diff == -2 ~ "\u208B\u2082",
                                                     year_diff == -3 ~ "\u208B\u2083",
-                                                    year_diff == -4 ~ "\u208B\u2084"),
-                   val_utf = paste0(value_str, year_diff_utf, val_status_utf, sep = "")) %>%
+                                                    year_diff == -4 ~ "\u208B\u2084",
+                                                   TRUE ~ ''),
+                   val_utf = ifelse(value_str == 'NA' | is.na(value_str),
+                                    "\u2026",
+                                    paste0(value_str, year_diff_utf, val_status_utf, sep = ""))) %>%
     dplyr::select(sheet, annex_name, !!pkg.env$region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),
