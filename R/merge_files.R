@@ -65,7 +65,8 @@ weights <- function() {
        "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/SAP.PER.L1._T..TH_ENTRY_GLAST._T..............?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2010&subscription-key=",
        "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/SAP.PER.L1._T..TH_ENTRY_GLAST._T..............?format=sdmx-compact-2.1&startPeriod=2011&endPeriod=2030&subscription-key=",
        "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/SAP.PER.L2._T..TH_ENTRY_GLAST._T..............?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=",
-       "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/STU.PER.L1+L2+L3+L2_3+L5T8._T._T._T._T.INST_T...._T.........?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=",
+       "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/STU.PER.L1+L2+L3._T._T._T._T.INST_T...._T.........?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=",
+       "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/STU.PER.L2_3+L4+L5T8._T._T._T._T.INST_T...._T.........?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=",
        "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/STU.PER.L1.._T..GLAST.INST_T.............?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=",
        "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/ILLPOP.PER..._T.Y_GE15+Y15T24...............?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=",
        "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/TEACH.PER.L1+L02+L2_3+L5T8._T._T._T..INST_T.............?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=",
@@ -77,3 +78,5 @@ weights <- function() {
   full <- list(uis, unpd)  %>%
     weights_clean()
 }
+
+

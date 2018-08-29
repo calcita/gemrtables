@@ -52,8 +52,8 @@ aggregates <- function(df) {
     dplyr::mutate(val_status = case_when(
       aggregation == 'median' & pc_comp < 2/3 ~ 'E',
       aggregation == 'wt_mean' & wt_share < 2/3 ~ 'E',
-      TRUE = "A"
-    ))
+      TRUE ~ "A"
+    )) %>%
     dplyr::filter(!is.na(annex_name) | annex_name != "")
 }
 

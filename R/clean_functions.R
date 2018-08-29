@@ -302,6 +302,14 @@ eurostat_clean <- function(df) {
 
 oecd_clean <- function(df) {
 
+  pkg.env$schol_unspec <- df[[1]] %>%
+    dplyr::mutate(ind = dplyr::case_when(AIDTYPE == "E02" ~ "odaflow.imputecost",
+                                         AIDTYPE == "E01"  ~ "odaflow.volumescholarship"),
+                  RECIPIENT = as.numeric(RECIPIENT)) %>%
+    dplyr::filter(RECIPIENT %in% c(89, 57, 189, 289, 298, 380, 389, 489, 498, 589, 619, 679, 689, 789, 798, 889, 998)) %>%
+    dplyr::group_by(ind) %>%
+    dplyr::summarise(value = (sum(obsValue))*1000000)
+
   schol <- df[[1]] %>%
     dplyr::mutate(ind = dplyr::case_when(AIDTYPE == "E02" ~ "odaflow.imputecost",
                                          AIDTYPE == "E01"  ~ "odaflow.volumescholarship"),
@@ -337,7 +345,6 @@ oecd_clean <- function(df) {
     dplyr::filter(!is.na(iso2c), !is.na(value))
 
 }
-
 
 #' un_aids_clean
 #'
@@ -552,10 +559,10 @@ weights_clean <- function(df) {
                                              OBS_STATUS == "Z" ~ NA_real_,
                                              TRUE ~ as.numeric(OBS_VALUE))) %>%
     dplyr::select(iso2c = REF_AREA, year = TIME_PERIOD, wt_var, wt_value) %>%
-    dplyr::filter(!is.na(iso2c), nchar(iso2c) == 2)
+    dplyr::filter(!is.na(iso2c), !is.na(wt_value), nchar(iso2c) == 2)
 
   unpd <- df[[2]] %>%
-    dplyr::mutate(REF_AREA = stringi::stri_replace_all_regex(REF_AREA, "\\b0*(\\d+)\\b", "$1")) %>%
+    dplyr::mutate(REF_AREA = as.numeric(stringi::stri_replace_all_regex(REF_AREA, "\\b0*(\\d+)\\b", "$1"))) %>%
     dplyr::mutate(wt_value = as.numeric(obsValue) * 1000,
                   iso2c = countrycode::countrycode(sourcevar = .$REF_AREA, origin = "iso3n", destination = "iso2c")) %>%
     dplyr::select(iso2c, year = obsTime, wt_var = AGE, wt_value)
