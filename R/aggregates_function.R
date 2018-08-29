@@ -25,7 +25,7 @@ compute_aggregate <- function(df, region, entity) {
                      w_mean = weighted.mean(value, wt_value, na.rm = TRUE),#sum(value*wt_value, na.rm = TRUE)/sum(wt_value, na.rm = TRUE),
                      pc_true = (sum(value)/dplyr::n())*100,
                      pc_true2 = (sum(value/count1*100)),
-                     wt_share = sum(wt_value[!is.na(value)], na.rm = TRUE)/sum(wt_value, na.rm = TRUE),
+                     wt_share = sum(wt_value[!is.na(value) & val_status == 'A'], na.rm = TRUE)/wt_total[1],
                      count2 = dplyr::n()) %>%
     dplyr::mutate(pc_comp = 100 * round(count2/count1, digits = 2),
                   entity = entity) %>%
