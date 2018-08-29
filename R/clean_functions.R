@@ -626,8 +626,8 @@ weights_clean <- function(df) {
 format_wide <- function(df) {
 
   redenominate_6 <- c("IllPop.Ag15t24", "IllPop.Ag15t99", "OFST.1.cp", "OFST.2.cp", "OFST.3.cp", "SAP.02", "SAP.1", "SAP.2t3",
-                      "SAP.5t8", "stu.per.02", "stu.per.1", "stu.per.2t3", "stu.per.5t8", "teach.per.02", "teach.per.1",
-                      "teach.per.2t3", "odaflow.volumescholarship", "odaflow.imputecost")
+                      "SAP.5t8", "stu.per.02", "stu.per.1", "stu.per.2t3", "stu.per.5t8",
+                      "odaflow.volumescholarship", "odaflow.imputecost")
 
   redenominate_3 <- c("IE.5t8.40510", "teach.per.02", "OE.5t8.40510", "teach.per.1", "teach.per.2t3")
 
@@ -642,27 +642,26 @@ format_wide <- function(df) {
         max(value, na.rm = TRUE) < 2 ~ 2,
         # (ind %in% redenominate_6 | ind %in% redenominate_3) & value >= 1000000 ~ 1,
         # (ind %in% redenominate_6 | ind %in% redenominate_3) & value < 1000000 ~ 3,
-        value < 1 | stringr::str_detect(ind, "XGDP") ~ 1,
+        value < 0.5 | stringr::str_detect(ind, "XGDP") ~ 1,
         TRUE ~ 0)) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
-      value_str = format(value,
+      value_str = format(round(value, digits),
                      big.mark = ',', trim = TRUE,
                      zero.print = '-',
-                     nsmall = 0,
-                     drop0trailing = TRUE,
+                     nsmall = digits,
+                     drop0trailing = FALSE,
                      scientific = FALSE,
                      digits = digits
                      )) %>%
+    wide_data %>%
     dplyr::mutate(
-      value_str = ifelse(is.na(value) | entity != "country", value_str,
-        case_when(
-        stringr::str_detect(ind, "bully")  ~ c('Low', 'Medium', 'High')[value],
-        stringr::str_detect(ind, "esd")    ~ c('None', 'Low', 'Medium', 'High')[value],
-        stringr::str_detect(ind, "attack") ~ c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
-        stringr::str_detect(ind, "admi")   ~ c('No', 'Yes')[value + 1],
-        TRUE ~ value_str
-      ))) %>%
+      value_str = ifelse(is.na(value) | entity != "country" | !stringr::str_detect(ind, "bully|esd|attack|admi"), value_str,
+        ifelse(stringr::str_detect(ind, "bully"), c('Low', 'Medium', 'High')[value],
+        ifelse(stringr::str_detect(ind, "esd"), c('None', 'Low', 'Medium', 'High')[value],
+        ifelse(stringr::str_detect(ind, "attack"), c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
+        ifelse(stringr::str_detect(ind, "admi"), c('No', 'Yes')[value + 1], value_str)
+      ))))) %>% filter(str_detect(ind, 'odaflow') & value < 1) %>% select(entity, value, ind, value_str)
     dplyr::ungroup() %>%
     dplyr::mutate(
                   val_status = ifelse(val_status == "A", "", tolower(val_status)),
@@ -678,7 +677,7 @@ format_wide <- function(df) {
                                                    TRUE ~ ''),
                    val_utf = ifelse(value_str == 'NA' | is.na(value_str),
                                     "\u2026",
-                                    paste0(value_str, year_diff_utf, val_status_utf, sep = ""))) %>%
+                                    paste0(stringr::str_trim(value_str), year_diff_utf, val_status_utf, sep = ""))) %>%
     dplyr::select(sheet, annex_name, !!pkg.env$region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),

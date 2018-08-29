@@ -114,7 +114,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   country_data1 <- country_data %>%
     dplyr::right_join(pkg.env$regions, by = "iso2c") %>%
     dplyr::left_join(pkg.env$indicators, by = c("ind", "source")) %>%
-    dplyr::filter(year >= ref_year - year_cut)
+    dplyr::filter(year >= pkg.env$ref_year - year_cut)
 
   unmatched <- dplyr::anti_join(pkg.env$indicators, country_data1, by = c("ind", "source")) %>%
     dplyr::select(ind, source, sheet, position)
@@ -140,13 +140,13 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   computed_aggregates <- country_data2 %>%
     aggregates() %>%
     dplyr::filter(!is.na(annex_name)) %>%
-    dplyr::inner_join(indicators_unique, by = c("ind", "aggregation")) %>%
+    dplyr::inner_join(indicators_unique, by = c("ind", "aggregation", "pc_comp_cut")) %>%
     dplyr::anti_join(uis_aggregates, by = c("annex_name", "ind")) %>%
     dplyr::mutate(value = dplyr::case_when(annex_name == "World" & ind == "odaflow.volumescholarship" ~ value + pkg.env$schol_unspec[1,2],
                                            annex_name == "World" & ind == "odaflow.imputecost" ~ value + pkg.env$schol_unspec[2,2],
                                            TRUE ~ value))
 
-  long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
+  long_data <<- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!pkg.env$region, !!pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
     dplyr::mutate(value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == "country" & is.na(value), 0, value)) %>%
