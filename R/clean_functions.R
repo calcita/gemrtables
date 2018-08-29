@@ -647,15 +647,14 @@ format_wide <- function(df) {
                      scientific = FALSE,
                      digits = digits
                      )) %>%
+    wide_data %>%
     dplyr::mutate(
-      value_str = ifelse(is.na(value) | entity != "country", value_str,
-        case_when(
-        stringr::str_detect(ind, "bully")  ~ c('Low', 'Medium', 'High')[value],
-        stringr::str_detect(ind, "esd")    ~ c('None', 'Low', 'Medium', 'High')[value],
-        stringr::str_detect(ind, "attack") ~ c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
-        stringr::str_detect(ind, "admi")   ~ c('No', 'Yes')[value + 1],
-        TRUE ~ value_str
-      ))) %>%
+      value_str = ifelse(is.na(value) | entity != "country" | !stringr::str_detect(ind, "bully|esd|attack|admi"), value_str,
+        ifelse(stringr::str_detect(ind, "bully"), c('Low', 'Medium', 'High')[value],
+        ifelse(stringr::str_detect(ind, "esd"), c('None', 'Low', 'Medium', 'High')[value],
+        ifelse(stringr::str_detect(ind, "attack"), c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
+        ifelse(stringr::str_detect(ind, "admi"), c('No', 'Yes')[value + 1], value_str)
+      ))))) %>% filter(str_detect(ind, 'odaflow') & value < 1) %>% select(entity, value, ind, value_str)
     dplyr::ungroup() %>%
     dplyr::mutate(
                   val_status = ifelse(val_status == "A", "", tolower(val_status)),
@@ -671,7 +670,7 @@ format_wide <- function(df) {
                                                    TRUE ~ ''),
                    val_utf = ifelse(value_str == 'NA' | is.na(value_str),
                                     "\u2026",
-                                    paste0(value_str, year_diff_utf, val_status_utf, sep = ""))) %>%
+                                    paste0(stringr::str_trim(value_str), year_diff_utf, val_status_utf, sep = ""))) %>%
     dplyr::select(sheet, annex_name, !!pkg.env$region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),
