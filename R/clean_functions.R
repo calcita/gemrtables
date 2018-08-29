@@ -619,8 +619,8 @@ weights_clean <- function(df) {
 format_wide <- function(df) {
 
   redenominate_6 <- c("IllPop.Ag15t24", "IllPop.Ag15t99", "OFST.1.cp", "OFST.2.cp", "OFST.3.cp", "SAP.02", "SAP.1", "SAP.2t3",
-                      "SAP.5t8", "stu.per.02", "stu.per.1", "stu.per.2t3", "stu.per.5t8", "teach.per.02", "teach.per.1",
-                      "teach.per.2t3", "odaflow.volumescholarship", "odaflow.imputecost")
+                      "SAP.5t8", "stu.per.02", "stu.per.1", "stu.per.2t3", "stu.per.5t8",
+                      "odaflow.volumescholarship", "odaflow.imputecost")
 
   redenominate_3 <- c("IE.5t8.40510", "teach.per.02", "OE.5t8.40510", "teach.per.1", "teach.per.2t3")
 
@@ -635,15 +635,15 @@ format_wide <- function(df) {
         max(value, na.rm = TRUE) < 2 ~ 2,
         # (ind %in% redenominate_6 | ind %in% redenominate_3) & value >= 1000000 ~ 1,
         # (ind %in% redenominate_6 | ind %in% redenominate_3) & value < 1000000 ~ 3,
-        value < 1 | stringr::str_detect(ind, "XGDP") ~ 1,
+        value < 0.5 | stringr::str_detect(ind, "XGDP") ~ 1,
         TRUE ~ 0)) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
-      value_str = format(value,
+      value_str = format(round(value, digits),
                      big.mark = ',', trim = TRUE,
                      zero.print = '-',
-                     nsmall = 0,
-                     drop0trailing = TRUE,
+                     nsmall = digits,
+                     drop0trailing = FALSE,
                      scientific = FALSE,
                      digits = digits
                      )) %>%
