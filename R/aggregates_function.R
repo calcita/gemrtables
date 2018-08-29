@@ -25,11 +25,12 @@ compute_aggregate <- function(df, region, entity) {
                      w_mean = weighted.mean(value, wt_value, na.rm = TRUE),#sum(value*wt_value, na.rm = TRUE)/sum(wt_value, na.rm = TRUE),
                      pc_true = (sum(value)/dplyr::n())*100,
                      pc_true2 = (sum(value/count1*100)),
+                     wt_share = sum(wt_value[!is.na(value)], na.rm = TRUE)/sum(wt_value, na.rm = TRUE),
                      count2 = dplyr::n()) %>%
     dplyr::mutate(pc_comp = 100 * round(count2/count1, digits = 2),
                   entity = entity) %>%
-    tidyr::gather(key = "aggregation", value = "value", -ind, -!!region, -pc_comp, -pc_comp_cut, -entity) %>%
-    dplyr::select(annex_name = !!region, ind, aggregation, value, pc_comp, pc_comp_cut, entity)
+    tidyr::gather(key = "aggregation", value = "value", -ind, -!!region, -pc_comp, -pc_comp_cut, -entity, -wt_share) %>%
+    dplyr::select(annex_name = !!region, ind, aggregation, value, pc_comp, wt_share, pc_comp_cut, entity)
 }
 
 aggregates <- function(df) {
@@ -46,7 +47,13 @@ aggregates <- function(df) {
   aggregates <- dplyr::bind_rows(world, regional, subregional, income, subincome) %>%
     dplyr::semi_join(pkg.env$indicators, by = c("ind", "aggregation")) %>%
     dplyr::mutate(year = pkg.env$ref_year) %>%
-    dplyr::filter(pc_comp >= pc_comp_cut) %>%
+    dplyr::filter(!(aggregation != 'w_mean' & pc_comp < pc_comp_cut) &
+                  !(aggregation == 'w_mean' & wt_share < pc_comp_cut)) %>%
+    dplyr::mutate(val_status = case_when(
+      aggregation == median & pc_comp < 2/3 ~ 'E',
+      aggregation == wt_mean & wt_share < 2/3 ~ 'E',
+      TRUE = "A"
+    ))
     dplyr::filter(!is.na(annex_name) | annex_name != "")
 }
 
