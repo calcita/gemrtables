@@ -141,8 +141,10 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     aggregates() %>%
     dplyr::filter(!is.na(annex_name)) %>%
     dplyr::inner_join(indicators_unique, by = c("ind", "aggregation")) %>%
-    dplyr::anti_join(uis_aggregates, by = c("annex_name", "ind"))
-
+    dplyr::anti_join(uis_aggregates, by = c("annex_name", "ind")) %>%
+    dplyr::mutate(value = dplyr::case_when(annex_name == "World" & ind == "odaflow.volumescholarship" ~ value + pkg.env$schol_unspec[1,2],
+                                           annex_name == "World" & ind == "odaflow.imputecost" ~ value + pkg.env$schol_unspec[2,2],
+                                           TRUE ~ value))
 
   long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!pkg.env$region, !!pkg.env$subregion, entity),
