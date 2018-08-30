@@ -660,8 +660,8 @@ format_wide <- function(df) {
         ifelse(stringr::str_detect(ind, "esd"), c('None', 'Low', 'Medium', 'High')[value],
         ifelse(stringr::str_detect(ind, "attack"), c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
         ifelse(stringr::str_detect(ind, "admi"), c('No', 'Yes')[value + 1], value_str)
-      ))))) %>% filter(stringr::str_detect(ind, 'odaflow') & value < 1) %>%
-    dplyr::select(entity, value, val_status, ind, value_str) %>%
+      ))))) %>%
+    # dplyr::select(entity, value, val_status, ind, value_str) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
                   val_status = ifelse(val_status == "A", "", tolower(val_status)),
