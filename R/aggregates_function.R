@@ -50,7 +50,7 @@ aggregates <- function(df) {
     dplyr::filter(!(aggregation != 'w_mean' & pc_comp < pc_comp_cut) &
                   !(aggregation == 'w_mean' & wt_share < pc_comp_cut)) %>%
     dplyr::mutate(val_status = case_when(
-      aggregation == 'median' & pc_comp < 2/3 ~ 'E',
+      aggregation == 'median' & pc_comp < 66 ~ 'E',
       aggregation == 'wt_mean' & wt_share < 2/3 ~ 'E',
       TRUE ~ "A"
     )) %>%

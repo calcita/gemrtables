@@ -306,7 +306,7 @@ oecd_clean <- function(df) {
     dplyr::mutate(ind = dplyr::case_when(AIDTYPE == "E02" ~ "odaflow.imputecost",
                                          AIDTYPE == "E01"  ~ "odaflow.volumescholarship"),
                   RECIPIENT = as.numeric(RECIPIENT)) %>%
-    dplyr::filter(RECIPIENT %in% c(89, 57, 189, 289, 298, 380, 389, 489, 498, 589, 619, 679, 689, 789, 798, 889, 998)) %>%
+    dplyr::filter(RECIPIENT %in% c(89, 57, 189, 289, 298, 380, 389, 489, 498, 589, 619, 679, 689, 789, 798, 889, 9998)) %>%
     dplyr::group_by(ind) %>%
     dplyr::summarise(value = (sum(obsValue))*1000000)
 
@@ -654,14 +654,14 @@ format_wide <- function(df) {
                      scientific = FALSE,
                      digits = digits
                      )) %>%
-    wide_data %>%
     dplyr::mutate(
       value_str = ifelse(is.na(value) | entity != "country" | !stringr::str_detect(ind, "bully|esd|attack|admi"), value_str,
         ifelse(stringr::str_detect(ind, "bully"), c('Low', 'Medium', 'High')[value],
         ifelse(stringr::str_detect(ind, "esd"), c('None', 'Low', 'Medium', 'High')[value],
         ifelse(stringr::str_detect(ind, "attack"), c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
         ifelse(stringr::str_detect(ind, "admi"), c('No', 'Yes')[value + 1], value_str)
-      ))))) %>% filter(str_detect(ind, 'odaflow') & value < 1) %>% select(entity, value, ind, value_str)
+      ))))) %>% filter(stringr::str_detect(ind, 'odaflow') & value < 1) %>%
+    dplyr::select(entity, value, val_status, ind, value_str) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
                   val_status = ifelse(val_status == "A", "", tolower(val_status)),
@@ -675,7 +675,7 @@ format_wide <- function(df) {
                                                     year_diff == -3 ~ "\u208B\u2083",
                                                     year_diff == -4 ~ "\u208B\u2084",
                                                    TRUE ~ ''),
-                   val_utf = ifelse(value_str == 'NA' | is.na(value_str),
+                  val_utf = ifelse(value_str == 'NA' | is.na(value_str),
                                     "\u2026",
                                     paste0(stringr::str_trim(value_str), year_diff_utf, val_status_utf, sep = ""))) %>%
     dplyr::select(sheet, annex_name, !!pkg.env$region, ind, val_utf, entity) %>%
