@@ -26,6 +26,7 @@ compute_aggregate <- function(df, region, entity) {
                      pc_true = (sum(value)/dplyr::n())*100,
                      pc_true2 = (sum(value/count1*100)),
                      wt_share = sum(wt_value[!is.na(value) & val_status == 'A'], na.rm = TRUE)/wt_total[1],
+                     pop_share = sum(pop[!is.na(value) & val_status == 'A'], na.rm = TRUE)/pop_total[1],
                      count2 = dplyr::n()) %>%
     dplyr::mutate(pc_comp = 100 * round(count2/count1, digits = 2),
                   entity = entity) %>%
@@ -50,9 +51,9 @@ aggregates <- function(df) {
     dplyr::filter(!(aggregation != 'w_mean' & pc_comp < pc_comp_cut) &
                   !(aggregation == 'w_mean' & wt_share < pc_comp_cut)) %>%
     dplyr::mutate(val_status = case_when(
-      aggregation == 'sum' & pc_comp < 90 ~ 'E',
+      aggregation == 'sum' & (pc_comp < .gemrtables.pkg.env$pc_flag_cut | pop_share < 95) ~ 'E',
       aggregation != 'w_mean' & pc_comp < .gemrtables.pkg.env$pc_flag_cut ~ 'E',
-      aggregation == 'w_mean' & wt_share < .gemrtables.pkg.env$pc_flag_cut ~ 'E',
+      aggregation == 'w_mean' & pmax(wt_share, pop_share, na.rm = TRUE) < .gemrtables.pkg.env$pc_flag_cut ~ 'E',
       TRUE ~ "A"
     )) %>%
     dplyr::filter(!is.na(annex_name) | annex_name != "")

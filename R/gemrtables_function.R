@@ -117,6 +117,10 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::group_by(wt_var) %>%
     dplyr::mutate(wt_total = sum(wt_value, na.rm = TRUE)) %>%
     dplyr::ungroup()
+  pop_data <-
+    weights_data %>%
+    filter(wt_var == '_T') %>%
+    select(iso2c, year, pop = wt_value, pop_total = wt_total)
 
   #clean country data and export statistical tables
 
@@ -138,6 +142,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::filter(priority == min(priority)) %>%
     dplyr::left_join(weights_data[, -3], by = c("iso2c", "wt_var")) %>%
     dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 1, wt_value), entity = "country") %>%
+    dplyr::left_join(select(pop_data, -year), by = c('iso2c', 'wt_var')) %>%
     ungroup()
 
   uis_aggregates_extra <- uis_extra_aggs()
