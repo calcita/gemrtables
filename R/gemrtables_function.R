@@ -151,7 +151,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::anti_join(uis_aggregates_extra, by = c('iso2c', 'var_concat', 'year')) %>%
     dplyr::bind_rows(uis_aggregates_extra) %>%
     dplyr::inner_join(.gemrtables.pkg.env$indicators, by = "var_concat") %>%
-    dplyr::filter(aggregation %in% c("w_mean", "sum") & year >= (ref_year - 4)) %>%
+    dplyr::filter(aggregation %in% c("w_mean", "sum") & year >= (.gemrtables.pkg.env$ref_year - 4)) %>%
     dplyr::inner_join(.gemrtables.pkg.env$regions2[, 1:3], by = c("iso2c" = "code")) %>%
     dplyr::select(-iso2c)
 

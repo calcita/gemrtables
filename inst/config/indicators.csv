@@ -167,7 +167,7 @@ stu.bully,NA,Percentage of students experiencing school-related bullying,Innocen
 edattacks,NA,"Number of attacks involving education institutions, teachers or students",GCPEA,6,1,,,NA,4,NA,16
 odaflow.volumescholarship,NA,"Volume of official development assistance flows for scholarships,  Gross disbursements by beneficiary,  (constant US PPP)",OECD,6,1,sum,,NA,4,0,21
 odaflow.imputecost,NA,"Volume of official development assistance flows for scholarships and imputed student costs,  Gross disbursements by beneficiary,  (constant US PPP)",OECD,6,1,sum,,NA,4,0,22
-IE.5t8.40510,NA,"Total inbound internationally mobile tertiary students, all countries, both sexes (number)",UIS,6,1,sum,,NA,4,66,19
+IE.5t8.40510,IE_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Total inbound internationally mobile tertiary students, all countries, both sexes (number)",UIS,6,1,sum,,NA,4,66,19
 MSEP.5t8,MSEP_PT_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Inbound student mobility rate, both sexes (%)",UIS,6,1,median,,NA,4,66,17
 OE.5t8.40510,OE_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Total outbound internationally mobile tertiary students studying abroad, all countries, both sexes (number)",UIS,6,1,sum,,NA,4,66,20
 MOR.5t8.40510,MOR_PT_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Outbound student mobility ratio, all regions, both sexes (%)",UIS,6,1,median,,NA,4,66,18

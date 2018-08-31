@@ -689,7 +689,7 @@ format_wide <- function(df) {
                   val_status = ifelse(val_status == "A", "", tolower(val_status)),
                   year_diff = year - .gemrtables.pkg.env$ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
                   val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
-                                                    val_status == "m" ~ "\u2099",
+                                                    # val_status == "m" ~ "\u2099",
                                                     TRUE ~ ''),
                   year_diff_utf = dplyr::case_when(year_diff  ==  1 ~ "\u208A\u2081",
                                                     year_diff == -1 ~ "\u208B\u2081",
