@@ -48,8 +48,8 @@ aggregates <- function(df) {
   aggregates <- dplyr::bind_rows(world, regional, subregional, income, subincome) %>%
     dplyr::semi_join(.gemrtables.pkg.env$indicators, by = c("ind", "aggregation")) %>%
     dplyr::mutate(year = .gemrtables.pkg.env$ref_year) %>%
-    dplyr::filter(!(aggregation != 'w_mean' & pc_comp < pc_comp_cut) &
-                  !(aggregation == 'w_mean' & wt_share < pc_comp_cut)) %>%
+    dplyr::filter(!(aggregation != 'w_mean' & pc_comp < .gemrtables.pkg.env$pc_comp_cut2) &
+                  !(aggregation == 'w_mean' & wt_share < .gemrtables.pkg.env$pc_comp_cut2)) %>%
     dplyr::mutate(val_status = case_when(
       aggregation == 'sum' & (pc_comp < .gemrtables.pkg.env$pc_flag_cut | pop_share < 95) ~ 'E',
       aggregation != 'w_mean' & pc_comp < .gemrtables.pkg.env$pc_flag_cut ~ 'E',

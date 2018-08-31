@@ -28,9 +28,19 @@ if(isTRUE(exists(".gemrtables.pkg.env", mode="environment"))) {
 #'
 #' df <- gemrtables(region = "UIS.region", ref_year = 2016, export = FALSE, key = y, password = z)
 
-gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, key, password, pc_flag_cut = 66) {
+gemrtables <- function(
+  region = "SDG.region",
+  ref_year,
+  export = FALSE,
+  path,
+  key,
+  password,
+  pc_flag_cut = 66,
+  pc_comp_cut2 = 33
+  ) {
 
   .gemrtables.pkg.env$pc_flag_cut <- pc_flag_cut
+  .gemrtables.pkg.env$pc_comp_cut2 <- pc_comp_cut2
 
   #define regions and ref_year
 
