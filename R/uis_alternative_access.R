@@ -33,7 +33,7 @@ uis_extra_aggs <- function() {
 
   rsdmx::readSDMX(stringr::str_glue("http://data.uis.unesco.org/RestSDMX/sdmx.ashx/GetData/EDULIT_DS/\\
 {paste_sdmx(c('26637','20060','20062','20082','25053','20160','20162','20182'))}.\\
-{paste_sdmx(uis_altcodes$uis_loccodes$id)}/all?startTime={pkg.env$ref_year-4}&endTime={pkg.env$ref_year}")) %>%
+{paste_sdmx(uis_altcodes$uis_loccodes$id)}/all?startTime={.gemrtables.pkg.env$ref_year-4}&endTime={.gemrtables.pkg.env$ref_year}")) %>%
     as.data.frame %>%
     dplyr::left_join(uis_altcodes$uis_loccodes, by = c('LOCATION' = 'id')) %>%
     dplyr::select(ind = EDULIT_IND, year = obsTime, value = obsValue, val_status = OBS_STATUS, annex_name = label.en) %>%
