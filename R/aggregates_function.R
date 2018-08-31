@@ -53,7 +53,7 @@ aggregates <- function(df) {
     dplyr::mutate(val_status = case_when(
       aggregation == 'sum' & (pc_comp < .gemrtables.pkg.env$pc_flag_cut | pop_share < 95) ~ 'E',
       aggregation != 'w_mean' & pc_comp < .gemrtables.pkg.env$pc_flag_cut ~ 'E',
-      aggregation == 'w_mean' & pmax(wt_share, pop_share, na.rm = TRUE) < .gemrtables.pkg.env$pc_flag_cut ~ 'E',
+      aggregation == 'w_mean' & pmin(wt_share, pop_share, na.rm = TRUE) < .gemrtables.pkg.env$pc_flag_cut ~ 'E',
       TRUE ~ "A"
     )) %>%
     dplyr::filter(!is.na(annex_name) | annex_name != "")
