@@ -73,6 +73,7 @@ uis_clean <- function(df) {
     filter(year == max(year)) %>%
     ungroup
 
+
   clean2 <- clean1 %>%
     dplyr::inner_join(.gemrtables.pkg.env$indicators[, 1:2], by = "var_concat")
 
