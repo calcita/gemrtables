@@ -88,13 +88,34 @@ uis_clean <- function(df) {
     tidyr::gather(key = "ind", value = "value", -iso2c, -year, -val_status) %>%
     dplyr::mutate(value = ifelse(is.na(value), 0, value))
 
+  # More accurate calculation based on published net flow of int'l mobile students,
+  # but currently inbound rate is more available.
+  # inbound_stu_add <- clean1 %>%
+  #   dplyr::filter(var_concat %in% c(
+  #     "MENF_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+  #     "OE_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA"
+  #   )) %>%
+  #   dplyr::group_by(iso2c, year) %>%
+  #   dplyr::filter(n()==2) %>%
+  #   dplyr::summarise(
+  #     value = sum(value),
+  #     val_status = ifelse(any(val_status == "E"), "E", "A")) %>%
+  #   dplyr::mutate(ind = "IE.5t8.40510") %>%
+  #   dplyr::select(iso2c, year, ind, value, val_status) %>%
+  #   group_by(iso2c, ind) %>%
+  #   filter(year == max(year)) %>%
+  #   ungroup()
+
   inbound_stu <- clean1 %>%
-    dplyr::filter(var_concat %in% c("STU_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                             "MSEP_PT_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA")) %>%
+    dplyr::filter(var_concat %in% c(
+        "STU_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+        "MSEP_PT_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA"
+                             )) %>%
     dplyr::group_by(iso2c, year) %>%
     dplyr::filter(n()==2) %>%
-    dplyr::summarise(value = value[1] * (value[2]/100),
-              val_status = ifelse(val_status[1] == "E" | val_status[2] == "E", "E", "A")) %>%
+    dplyr::summarise(
+      value = value[1] * (value[2]/100),
+      val_status = ifelse(any(val_status == "E"), "E", "A")) %>%
     dplyr::mutate(ind = "IE.5t8.40510") %>%
     dplyr::select(iso2c, year, ind, value, val_status) %>%
     group_by(iso2c, ind) %>%

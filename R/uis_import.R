@@ -113,6 +113,7 @@ uis <- function() {
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/MOR+MSEP.PT.L5T8._T._T...INST_T...........W00.W00.?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #var 19 (unavailable in UIS API) - total tertiary enrolment needed to calculate
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/STU.PER.L5T8._T._T._T._T.INST_T...._T.........?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    # "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/MENF.PER.L5T8._T._T.._T.INST_T............W00.?format=sdmx-compact-2.1&startPeriod=2010&endPeriod=2020&subscription-key=",
     #var 20
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/OE.PER.L5T8._T._T.._T.INST_T............W00.?format=sdmx-compact-2.1&startPeriod=2010&endPeriod=2020&subscription-key=",
 
