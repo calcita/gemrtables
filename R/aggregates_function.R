@@ -50,8 +50,9 @@ aggregates <- function(df) {
     dplyr::filter(!(aggregation != 'w_mean' & pc_comp < pc_comp_cut) &
                   !(aggregation == 'w_mean' & wt_share < pc_comp_cut)) %>%
     dplyr::mutate(val_status = case_when(
-      aggregation == 'median' & pc_comp < 66 ~ 'E',
-      aggregation == 'wt_mean' & wt_share < 2/3 ~ 'E',
+      aggregation == 'sum' & pc_comp < 90 ~ 'E',
+      aggregation != 'w_mean' & pc_comp < .gemrtables.pkg.env$pc_flag_cut ~ 'E',
+      aggregation == 'w_mean' & wt_share < .gemrtables.pkg.env$pc_flag_cut ~ 'E',
       TRUE ~ "A"
     )) %>%
     dplyr::filter(!is.na(annex_name) | annex_name != "")
