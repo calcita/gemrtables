@@ -54,6 +54,6 @@ uis_extra_aggs <- function() {
            )) %>%
     dplyr::group_by(code, var_concat) %>%
     dplyr::filter(year == max(year)) %>%
-    dplyr::ungroup %>%
+    dplyr::ungroup() %>%
     dplyr::select(iso2c = code, var_concat, year, value, val_status)
 }
