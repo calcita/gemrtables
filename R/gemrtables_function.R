@@ -142,7 +142,7 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::filter(priority == min(priority)) %>%
     dplyr::left_join(weights_data[, -3], by = c("iso2c", "wt_var")) %>%
     dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 1, wt_value), entity = "country") %>%
-    dplyr::left_join(select(pop_data, -year), by = c('iso2c', 'wt_var')) %>%
+    dplyr::left_join(select(pop_data, -year), by = c('iso2c')) %>%
     ungroup()
 
   uis_aggregates_extra <- uis_extra_aggs()
