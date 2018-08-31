@@ -20,8 +20,8 @@ Europe,SDG_EUR,subregion,18,SDG.region
 Northern America,SDG_NAM,subregion,19,SDG.region
 High,WB_HIC,income_group,20,SDG.region
 Middle,WB_MIC,income_group,21,SDG.region
-Upper middle,WB_UMIC,income_subgroup,22,SDG.region
-Lower middle,WB_LMIC,income_subgroup,23,SDG.region
+Upper middle,WB_UMC,income_subgroup,22,SDG.region
+Lower middle,WB_LMC,income_subgroup,23,SDG.region
 Low,WB_LIC,income_group,24,SDG.region
 World,NA,world,1,GEMR.region
 Caucasus and Central Asia,NA,region,2,GEMR.region
@@ -54,6 +54,6 @@ South and West Asia,UIS_SAS_WAS,region,8,UIS.region
 Sub-Saharan Africa,UIS_SSA,region,9,UIS.region
 High,WB_HIC,income_group,10,UIS.region
 Middle,WB_MIC,income_group,11,UIS.region
-Upper middle,WB_UMIC,income_subgroup,12,UIS.region
-Lower middle,WB_LMIC,income_subgroup,13,UIS.region
+Upper middle,WB_UMC,income_subgroup,12,UIS.region
+Lower middle,WB_LMC,income_subgroup,13,UIS.region
 Low,WB_LIC,income_group,14,UIS.region
