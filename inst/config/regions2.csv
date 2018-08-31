@@ -1,0 +1,59 @@
+annex_name,code,entity,region_order,grouping
+World,SDG_WORLD,world,1,SDG.region
+Sub-Saharan Africa,SDG_SSA,region,2,SDG.region
+Northern Africa and Western Asia,SDG_NAFR_WEST_AS,region,3,SDG.region
+Northern Africa,SDG_NAFR,subregion,4,SDG.region
+Western Asia,SDG_WEST_AS,subregion,5,SDG.region
+Central and Southern Asia,SDG_CEN_SAS,region,6,SDG.region
+Central Asia,SDG_CAS,subregion,7,SDG.region
+Southern Asia,SDG_SAS,subregion,8,SDG.region
+Eastern and South-eastern Asia,SDG_EAS_SEAS,region,9,SDG.region
+Eastern Asia,SDG_EAS,subregion,10,SDG.region
+South-eastern Asia,SDG_SEAS,subregion,11,SDG.region
+Oceania,SDG_OC,region,12,SDG.region
+Latin America and the Caribbean,SDG_LAC,region,13,SDG.region
+Caribbean,NA,subregion,14,SDG.region
+Central America,NA,subregion,15,SDG.region
+South America,NA,subregion,16,SDG.region
+Europe and Northern America,SDG_EUR_NAM,region,17,SDG.region
+Europe,SDG_EUR,subregion,18,SDG.region
+Northern America,SDG_NAM,subregion,19,SDG.region
+High,WB_HIC,income_group,20,SDG.region
+Middle,WB_MIC,income_group,21,SDG.region
+Upper middle,WB_UMIC,income_subgroup,22,SDG.region
+Lower middle,WB_LMIC,income_subgroup,23,SDG.region
+Low,WB_LIC,income_group,24,SDG.region
+World,NA,world,1,GEMR.region
+Caucasus and Central Asia,NA,region,2,GEMR.region
+Eastern and South-eastern Asia,NA,region,3,GEMR.region
+Eastern Asia,NA,subregion,4,GEMR.region
+South-eastern Asia,NA,subregion,5,GEMR.region
+Europe and Northern America,NA,region,6,GEMR.region
+Latin America and the Caribbean,NA,region,7,GEMR.region
+Caribbean,NA,subregion,8,GEMR.region
+Latin America,NA,subregion,9,GEMR.region
+Northern Africa and Western Asia,NA,region,10,GEMR.region
+Northern Africa,NA,subregion,11,GEMR.region
+Western Asia,NA,subregion,12,GEMR.region
+Pacific,NA,region,13,GEMR.region
+Southern Asia,NA,region,14,GEMR.region
+Sub-Saharan Africa,NA,region,15,GEMR.region
+High,NA,income_group,16,GEMR.region
+Middle,NA,income_group,17,GEMR.region
+Upper middle,NA,income_subgroup,18,GEMR.region
+Lower middle,NA,income_subgroup,19,GEMR.region
+Low,NA,income_group,20,GEMR.region
+World,UIS_WORLD,world,1,UIS.region
+Arab States,UIS_ARAB,region,2,UIS.region
+Central Asia,UIS_CAS,region,3,UIS.region
+Central and Eastern Europe,UIS_CEN_EEUR,region,4,UIS.region
+East Asia and the Pacific,UIS_EAP,region,5,UIS.region
+Latin America and the Caribbean,UIS_LAC,region,6,UIS.region
+North America and Western Europe,UIS_NAM_WEUR,region,7,UIS.region
+South and West Asia,UIS_SAS_WAS,region,8,UIS.region
+Sub-Saharan Africa,UIS_SSA,region,9,UIS.region
+High,WB_HIC,income_group,10,UIS.region
+Middle,WB_MIC,income_group,11,UIS.region
+Upper middle,WB_UMIC,income_subgroup,12,UIS.region
+Lower middle,WB_LMIC,income_subgroup,13,UIS.region
+Low,WB_LIC,income_group,14,UIS.region

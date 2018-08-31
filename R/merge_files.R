@@ -8,7 +8,8 @@
 #'@family import/clean
 
 inds <- function() {
-  read.csv("https://drive.google.com/uc?export=download&id=1_VGBQ3x4DDrcmEO_5192oPP4xjOuz12I", stringsAsFactors = FALSE) %>%
+  read.csv(system.file("config", "indicators.csv", package = "gemrtables"), stringsAsFactors = FALSE) %>%
+  # read.csv("https://drive.google.com/uc?export=download&id=1_VGBQ3x4DDrcmEO_5192oPP4xjOuz12I", stringsAsFactors = FALSE) %>%
     dplyr::mutate(var_concat = ifelse(var_concat == "", NA, var_concat)) %>%
     dplyr::as_tibble()
 }
@@ -22,7 +23,8 @@ inds <- function() {
 #'@family import/clean
 #'
 region_groups <- function() {
-  read.csv("https://drive.google.com/uc?export=download&id=13-dMaPNS6-DwzMTxhIR4OKP2zrm5s_dx", stringsAsFactors = FALSE) %>%
+  read.csv(system.file("config", "regions.csv", package = "gemrtables"), stringsAsFactors = FALSE) %>%
+  # read.csv("https://drive.google.com/uc?export=download&id=13-dMaPNS6-DwzMTxhIR4OKP2zrm5s_dx", stringsAsFactors = FALSE) %>%
     dplyr::mutate(iso2c = ifelse(annex_name == "Namibia", "NA", iso2c))
 }
 
@@ -33,7 +35,8 @@ region_groups <- function() {
 #'@family import/clean
 #'
 region_groups2 <- function() {
-  read.csv("https://drive.google.com/uc?export=download&id=1Izklg_r1eNPN-ECLGkagRnp5u9K2EfYt", stringsAsFactors = FALSE)
+  read.csv(system.file("config", "regions2.csv", package = "gemrtables"), stringsAsFactors = FALSE)
+  # read.csv("https://drive.google.com/uc?export=download&id=1Izklg_r1eNPN-ECLGkagRnp5u9K2EfYt", stringsAsFactors = FALSE)
 }
 
 
