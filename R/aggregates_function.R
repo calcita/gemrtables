@@ -35,8 +35,8 @@ compute_aggregate <- function(df, region, entity) {
 
 aggregates <- function(df) {
 
-  region <- as.character(pkg.env$region)
-  subregion <- as.character(pkg.env$subregion)
+  region <- as.character(.gemrtables.pkg.env$region)
+  subregion <- as.character(.gemrtables.pkg.env$subregion)
 
   world <- compute_aggregate(df, region = "World", entity = "world")
   regional <- compute_aggregate(df, region = region, entity = "region")
@@ -45,8 +45,8 @@ aggregates <- function(df) {
   subincome <- compute_aggregate(df, region = "income_subgroup", entity = "income_subgroup")
 
   aggregates <- dplyr::bind_rows(world, regional, subregional, income, subincome) %>%
-    dplyr::semi_join(pkg.env$indicators, by = c("ind", "aggregation")) %>%
-    dplyr::mutate(year = pkg.env$ref_year) %>%
+    dplyr::semi_join(.gemrtables.pkg.env$indicators, by = c("ind", "aggregation")) %>%
+    dplyr::mutate(year = .gemrtables.pkg.env$ref_year) %>%
     dplyr::filter(!(aggregation != 'w_mean' & pc_comp < pc_comp_cut) &
                   !(aggregation == 'w_mean' & wt_share < pc_comp_cut)) %>%
     dplyr::mutate(val_status = case_when(

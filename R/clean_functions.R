@@ -68,13 +68,13 @@ uis_clean <- function(df) {
     dplyr::filter(!is.na(value)) %>%
     unique()
 
-  pkg.env$uis_comp <- clean1 %>%
+  .gemrtables.pkg.env$uis_comp <- clean1 %>%
     group_by(iso2c, var_concat) %>%
     filter(year == max(year)) %>%
     ungroup
 
   clean2 <- clean1 %>%
-    dplyr::inner_join(pkg.env$indicators[, 1:2], by = "var_concat")
+    dplyr::inner_join(.gemrtables.pkg.env$indicators[, 1:2], by = "var_concat")
 
   admin_assessment <- clean1 %>%
     dplyr::filter(stringr::str_detect(var_concat, "ADMIN_NB")) %>%
@@ -192,7 +192,7 @@ cedar_clean <- function(df) {
                            indicator == "child_chores_more_28_12_14" & sex_id == 1 ~ "chores.28plus.12t14.f",
                            indicator == "child_chores_more_28_12_14" & sex_id == 2 ~ "chores.28plus.12t14.m"),
                   value = ifelse(stringr::str_detect(ind, stringr::regex("CR\\.")), value*100, value)) %>%
-    dplyr::inner_join(pkg.env$regions, by = c("country_code" = "iso3c")) %>%
+    dplyr::inner_join(.gemrtables.pkg.env$regions, by = c("country_code" = "iso3c")) %>%
     dplyr::filter(!is.na(ind))
 
   parity_indices <- list(df = list("clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1"),
@@ -302,7 +302,7 @@ eurostat_clean <- function(df) {
 
 oecd_clean <- function(df) {
 
-  pkg.env$schol_unspec <- df[[1]] %>%
+  .gemrtables.pkg.env$schol_unspec <- df[[1]] %>%
     dplyr::mutate(ind = dplyr::case_when(AIDTYPE == "E02" ~ "odaflow.imputecost",
                                          AIDTYPE == "E01"  ~ "odaflow.volumescholarship"),
                   RECIPIENT = as.numeric(RECIPIENT)) %>%
@@ -314,7 +314,7 @@ oecd_clean <- function(df) {
     dplyr::mutate(ind = dplyr::case_when(AIDTYPE == "E02" ~ "odaflow.imputecost",
                                          AIDTYPE == "E01"  ~ "odaflow.volumescholarship"),
                   RECIPIENT = as.numeric(RECIPIENT)) %>%
-    dplyr::left_join(pkg.env$regions, by = c("RECIPIENT" = "oecd.crs.recipientcode")) %>%
+    dplyr::left_join(.gemrtables.pkg.env$regions, by = c("RECIPIENT" = "oecd.crs.recipientcode")) %>%
     dplyr::select(iso2c, year = REFERENCEPERIOD, ind, value = obsValue) %>%
     dplyr::mutate(value = value*1000000)
 
@@ -323,13 +323,13 @@ oecd_clean <- function(df) {
                                          ISC11 == "L1" ~ "sal.rel.1",
                                          ISC11 == "L2_C4" ~ "sal.rel.2",
                                          ISC11 == "L3_C4" ~ "sal.rel.3")) %>%
-    dplyr::inner_join(pkg.env$regions, by = c("COUNTRY" = "iso3c")) %>%
+    dplyr::inner_join(.gemrtables.pkg.env$regions, by = c("COUNTRY" = "iso3c")) %>%
     dplyr::select(iso2c, year = YEAR, ind, value = obsValue)
 
   sal2 <- df[[3]] %>%
     dplyr::mutate(ind = dplyr::case_when(ISC11_LEVEL == "L2" ~ "teachers.2",
                                          ISC11_LEVEL == "L3" ~ "teachers.3")) %>%
-    dplyr::inner_join(pkg.env$regions, by = c("COUNTRY" = "iso3c")) %>%
+    dplyr::inner_join(.gemrtables.pkg.env$regions, by = c("COUNTRY" = "iso3c")) %>%
     dplyr::select(iso2c, year = obsTime, ind, value = obsValue) %>%
     dplyr::bind_rows(sal1)  %>%
     tidyr::spread(key = ind, value = value) %>%
@@ -595,7 +595,7 @@ weights_clean <- function(df) {
   cleaned <-
     clean3 %>%
     dplyr::mutate(year = as.numeric(year)) %>%
-    dplyr::filter(dplyr::between(year, 2006, pkg.env$ref_year+1)) %>%
+    dplyr::filter(dplyr::between(year, 2006, .gemrtables.pkg.env$ref_year+1)) %>%
     tidyr::complete(tidyr::nesting(iso2c, wt_var), year) %>%
     # Approx insists on at least two values to interpolate;
     # since anyhow we want the interpolation to hold the latest value constant,
@@ -606,11 +606,11 @@ weights_clean <- function(df) {
         dplyr::group_by(iso2c, wt_var) %>%
         dplyr::filter(year == max(year)) %>%
         dplyr::ungroup() %>%
-        dplyr::mutate(year = pkg.env$ref_year + 2)
+        dplyr::mutate(year = .gemrtables.pkg.env$ref_year + 2)
     )} %>%
     dplyr::group_by(iso2c, wt_var) %>% #na.omit %>% filter(n() == 1)
     dplyr::mutate(wt_value = stats::approx(year, wt_value, xout = year, rule = 2)$y) %>%
-    dplyr::filter(year == pkg.env$ref_year) %>%
+    dplyr::filter(year == .gemrtables.pkg.env$ref_year) %>%
     dplyr::ungroup()
 }
 
@@ -665,7 +665,7 @@ format_wide <- function(df) {
     dplyr::ungroup() %>%
     dplyr::mutate(
                   val_status = ifelse(val_status == "A", "", tolower(val_status)),
-                  year_diff = year - pkg.env$ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
+                  year_diff = year - .gemrtables.pkg.env$ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
                   val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
                                                     val_status == "m" ~ "\u2099",
                                                     TRUE ~ ''),
@@ -678,14 +678,14 @@ format_wide <- function(df) {
                   val_utf = ifelse(value_str == 'NA' | is.na(value_str),
                                     "\u2026",
                                     paste0(stringr::str_trim(value_str), year_diff_utf, val_status_utf, sep = ""))) %>%
-    dplyr::select(sheet, annex_name, !!pkg.env$region, ind, val_utf, entity) %>%
+    dplyr::select(sheet, annex_name, !!.gemrtables.pkg.env$region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),
                   sheet = paste("sheet", sheet),
                   val_utf = stringr::str_replace_all(val_utf, "NA", ""),
-                  regionx = !!pkg.env$region,
+                  regionx = !!.gemrtables.pkg.env$region,
                   regionx = ifelse(is_aggregate == "aggregate", annex_name, regionx)) %>%
-    dplyr::left_join(pkg.env$regions2[, c(1,4)], by = c("regionx" = "annex_name")) %>%
+    dplyr::left_join(.gemrtables.pkg.env$regions2[, c(1,4)], by = c("regionx" = "annex_name")) %>%
     split(list(.$is_aggregate, .$sheet)) %>%
     purrr::map(tidyr::spread, key=ind, value = val_utf) %>%
     purrr::map(function(.) dplyr::mutate(., annex_name = ifelse(entity == "subregion" | entity == "income_subgroup", paste("  ", annex_name), annex_name))) %>%
@@ -695,6 +695,6 @@ format_wide <- function(df) {
     purrr::map(function(.) dplyr::arrange(., region_order, annex_name)) %>%
     purrr::map(mutate_all, as.character) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
-    purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(pkg.env$region)]$V1][!.N]) %>%
-    purrr::map(function(.) dplyr::select(., -sheet, -is_aggregate, -entity, -!!pkg.env$region, - regionx, -region_order))
+    purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(.gemrtables.pkg.env$region)]$V1][!.N]) %>%
+    purrr::map(function(.) dplyr::select(., -sheet, -is_aggregate, -entity, -!!.gemrtables.pkg.env$region, - regionx, -region_order))
 }

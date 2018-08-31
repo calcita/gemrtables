@@ -1,3 +1,9 @@
+if(isTRUE(exists(".gemrtables.pkg.env", mode="environment"))) {
+  .gemrtables.pkg.env.SAVED <- .gemrtables.pkg.env
+  print("Existing environment '.gemrtables.pkg.env' saved as '.gemrtables.pkg.env.SAVED'!")
+}
+.gemrtables.pkg.env <- new.env(parent = emptyenv())
+
 #' gemrtables
 #'
 #' \code{gemrtables} is the main function to generate the UNESCO Global
@@ -24,21 +30,18 @@
 
 gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, key, password) {
 
-  if(!isTRUE(exists("pkg.env", mode="environment"))) {
-  pkg.env <<- new.env(parent = emptyenv())
-  }
   #define regions and ref_year
 
-  pkg.env$ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
+  .gemrtables.pkg.env$ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
 
-  pkg.env$region = as.name(region)
+  .gemrtables.pkg.env$region = as.name(region)
 
   if(region == "SDG.region") {
-    pkg.env$subregion <- as.name("SDG.subregion")
+    .gemrtables.pkg.env$subregion <- as.name("SDG.subregion")
   }else if(region == "UIS.region") {
-    pkg.env$subregion <- as.name("UIS.subregion")
+    .gemrtables.pkg.env$subregion <- as.name("UIS.subregion")
   }else if(region == "GEMR.region") {
-    pkg.env$subregion <- as.name("GEMR.subregion")
+    .gemrtables.pkg.env$subregion <- as.name("GEMR.subregion")
   }
 
 
@@ -50,13 +53,13 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   if (missing(key)) {
     stop("Key for UIS API is missing")
   } else {
-    pkg.env$key <- as.character(key)
+    .gemrtables.pkg.env$key <- as.character(key)
   }
 
   if (missing(password)) {
     stop("Password for cedar sql database is missing")
   } else {
-    pkg.env$password <- as.character(password)
+    .gemrtables.pkg.env$password <- as.character(password)
   }
 
   if (missing(path) & isTRUE(export)) {
@@ -66,13 +69,13 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   }
 
   #import / generate other merge files
-  pkg.env$indicators <- inds()
-  pkg.env$regions <- region_groups()
-  indicators_unique <- pkg.env$indicators %>%
+  .gemrtables.pkg.env$indicators <- inds()
+  .gemrtables.pkg.env$regions <- region_groups()
+  indicators_unique <- .gemrtables.pkg.env$indicators %>%
     dplyr::select(-source, -var_concat, -priority, -ind_lab) %>%
     unique()
-  pkg.env$regions2 <- region_groups2() %>%
-    dplyr::filter(grouping == as.character(pkg.env$region))
+  .gemrtables.pkg.env$regions2 <- region_groups2() %>%
+    dplyr::filter(grouping == as.character(.gemrtables.pkg.env$region))
 
   #load/ cache for imported/cleaned country data and weights
 
@@ -116,16 +119,16 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
   #clean country data and export statistical tables
 
   country_data1 <- country_data %>%
-    dplyr::right_join(pkg.env$regions, by = "iso2c") %>%
-    dplyr::left_join(pkg.env$indicators, by = c("ind", "source")) %>%
-    dplyr::filter(year >= pkg.env$ref_year - year_cut)
+    dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
+    dplyr::left_join(.gemrtables.pkg.env$indicators, by = c("ind", "source")) %>%
+    dplyr::filter(year >= .gemrtables.pkg.env$ref_year - year_cut)
 
-  unmatched <- dplyr::anti_join(pkg.env$indicators, country_data1, by = c("ind", "source")) %>%
+  unmatched <- dplyr::anti_join(.gemrtables.pkg.env$indicators, country_data1, by = c("ind", "source")) %>%
     dplyr::select(ind, source, sheet, position)
 
   country_data2 <- country_data1 %>%
-    dplyr::select(iso2c, annex_name, World, !!pkg.env$region, !!pkg.env$subregion, income_group, income_subgroup, year, ind, value, val_status, source) %>%
-    dplyr::right_join(pkg.env$indicators, by = c("ind", "source")) %>%
+    dplyr::select(iso2c, annex_name, World, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, income_group, income_subgroup, year, ind, value, val_status, source) %>%
+    dplyr::right_join(.gemrtables.pkg.env$indicators, by = c("ind", "source")) %>%
     dplyr::group_by(iso2c, ind, source) %>%
     dplyr::filter(year == max(year)) %>%
     dplyr::ungroup() %>%
@@ -135,10 +138,10 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 1, wt_value), entity = "country") %>%
     ungroup()
 
-  uis_aggregates <- pkg.env$uis_comp %>%
-    dplyr::inner_join(pkg.env$indicators, by = "var_concat") %>%
+  uis_aggregates <- .gemrtables.pkg.env$uis_comp %>%
+    dplyr::inner_join(.gemrtables.pkg.env$indicators, by = "var_concat") %>%
     dplyr::filter(aggregation %in% c("w_mean", "sum") & year >= (ref_year - 4)) %>%
-    dplyr::inner_join(pkg.env$regions2[, 1:3], by = c("iso2c" = "code")) %>%
+    dplyr::inner_join(.gemrtables.pkg.env$regions2[, 1:3], by = c("iso2c" = "code")) %>%
     dplyr::select(-iso2c)
 
   computed_aggregates <- country_data2 %>%
@@ -146,15 +149,15 @@ gemrtables <- function(region = "SDG.region", ref_year, export = FALSE, path, ke
     dplyr::filter(!is.na(annex_name)) %>%
     dplyr::inner_join(indicators_unique, by = c("ind", "aggregation", "pc_comp_cut")) %>%
     dplyr::anti_join(uis_aggregates, by = c("annex_name", "ind")) %>%
-    dplyr::mutate(value = dplyr::case_when(annex_name == "World" & ind == "odaflow.volumescholarship" ~ value + pkg.env$schol_unspec[[1,2]],
-                                           annex_name == "World" & ind == "odaflow.imputecost" ~ value + pkg.env$schol_unspec[[2,2]],
+    dplyr::mutate(value = dplyr::case_when(annex_name == "World" & ind == "odaflow.volumescholarship" ~ value + .gemrtables.pkg.env$schol_unspec[[1,2]],
+                                           annex_name == "World" & ind == "odaflow.imputecost" ~ value + .gemrtables.pkg.env$schol_unspec[[2,2]],
                                            TRUE ~ value))
 
   long_data <<- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
-    tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!pkg.env$region, !!pkg.env$subregion, entity),
+    tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
     dplyr::mutate(value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == "country" & is.na(value), 0, value)) %>%
-    dplyr::arrange(sheet, position, !!pkg.env$region, entity, annex_name)
+    dplyr::arrange(sheet, position, !!.gemrtables.pkg.env$region, entity, annex_name)
 
   wide_data <- long_data %>%
     format_wide()

@@ -97,13 +97,13 @@ read_urls <- function(urls, key = NULL, bind = TRUE) {
 read_cedar <- function(sc, level = 1, table, ind, password) {
 
   if(missing(password)) {
-    password <- pkg.env$key
+    password <- .gemrtables.pkg.env$key
   }
 
   cedar_con <- RMariaDB::dbConnect(RMariaDB::MariaDB(), host = "77.104.134.109",
                                    dbname = "cedardat_cedar",
                                    port = "3306",
-                                   user = "cedardat_user", password = pkg.env$password)
+                                   user = "cedardat_user", password = .gemrtables.pkg.env$password)
 
   sc <- dplyr::tbl(cedar_con, sc)
   dims <- colnames(sc)

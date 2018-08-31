@@ -74,7 +74,7 @@ weights <- function() {
        "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/ILLPOP.PER..._T.Y_GE15+Y15T24...............?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=",
        "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/TEACH.PER.L1+L02+L2_3+L5T8._T._T._T..INST_T.............?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=",
        "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/SAP.PER._T.._T.Y12T14...............?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=") %>%
-    read_urls(key = pkg.env$key)
+    read_urls(key = .gemrtables.pkg.env$key)
 
   unpd <-  read_urls("http://data.un.org/ws/rest/data/DF_UNDATA_WPP/SP_POP_TOTL.A.Y_LT5+Y5T10+Y10T14._T.....?startPeriod=2005&endPeriod=2017")
 
