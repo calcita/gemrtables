@@ -68,10 +68,11 @@ uis_clean <- function(df) {
     dplyr::filter(!is.na(value)) %>%
     unique()
 
-  .gemrtables.pkg.env$uis_comp <- clean1 %>%
+  clean1 %>%
     group_by(iso2c, var_concat) %>%
     filter(year == max(year)) %>%
-    ungroup
+    ungroup %>%
+    R.cache::saveCache(key=list("uis_comp"), comment="uis_comp")
 
 
   clean2 <- clean1 %>%

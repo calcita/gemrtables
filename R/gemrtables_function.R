@@ -111,17 +111,18 @@ gemrtables <- function(
     }
     # 2. If not available, generate it.
     cat(paste("Generating", df, "from scratch...\n", sep = " "))
-    if(df == "country_data") {
+    if(df == "country_data" | df == "uis_comp") {
       data <- c_data()
     }
     if(df == "weights_data") {
       data <- weights()
     }
-    R.cache::saveCache(data, key=key, comment= df)
+    R.cache::saveCache(data, key=key, comment=df)
     data;
   }
 
   country_data <- load_cache_data("country_data")
+  uis_comp <- load_cache_data("uis_comp")
   weights_data <-
     load_cache_data("weights_data") %>%
     dplyr::group_by(wt_var) %>%
@@ -157,7 +158,7 @@ gemrtables <- function(
 
   uis_aggregates_extra <- uis_extra_aggs()
 
-  uis_aggregates <- .gemrtables.pkg.env$uis_comp %>%
+  uis_aggregates <- uis_comp %>%
     dplyr::anti_join(uis_aggregates_extra, by = c('iso2c', 'var_concat', 'year')) %>%
     dplyr::bind_rows(uis_aggregates_extra) %>%
     dplyr::inner_join(.gemrtables.pkg.env$indicators, by = "var_concat") %>%
