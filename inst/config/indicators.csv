@@ -12,9 +12,9 @@ SAP.02,SAP_PER_L02__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W
 SAP.1,SAP_PER_L1__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for primary education, both sexes (number)",UIS,1,1,sum,,NA,4,33,11
 SAP.2t3,SAP_PER_L2_3__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for secondary education, both sexes (number)",UIS,1,1,sum,,NA,4,33,12
 SAP.5t8,SAP_PER_L5T8__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for secondary education, both sexes (number)",UIS,1,1,sum,,NA,4,33,13
-stu.per.2t3,STU_PER_L2_3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in pre-primary education, all programmes, both sexes (number)",UIS,1,1,sum,,NA,4,33,16
+stu.per.2t3,STU_PER_L2_3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in secondary education, all programmes, both sexes (number)",UIS,1,1,sum,,NA,4,33,16
 stu.per.1,STU_PER_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in primary education, all programmes, both sexes (number)",UIS,1,1,sum,,NA,4,33,15
-stu.per.02,STU_PER_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in secondary education, all programmes, both sexes (number)",UIS,1,1,sum,,NA,4,33,14
+stu.per.02,STU_PER_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in pre-primary education, all programmes, both sexes (number)",UIS,1,1,sum,,NA,4,33,14
 stu.per.5t8,STU_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in tertiary education, all programmes, both sexes (number)",UIS,1,1,sum,,NA,4,33,17
 XGDP.FSgov.FFntr,EDU_EXP_GDP__T__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure on education as % of GDP (%),UIS,1,1,median,,NA,4,33,18
 XGovExp.IMF,EDU_EXP_GOV_EXP_T__T__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV__T,Total Expenditure on education as % of total government expenditure (%),UIS,1,1,median,,NA,4,33,19

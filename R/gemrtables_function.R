@@ -31,7 +31,7 @@ if(isTRUE(exists(".gemrtables.pkg.env", mode="environment"))) {
 gemrtables <- function(
   region = "SDG.region",
   ref_year,
-  export = FALSE,
+  export,
   path,
   key,
   password,
@@ -139,7 +139,7 @@ gemrtables <- function(
 
   weights_data <-
     load_cache_data("weights_data") %>%
-    dplyr::left_join(select(.gemrtables.pkg.env$regions, iso3c, iso2c, World, SDG.region, SDG.subregion, income_group, income_subgroup)) %>%
+    dplyr::left_join(select(.gemrtables.pkg.env$regions, iso3c, iso2c, World, SDG.region, SDG.subregion, income_group, income_subgroup), by = 'iso2c') %>%
     tidyr::gather(wt_region, group, World:income_subgroup) %>%
     dplyr::filter(!stringr::str_detect(ind, 'odaflow') | iso3c %in% dac_recipients$iso3c) %>%
     dplyr::select(-iso3c) %>%
@@ -174,7 +174,7 @@ gemrtables <- function(
     dplyr::group_by(iso2c, ind) %>%
     dplyr::filter(priority == min(priority)) %>%
     # dplyr::left_join(weights_data[, -3], by = c("iso2c", "wt_var")) %>%
-    # dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 1, wt_value), entity = "country") %>%
+    dplyr::mutate(entity = "country") %>%
     # dplyr::left_join(select(pop_data, -year), by = c('iso2c')) %>%
     ungroup()
 
@@ -188,13 +188,18 @@ gemrtables <- function(
     dplyr::inner_join(.gemrtables.pkg.env$regions2[, 1:3], by = c("iso2c" = "code")) %>%
     dplyr::select(-iso2c)
 
+  load(file = "C:/Users/a_mc-william/Downloads/schol_unspec.rda")
+
+  .gemrtables.pkg.env$schol_unspec <- schol_unspec
+
+
   computed_aggregates <- country_data2 %>%
     aggregates() %>%
     dplyr::filter(!is.na(annex_name)) %>%
     dplyr::inner_join(indicators_unique, by = c("ind", "aggregation", "pc_comp_cut")) %>%
     dplyr::anti_join(uis_aggregates, by = c("annex_name", "ind")) %>%
-    dplyr::mutate(value = dplyr::case_when(annex_name == "World" & ind == "odaflow.volumescholarship" ~ value + .gemrtables.pkg.env$schol_unspec[[1,2]],
-                                           annex_name == "World" & ind == "odaflow.imputecost" ~ value + .gemrtables.pkg.env$schol_unspec[[2,2]],
+    dplyr::mutate(value = dplyr::case_when(annex_name == "World" & ind == "odaflow.volumescholarship" ~ value + .gemrtables.pkg.env$schol_unspec[[2,2]],
+                                           annex_name == "World" & ind == "odaflow.imputecost" ~ value + .gemrtables.pkg.env$schol_unspec[[1,2]],
                                            TRUE ~ value))
 
   long_data <<- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
