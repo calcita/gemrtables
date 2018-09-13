@@ -134,10 +134,15 @@ gemrtables <- function(
   #   is.null(.gemrtables.pkg.env$uis_comp),
   #   FALSE)) {clearCache(prompt = FALSE)}
 
+  dac_recipients <- read.csv(system.file("config", "DAC_recipients.csv", package = "gemrtables"),
+                             stringsAsFactors = FALSE) %>% na.omit
+
   weights_data <-
     load_cache_data("weights_data") %>%
-    dplyr::left_join(select(.gemrtables.pkg.env$regions, iso2c, World, SDG.region, SDG.subregion, income_group, income_subgroup), by = "iso2c") %>%
+    dplyr::left_join(select(.gemrtables.pkg.env$regions, iso3c, iso2c, World, SDG.region, SDG.subregion, income_group, income_subgroup), by = 'iso2c') %>%
     tidyr::gather(wt_region, group, World:income_subgroup) %>%
+    dplyr::filter(!stringr::str_detect(ind, 'odaflow') | iso3c %in% dac_recipients$iso3c) %>%
+    dplyr::select(-iso3c) %>%
     dplyr::group_by(wt_var, wt_region, group) %>%
     dplyr::mutate(wt_total = sum(wt_value, na.rm = TRUE)) %>%
     dplyr::ungroup()
