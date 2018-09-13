@@ -682,7 +682,7 @@ format_wide <- function(df) {
         ifelse(stringr::str_detect(ind, "bully"), c('Low', 'Medium', 'High')[value],
         ifelse(stringr::str_detect(ind, "esd"), c('None', 'Low', 'Medium', 'High')[value],
         ifelse(stringr::str_detect(ind, "attack"), c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
-        ifelse(stringr::str_detect(ind, "admi"), c('No', 'Yes')[value + 1], value_str)
+        ifelse(stringr::str_detect(ind, "admi"), c('\u2212', '\u002B')[value + 1], value_str)
       ))))) %>%
     # dplyr::select(entity, value, val_status, ind, value_str) %>%
     dplyr::ungroup() %>%
