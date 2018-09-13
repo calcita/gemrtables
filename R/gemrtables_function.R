@@ -141,7 +141,7 @@ gemrtables <- function(
     load_cache_data("weights_data") %>%
     dplyr::left_join(select(.gemrtables.pkg.env$regions, iso3c, iso2c, World, SDG.region, SDG.subregion, income_group, income_subgroup), by = 'iso2c') %>%
     tidyr::gather(wt_region, group, World:income_subgroup) %>%
-    dplyr::filter(!stringr::str_detect(ind, 'odaflow') | iso3c %in% dac_recipients$iso3c) %>%
+   #dplyr::filter(!stringr::str_detect(ind, 'odaflow') | iso3c %in% dac_recipients$iso3c) %>%
     dplyr::select(-iso3c) %>%
     dplyr::group_by(wt_var, wt_region, group) %>%
     dplyr::mutate(wt_total = sum(wt_value, na.rm = TRUE)) %>%
