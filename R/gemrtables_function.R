@@ -183,19 +183,14 @@ gemrtables <- function(
     dplyr::inner_join(.gemrtables.pkg.env$regions2[, 1:3], by = c("iso2c" = "code")) %>%
     dplyr::select(-iso2c)
 
-  load(file = "C:/Users/a_mc-william/Downloads/schol_unspec.rda")
-
-  .gemrtables.pkg.env$schol_unspec <- schol_unspec
-
-
-  computed_aggregates <- country_data2 %>%
+    computed_aggregates <- country_data2 %>%
     aggregates() %>%
     dplyr::filter(!is.na(annex_name)) %>%
     dplyr::inner_join(indicators_unique, by = c("ind", "aggregation", "pc_comp_cut")) %>%
-    dplyr::anti_join(uis_aggregates, by = c("annex_name", "ind")) %>%
-    dplyr::mutate(value = dplyr::case_when(annex_name == "World" & ind == "odaflow.volumescholarship" ~ value + .gemrtables.pkg.env$schol_unspec[[2,2]],
-                                           annex_name == "World" & ind == "odaflow.imputecost" ~ value + .gemrtables.pkg.env$schol_unspec[[1,2]],
-                                           TRUE ~ value))
+    dplyr::anti_join(uis_aggregates, by = c("annex_name", "ind")) #%>%
+   # dplyr::mutate(value = dplyr::case_when(annex_name == "World" & ind == "odaflow.volumescholarship" ~ value + .gemrtables.pkg.env$schol_unspec[[2,2]],
+                                           #annex_name == "World" & ind == "odaflow.imputecost" ~ value + .gemrtables.pkg.env$schol_unspec[[1,2]],
+                                           #TRUE ~ value))
 
   long_data <<- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, entity),

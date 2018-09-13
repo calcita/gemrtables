@@ -23,7 +23,7 @@ other <- function() {
     read_urls() %>%
     eurostat_clean()
 
-  oecd_data <- list("https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/CRS1/20005..11420.100.100.D.112.E02+E01/all?startTime=2016&endTime=2050",
+  oecd_data <- list("https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/CRS1/20005..1000.100.100.D.112.E01+E02/all?startTime=2016&endTime=2050",
                     "https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/EAG_TS_ACT/..L0+L1+L2_C4+L3_C4.Y25T64.T.RATIO_ACTL_TER/all?",
                     "https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/EDU_PERS_INST/.T.INST_T.T.L2+L3.T.TEACH.PER/all?startTime=2010&endTime=2050") %>%
     read_urls(bind = FALSE) %>%
