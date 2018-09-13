@@ -11,11 +11,17 @@ agg_preprocess <- function(df) {
 
 compute_aggregate <- function(df, region, entity) {
 
+  wt <- .gemrtables.pkg.env$weights_data %>%
+    filter(wt_region == region) %>%
+    select(-wt_region) %>%
+    identity
+
   region <- as.name(region)
   entity <- as.character(entity)
 
   computed <- df %>%
     agg_preprocess() %>%
+    dplyr::left_join(wt, by = c('iso2c', 'wt_var')) %>%
     dplyr::group_by(!!region) %>%
     dplyr::mutate(count1 = n_distinct(iso2c)) %>%
     dplyr::ungroup() %>%

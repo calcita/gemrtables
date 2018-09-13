@@ -111,9 +111,15 @@ gemrtables <- function(
     }
     # 2. If not available, generate it.
     cat(paste("Generating", df, "from scratch...\n", sep = " "))
-    if(df == "country_data" | df == "uis_comp") {
+    if(df == "country_data") {
       data <- c_data()
     }
+    # if(df == "uis_comp") {
+    #   uis()
+    # }
+    # if(df == "schol_unspec") {
+    #   other()
+    # }
     if(df == "weights_data") {
       data <- weights()
     }
@@ -123,15 +129,26 @@ gemrtables <- function(
 
   country_data <- load_cache_data("country_data")
   uis_comp <- load_cache_data("uis_comp")
+  # if (any(
+  #   # is.null(.gemrtables.pkg.env$schol_unspec),
+  #   is.null(.gemrtables.pkg.env$uis_comp),
+  #   FALSE)) {clearCache(prompt = FALSE)}
+
   weights_data <-
     load_cache_data("weights_data") %>%
-    dplyr::group_by(wt_var) %>%
+    dplyr::left_join(select(.gemrtables.pkg.env$regions, iso2c, World, SDG.region, SDG.subregion, income_group, income_subgroup)) %>%
+    tidyr::gather(wt_region, group, World:income_subgroup) %>%
+    dplyr::group_by(wt_var, wt_region, group) %>%
     dplyr::mutate(wt_total = sum(wt_value, na.rm = TRUE)) %>%
     dplyr::ungroup()
   pop_data <-
     weights_data %>%
     filter(wt_var == '_T') %>%
-    select(iso2c, year, pop = wt_value, pop_total = wt_total)
+    select(iso2c, year, wt_region, group, pop = wt_value, pop_total = wt_total)
+  .gemrtables.pkg.env$weights_data <-
+    weights_data %>%
+    dplyr::left_join(select(pop_data, -year), by = c('iso2c', 'wt_region', 'group')) %>%
+    dplyr::select(-year)
 
   #clean country data and export statistical tables
 
@@ -151,12 +168,12 @@ gemrtables <- function(
     dplyr::ungroup() %>%
     dplyr::group_by(iso2c, ind) %>%
     dplyr::filter(priority == min(priority)) %>%
-    dplyr::left_join(weights_data[, -3], by = c("iso2c", "wt_var")) %>%
-    dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 1, wt_value), entity = "country") %>%
-    dplyr::left_join(select(pop_data, -year), by = c('iso2c')) %>%
+    # dplyr::left_join(weights_data[, -3], by = c("iso2c", "wt_var")) %>%
+    # dplyr::mutate(wt_value = ifelse(aggregation != "w_mean", 1, wt_value), entity = "country") %>%
+    # dplyr::left_join(select(pop_data, -year), by = c('iso2c')) %>%
     ungroup()
 
-  uis_aggregates_extra <- uis_extra_aggs()
+  uis_aggregates_extra <- R.cache::evalWithMemoization(uis_extra_aggs())
 
   uis_aggregates <- uis_comp %>%
     dplyr::anti_join(uis_aggregates_extra, by = c('iso2c', 'var_concat', 'year')) %>%
