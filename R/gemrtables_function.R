@@ -1,8 +1,8 @@
-if(isTRUE(exists(".gemrtables.pkg.env", mode="environment"))) {
-  .gemrtables.pkg.env.SAVED <- .gemrtables.pkg.env
-  print("Existing environment '.gemrtables.pkg.env' saved as '.gemrtables.pkg.env.SAVED'!")
-}
-.gemrtables.pkg.env <- new.env(parent = emptyenv())
+#if(isTRUE(exists(".gemrtables.pkg.env", mode="environment"))) {
+#  .gemrtables.pkg.env.SAVED <- .gemrtables.pkg.env
+#  print("Existing environment '.gemrtables.pkg.env' saved as '.gemrtables.pkg.env.SAVED'!")
+#}
+
 
 #' gemrtables
 #'
@@ -21,6 +21,7 @@ if(isTRUE(exists(".gemrtables.pkg.env", mode="environment"))) {
 #'   file.
 #' @param key UIS api subcription key.
 #' @param password password to cedar database.
+#' @param removeCache Character vector of unprocessed dataframes. Options are c("uis_up", "cedar_up", "wb_up", "eurostat_up", "oecd_up")
 #' @return A data frame or an xlsx workbook.
 #' @export
 #' @examples
@@ -31,18 +32,21 @@ if(isTRUE(exists(".gemrtables.pkg.env", mode="environment"))) {
 gemrtables <- function(
   region = "SDG.region",
   ref_year,
-  export,
+  export = TRUE,
   path,
   key,
   password,
   pc_flag_cut = 66,
-  pc_comp_cut2 = 33
+  pc_comp_cut2 = 33,
+  removeCache
   ) {
 
   .gemrtables.pkg.env$pc_flag_cut <- pc_flag_cut
   .gemrtables.pkg.env$pc_comp_cut2 <- pc_comp_cut2
 
-  #define regions and ref_year
+  #define package environment, regions and ref_year
+
+  .gemrtables.pkg.env <- new.env(parent = emptyenv())
 
   .gemrtables.pkg.env$ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
 
@@ -56,11 +60,18 @@ gemrtables <- function(
     .gemrtables.pkg.env$subregion <- as.name("GEMR.subregion")
   }
 
+  #Set directory for cache (users current working directory)
 
-  #define api and db keys. Set directory for cache (users current working directory)
-
-  dir.create(path="~/.Rcache", showWarnings=FALSE)
+  dir.create(path="./.Rcache", showWarnings=FALSE)
   R.cache::setCacheRootPath(path="./.Rcache")
+
+  if(!missing(removeCache)) {
+    for(i in 1:length(removeCache)) {
+      file.remove(R.cache::findCache(key=list(removeCache[i])))
+    }
+  }
+
+  #define api and db keys.
 
   if (missing(key)) {
     stop("Key for UIS API is missing")
@@ -102,24 +113,36 @@ gemrtables <- function(
 
   load_cache_data <- function(df) {
 
+    #convert file_paths into of unprocessed datasets into character vector
+
+    source_keys = c("uis_up", "cedar_up", "wb_up", "eurostat_up", "oecd_up")
+    sources <- list()
+    for(i in seq_along(source_keys)) {
+       sources[[i]] <- R.cache::findCache(list(source_keys[i]))
+    }
+    sources <- unlist(sources, use.names = FALSE)
+
     # 1. Try to load cached data, if already generated
     key <- list(df)
-    data <- R.cache::loadCache(key)
+
+    if(df == "country_data") {
+      data <- R.cache::loadCache(key, sources = sources, removeOldCache=TRUE)
+      if(length(sources) !=5) {
+        data <- NULL
+        }
+    }else{
+      data <- R.cache::loadCache(key)
+    }
+
     if (!is.null(data)) {
       cat(paste("Loaded cached", df, "\n", sep = " " ))
       return(data);
     }
     # 2. If not available, generate it.
-    cat(paste("Generating", df, "from scratch...\n", sep = " "))
+    cat(paste("Building", df, "...\n", sep = " "))
     if(df == "country_data") {
       data <- c_data()
     }
-    # if(df == "uis_comp") {
-    #   uis()
-    # }
-    # if(df == "schol_unspec") {
-    #   other()
-    # }
     if(df == "weights_data") {
       data <- weights()
     }
@@ -128,7 +151,6 @@ gemrtables <- function(
   }
 
   country_data <- load_cache_data("country_data")
-  uis_comp <- load_cache_data("uis_comp")
   # if (any(
   #   # is.null(.gemrtables.pkg.env$schol_unspec),
   #   is.null(.gemrtables.pkg.env$uis_comp),
@@ -180,7 +202,7 @@ gemrtables <- function(
 
   uis_aggregates_extra <- R.cache::evalWithMemoization(uis_extra_aggs())
 
-  uis_aggregates <- uis_comp %>%
+  uis_aggregates <- R.cache::loadCache(list("uis_comp")) %>%
     dplyr::anti_join(uis_aggregates_extra, by = c('iso2c', 'var_concat', 'year')) %>%
     dplyr::bind_rows(uis_aggregates_extra) %>%
     dplyr::inner_join(.gemrtables.pkg.env$indicators, by = "var_concat") %>%

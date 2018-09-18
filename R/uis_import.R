@@ -13,6 +13,8 @@ uis <- function() {
 
   if(is.null(uis_up)) {
 
+    cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
+
     uis_up <- list(
 
     # UIS api REST API urls

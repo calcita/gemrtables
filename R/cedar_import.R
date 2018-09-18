@@ -13,9 +13,10 @@ cedar <- function() {
   cedar_up <- R.cache::loadCache(key)
 
   if(is.null(cedar_up)) {
+    cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
 
 
-  cedar_up <- list(sc = list("wide_dimension",
+    cedar_up <- list(sc = list("wide_dimension",
                                "wide_dimension",
                                "other_dimension",
                                "other_dimension",

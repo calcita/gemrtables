@@ -18,6 +18,7 @@ other <- function() {
     wb_up <- R.cache::loadCache(key)
 
     if(is.null(wb_up)) {
+      cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
 
       wb_up <- wbstats::wb(country = "countries_only", indicator = c("SH.STA.STNT.ZS",
                                                                      "LO.TIMSS.SCI8.LOW", "LO.PISA.SCI.0.MA", "LO.PISA.SCI.1B.MA", "LO.PISA.SCI.1A.MA",
@@ -43,6 +44,7 @@ other <- function() {
     eurostat_up <- R.cache::loadCache(key)
 
     if(is.null(eurostat_up)) {
+      cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
 
       eurostat_up <- list("http://ec.europa.eu/eurostat/SDMX/diss-web/rest/data/trng_aes_100/.T.FE_NFE.PC../?startperiod=2010&endPeriod=2050",
                           "ec.europa.eu/eurostat/SDMX/diss-web/rest/data/isoc_sk_cskl_i/A.I_CCPY.IND_TOTAL.PC_IND./?startperiod=2010&endPeriod=2050") %>%
@@ -65,6 +67,7 @@ other <- function() {
     oecd_up <- R.cache::loadCache(key)
 
     if(is.null(oecd_up)) {
+      cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
 
       oecd_up <- list("https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/CRS1/20005..1000.100.100.D.112.E01+E02/all?startTime=2016&endTime=2050",
                       "https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/EAG_TS_ACT/..L0+L1+L2_C4+L3_C4.Y25T64.T.RATIO_ACTL_TER/all?",
