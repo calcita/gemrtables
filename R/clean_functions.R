@@ -69,9 +69,9 @@ uis_clean <- function(df) {
     unique()
 
   clean1 %>%
-    group_by(iso2c, var_concat) %>%
-    filter(year == max(year)) %>%
-    ungroup %>%
+    dplyr::group_by(iso2c, var_concat) %>%
+    dplyr::filter(year == max(year)) %>%
+    dplyr::ungroup() %>%
     R.cache::saveCache(key=list("uis_comp"), comment="uis_comp")
 
 
@@ -325,13 +325,15 @@ eurostat_clean <- function(df) {
 
 oecd_clean <- function(df) {
 
-  .gemrtables.pkg.env$schol_unspec <- df[[1]] %>%
+  schol_unspec <- df[[1]] %>%
     dplyr::mutate(ind = dplyr::case_when(AIDTYPE == "E02" ~ "odaflow.imputecost",
                                          AIDTYPE == "E01"  ~ "odaflow.volumescholarship"),
                   RECIPIENT = as.numeric(RECIPIENT)) %>%
     dplyr::filter(RECIPIENT %in% c(89, 57, 189, 289, 298, 380, 389, 489, 498, 589, 619, 679, 689, 789, 798, 889, 9998)) %>%
     dplyr::group_by(ind) %>%
     dplyr::summarise(value = (sum(obsValue))*1000000)
+
+  R.cache::saveCache(schol_unspec, key=list("schol_unspec"), comment="schol_unspec")
 
   schol <- df[[1]] %>%
     dplyr::mutate(ind = dplyr::case_when(AIDTYPE == "E02" ~ "odaflow.imputecost",

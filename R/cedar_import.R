@@ -9,7 +9,13 @@
 
 cedar <- function() {
 
-  cedar_data <- list(sc = list("wide_dimension",
+  key <- list("cedar_up")
+  cedar_up <- R.cache::loadCache(key)
+
+  if(is.null(cedar_up)) {
+
+
+  cedar_up <- list(sc = list("wide_dimension",
                                "wide_dimension",
                                "other_dimension",
                                "other_dimension",
@@ -34,7 +40,13 @@ cedar <- function() {
                                 "child_chores_more_28_12_14",
                                 c("esd_gced_curr_ge", "esd_gced_curr_hr", "esd_gced_glo_cit", "esd_gced_sus_dev"))) %>%
     purrr::pmap(read_cedar) %>%
-    dplyr::bind_rows() %>%
+    dplyr::bind_rows()
+
+  R.cache::saveCache(cedar_up, key=key, comment="cedar_up")
+
+  }
+
+  cedar_up %>%
     cedar_clean()
 
 }
