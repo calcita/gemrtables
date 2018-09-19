@@ -38,4 +38,8 @@ b = list("adult.profiliteracy.m", "adult.profinumeracy.m"),
 varname = list("adult.profiliteracy.gpia", "adult.profinumeracy.gpia")) \%>\%
 pmap(parity_adj) \%>\%
 }
+\seealso{
+Other summarise: \code{\link{aggregates}},
+  \code{\link{compute_aggregate}}
+}
 \concept{summarise}

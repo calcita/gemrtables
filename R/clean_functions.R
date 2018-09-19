@@ -690,7 +690,8 @@ format_wide <- function(df) {
     dplyr::ungroup() %>%
     dplyr::mutate(
                   val_status = ifelse(val_status == "A", "", tolower(val_status)),
-                  year_diff = year - .gemrtables.pkg.env$ref_year, year_diff = ifelse(year_diff == 0, "", year_diff),
+                  year_diff = year - .gemrtables.pkg.env$ref_year,
+                  year_diff = ifelse(year_diff == 0, "", year_diff),
                   val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
                                                     # val_status == "m" ~ "\u2099",
                                                     TRUE ~ ''),
@@ -719,7 +720,7 @@ format_wide <- function(df) {
                                                                       TRUE ~ entity))) %>%
     purrr::map(function(.) dplyr::arrange(., region_order, annex_name)) %>%
     purrr::map(mutate_all, as.character) %>%
-    purrr::map_if(stringr::str_detect(., "country"), function(.) dplyr::left_join(., .gemrtables.pkg.env$regions[, c("annex_name", "iso3c")], by = "annex_name")) %>%
+    purrr::map_if(suppressWarnings(stringr::str_detect(., "country")), function(.) dplyr::left_join(., .gemrtables.pkg.env$regions[, c("annex_name", "iso3c")], by = "annex_name")) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(.gemrtables.pkg.env$region)]$V1][!.N]) %>%
     purrr::map(function(.) dplyr::select(., -sheet, -is_aggregate, -entity, -!!.gemrtables.pkg.env$region, - regionx, -region_order))

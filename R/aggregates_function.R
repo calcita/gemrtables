@@ -1,3 +1,14 @@
+#' agg_preprocess
+#'
+#' \code{agg_preprocess} converts several country data variables to boolean in
+#' order to caclulate the percentage of countries meeting a condition in the
+#' aggregates tables
+#'
+#' @param df a data frame with a key / value columns.
+#' @return A data frame.
+#' @family clean
+
+
 agg_preprocess <- function(df) {
   df %>%
     mutate(value = case_when(
@@ -8,6 +19,18 @@ agg_preprocess <- function(df) {
        stringr::str_detect(ind, "esd") ~ as.numeric(value >= 2),
        TRUE ~ value))
 }
+
+#' compute_aggregate
+#'
+#' \code{compute_aggregate} computes various summarise functions on country_data
+#' for a specified aggregate grouping.
+#'
+#' @param df a data frame with a key / value columns.
+#' @param region aggregate grouping on which to compute (corresponds to the
+#'   relevent column in `.gemrtables.pkg.env$indicators`.
+#' @param entity type of aggregate (character)
+#' @return A data frame.
+#' @family summarise
 
 compute_aggregate <- function(df, region, entity) {
 
@@ -39,6 +62,16 @@ compute_aggregate <- function(df, region, entity) {
     tidyr::gather(key = "aggregation", value = "value", -ind, -!!region, -pc_comp, -pc_comp_cut, -entity, -wt_share, -pop_share) %>%
     dplyr::select(annex_name = !!region, ind, aggregation, value, pc_comp, wt_share, pop_share, pc_comp_cut, entity)
 }
+
+#' aggregates
+#'
+#' \code{aggregates} Is a wrapper function for \code{compute_aggregate}.
+#' Aggregates are computed for each type of grouping and binded. Redundant
+#' aggregations are dropped through a join.
+#'
+#' @param df a data frame with a key / value columns.
+#' @return A data frame.
+#' @family summarise
 
 aggregates <- function(df) {
 

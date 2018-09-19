@@ -41,16 +41,20 @@ gemrtables <- function(
   removeCache
   ) {
 
-  .gemrtables.pkg.env$pc_flag_cut <- pc_flag_cut
-  .gemrtables.pkg.env$pc_comp_cut2 <- pc_comp_cut2
-
   #define package environment, regions and ref_year
 
-  .gemrtables.pkg.env <- new.env(parent = emptyenv())
+  .gemrtables.pkg.env <<- new.env(parent = emptyenv())
+  # rm(list = ls(envir = .gemrtables.pkg.env), envir = .gemrtables.pkg.env)
 
   .gemrtables.pkg.env$ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
 
   .gemrtables.pkg.env$region = as.name(region)
+
+  .gemrtables.pkg.env$pc_flag_cut <- pc_flag_cut
+
+  .gemrtables.pkg.env$pc_comp_cut2 <- pc_comp_cut2
+
+
 
   if(region == "SDG.region") {
     .gemrtables.pkg.env$subregion <- as.name("SDG.subregion")
@@ -111,7 +115,7 @@ gemrtables <- function(
     dplyr::bind_rows(uis_data, cedar_data, other_data)
   }
 
-  load_cache_data <- function(df) {
+  load_cache_data <- function(df, ref_year = .gemrtables.pkg.env$ref_year) {
 
     #convert file_paths into of unprocessed datasets into character vector
 
@@ -123,31 +127,33 @@ gemrtables <- function(
     sources <- unlist(sources, use.names = FALSE)
 
     # 1. Try to load cached data, if already generated
-    key <- list(df)
+    key_country <- list(df)
+    key_weights <- list(df, ref_year)
 
     if(df == "country_data") {
-      data <- R.cache::loadCache(key, sources = sources, removeOldCache=TRUE)
+      data <- R.cache::loadCache(key_country, sources = sources, removeOldCache=TRUE)
       if(length(sources) !=5) {
         data <- NULL
         }
-    }else{
-      data <- R.cache::loadCache(key)
+      }else{
+        data <- R.cache::loadCache(key_weights)
     }
 
     if (!is.null(data)) {
       cat(paste("Loaded cached", df, "\n", sep = " " ))
       return(data);
     }
+
     # 2. If not available, generate it.
     cat(paste("Building", df, "...\n", sep = " "))
     if(df == "country_data") {
       data <- c_data()
+      R.cache::saveCache(data, key=key_country, comment=df)
     }
     if(df == "weights_data") {
       data <- weights()
+      R.cache::saveCache(data, key=key_weights, comment=df)
     }
-    R.cache::saveCache(data, key=key, comment=df)
-    data;
   }
 
   country_data <- load_cache_data("country_data")
@@ -221,7 +227,7 @@ gemrtables <- function(
                                            annex_name == "World" & ind == "odaflow.imputecost" ~ value + schol_unspec[[1,2]],
                                            TRUE ~ value))
 
-  long_data <<- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
+  long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
     dplyr::mutate(value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == "country" & is.na(value), 0, value)) %>%

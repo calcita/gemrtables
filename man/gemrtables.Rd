@@ -7,8 +7,8 @@
 \title{gemrtables: A package for generating the Global Education Monitoring (GEM)
 Report statistical tables.}
 \usage{
-gemrtables(region = "SDG.region", ref_year, export = FALSE, path, key,
-  password)
+gemrtables(region = "SDG.region", ref_year, export = TRUE, path, key,
+  password, pc_flag_cut = 66, pc_comp_cut2 = 33, removeCache)
 }
 \arguments{
 \item{region}{regional grouping on which to compute aggregate values. Options
@@ -27,6 +27,8 @@ file.}
 \item{key}{UIS api subcription key.}
 
 \item{password}{password to cedar database.}
+
+\item{removeCache}{Character vector of unprocessed dataframes. Options are c("uis_up", "cedar_up", "wb_up", "eurostat_up", "oecd_up")}
 }
 \value{
 A data frame or an xlsx workbook.
