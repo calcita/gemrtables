@@ -41,7 +41,7 @@ gemrtables <- function(
   removeCache
   ) {
 
-  #define package environment, regions and ref_year
+  #define package environment and package wide parameters
 
   .gemrtables.pkg.env <<- new.env(parent = emptyenv())
   # rm(list = ls(envir = .gemrtables.pkg.env), envir = .gemrtables.pkg.env)
@@ -149,8 +149,7 @@ gemrtables <- function(
     if(df == "country_data") {
       data <- c_data()
       R.cache::saveCache(data, key=key_country, comment=df)
-    }
-    if(df == "weights_data") {
+    }else if (df == "weights_data") {
       data <- weights()
       R.cache::saveCache(data, key=key_weights, comment=df)
     }
