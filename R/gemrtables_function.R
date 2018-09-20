@@ -135,7 +135,7 @@ gemrtables <- function(
       if(length(sources) !=5) {
         data <- NULL
         }
-      }else{
+      }else if (df == "weights_data"){
         data <- R.cache::loadCache(key_weights)
     }
 
@@ -149,10 +149,13 @@ gemrtables <- function(
     if(df == "country_data") {
       data <- c_data()
       R.cache::saveCache(data, key=key_country, comment=df)
+      R.cache::loadCache(key_country)
     }else if (df == "weights_data") {
       data <- weights()
       R.cache::saveCache(data, key=key_weights, comment=df)
+      R.cache::loadCache(key_weights)
     }
+
   }
 
   country_data <- load_cache_data("country_data")
