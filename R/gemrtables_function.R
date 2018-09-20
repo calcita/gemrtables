@@ -229,7 +229,7 @@ gemrtables <- function(
                                            annex_name == "World" & ind == "odaflow.imputecost" ~ value + schol_unspec[[1,2]],
                                            TRUE ~ value))
 
-  long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
+  long_data <<- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
     dplyr::mutate(value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == "country" & is.na(value), 0, value)) %>%

@@ -232,6 +232,9 @@ cedar_clean <- function(df) {
     dplyr::select(iso2c, year, ind, value) %>%
     dplyr::mutate(source = "cedar") %>%
     dplyr::filter(!is.na(value)) %>%
+    dplyr::group_by(iso2c, ind) %>%
+    dplyr::filter(year == max(year)) %>%
+    dplyr::ungroup() %>%
     unique()
 
 }
