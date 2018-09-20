@@ -49,7 +49,9 @@ cedar <- function() {
 
   cedar_local <-  read.csv(system.file("local_data", "WIDE_2018_completion.csv", package = "gemrtables"), stringsAsFactors = FALSE)
   cedar_local <- cedar_local[-c(4648:4649),] %>%
-    dplyr::filter(category != 'camps', !stringr::str_detect(category, "2|3|4")) %>%
+    dplyr::filter(category != 'camps',
+                  !stringr::str_detect(category, "2|3|4"),
+                  ï..survey != "MICS" & iso_code3 != "SRB") %>%
     tidyr::spread(key = group, value = category) %>%
     dplyr::select(country_code = iso_code3,
                   year,
