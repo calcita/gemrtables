@@ -155,7 +155,6 @@ gemrtables <- function(
       R.cache::saveCache(data, key=key_weights, comment=df)
       R.cache::loadCache(key_weights)
     }
-
   }
 
   country_data <- load_cache_data("country_data")

@@ -51,7 +51,7 @@ compute_aggregate <- function(df, region, entity) {
     dplyr::group_by(!!region, ind, count1, pc_comp_cut) %>%
     dplyr::summarise(sum = sum(value,  na.rm = TRUE),
                      median = median(value, na.rm = TRUE),
-                     w_mean = weighted.mean(value, wt_value, na.rm = TRUE),#sum(value*wt_value, na.rm = TRUE)/sum(wt_value, na.rm = TRUE),
+                     w_mean = sum(value*wt_value, na.rm = TRUE)/sum(wt_value, na.rm = TRUE), #weighted.mean(value, wt_value, na.rm = TRUE),
                      pc_true = (sum(value)/dplyr::n())*100,
                      pc_true2 = (sum(value/count1*100)),
                      wt_share = 100 * sum(wt_value[!is.na(value) & val_status == 'A'], na.rm = TRUE)/wt_total[1],

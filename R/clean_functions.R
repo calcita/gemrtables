@@ -214,7 +214,9 @@ cedar_clean <- function(df) {
                            indicator == "child_chores_more_28_12_14" & sex_id == 4 ~ "chores.28plus.12t14",
                            indicator == "child_chores_more_28_12_14" & sex_id == 1 ~ "chores.28plus.12t14.f",
                            indicator == "child_chores_more_28_12_14" & sex_id == 2 ~ "chores.28plus.12t14.m"),
-                  value = ifelse(stringr::str_detect(ind, stringr::regex("CR\\.")), value*100, value)) %>%
+                  value = ifelse(stringr::str_detect(ind, stringr::regex("CR\\.|TranRA")), value*100, value),
+                  val_status = ifelse(stringr::str_detect(ind, stringr::regex("CR\\.|TranRA")), "A", NA)) %>%
+
     dplyr::inner_join(.gemrtables.pkg.env$regions, by = c("country_code" = "iso3c")) %>%
     dplyr::filter(!is.na(ind))
 
@@ -229,7 +231,7 @@ cedar_clean <- function(df) {
 
   cleaned <- dplyr::bind_rows(clean1, parity_indices) %>%
     dplyr::ungroup() %>%
-    dplyr::select(iso2c, year, ind, value) %>%
+    dplyr::select(iso2c, year, ind, value, val_status) %>%
     dplyr::mutate(source = "cedar") %>%
     dplyr::filter(!is.na(value)) %>%
     dplyr::group_by(iso2c, ind) %>%
