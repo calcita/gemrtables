@@ -124,9 +124,10 @@ uis_clean <- function(df) {
     filter(year == max(year)) %>%
     ungroup()
 
-  parity_indices <- list(df = list("clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1"),
+  parity_indices <- list(df = list("clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1",
+                                   "clean1", "clean1", "clean1", "clean1"),
                          col = list("var_concat",  "var_concat", "var_concat", "var_concat", "var_concat",  "var_concat", "var_concat",
-                                    "var_concat", "var_concat", "var_concat"),
+                                    "var_concat", "var_concat", "var_concat", "var_concat", "var_concat",  "var_concat", "var_concat"),
                          a = list("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
@@ -136,7 +137,11 @@ uis_clean <- function(df) {
                                   "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
-                                  "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA"),
+                                  "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+                                  "GER_PT_L02__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                                  "GER_PT_L1__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                                  "GER_PT_L2_3__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                                  "GER_PT_L5T8__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA"),
                          b = list("STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L2__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
@@ -146,11 +151,16 @@ uis_clean <- function(df) {
                                   "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
-                                  "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA"),
+                                  "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+                                  "GER_PT_L02__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                                  "GER_PT_L1__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                                  "GER_PT_L2_3__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                                  "GER_PT_L5T8__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA"),
                          varname = list("Read.Primary.GPIA", "Math.Primary.GPIA", "Read.LowerSec.GPIA", "Math.LowerSec.GPIA",
                                         "LR.Ag15t24.GPIA", "LR.Ag15t99.GPIA", "Read.Primary.WPIA", "Math.Primary.WPIA",
-                                        "Read.LowerSec.WPIA", "Math.LowerSec.WPIA"),
-                         val_status = list(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)) %>%
+                                        "Read.LowerSec.WPIA", "Math.LowerSec.WPIA", "GER.02.GPIA", "GER.1.GPIA", "GER.2t3.GPIA",
+                                        "GER.5t8.GPIA"),
+                         val_status = list(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)) %>%
     purrr::pmap(parity_adj) %>%
     purrr::reduce(dplyr::bind_rows)
 
@@ -364,11 +374,12 @@ oecd_clean <- function(df) {
     dplyr::bind_rows(sal1)  %>%
     tidyr::spread(key = ind, value = value) %>%
     dplyr::mutate(value = ((sal.rel.2 * teachers.2) + (sal.rel.3 * teachers.3))/(teachers.2 + teachers.3), ind = "sal.rel.2t3") %>%
+    dplyr::filter(!is.na(value)) %>%
     dplyr::select(iso2c, year, ind, value)
 
   cleaned <- dplyr::bind_rows(schol, sal1, sal2) %>%
     dplyr::mutate(source = "OECD",
-                  val_status = "A",
+                  val_status = ifelse(ind == "sal.rel.2t3", "E", "A"),
                   year = as.numeric(year)) %>%
     dplyr::group_by(iso2c, ind) %>%
     dplyr::filter(year == max(year)) %>%
@@ -669,7 +680,7 @@ format_wide <- function(df) {
     dplyr::group_by(ind) %>%
     dplyr::mutate(
       digits = case_when(
-        max(value, na.rm = TRUE) < 2 ~ 2,
+        max(value, na.rm = TRUE) < 2 | stringr::str_detect(ind, 'sal.rel') ~ 2,
         # (ind %in% redenominate_6 | ind %in% redenominate_3) & value >= 1000000 ~ 1,
         # (ind %in% redenominate_6 | ind %in% redenominate_3) & value < 1000000 ~ 3,
         value < 0.5 | stringr::str_detect(ind, "XGDP") ~ 1,
@@ -687,7 +698,7 @@ format_wide <- function(df) {
     dplyr::mutate(
       value_str = ifelse(is.na(value) | entity != "country" | !stringr::str_detect(ind, "bully|esd|attack|admi"), value_str,
         ifelse(stringr::str_detect(ind, "bully"), c('Low', 'Medium', 'High')[value],
-        ifelse(stringr::str_detect(ind, "esd"), c('None', 'Low', 'Medium', 'High')[value],
+        ifelse(stringr::str_detect(ind, "esd"), c('None', 'Low', 'Medium', 'High')[value + 1],
         ifelse(stringr::str_detect(ind, "attack"), c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
         ifelse(stringr::str_detect(ind, "admi"), c('No', 'Yes')[value + 1], value_str)
       ))))) %>%
@@ -708,7 +719,7 @@ format_wide <- function(df) {
                                                    TRUE ~ ''),
                   val_utf = ifelse(value_str == 'NA' | is.na(value_str),
                                     "\u2026",
-                                    paste0(stringr::str_trim(value_str), year_diff_utf, val_status_utf, sep = ""))) %>%
+                                    paste0(stringr::str_trim(value_str), ifelse(stringr::str_detect(ind, "admi|esd"), "", year_diff_utf), val_status_utf, sep = ""))) %>%
     dplyr::select(sheet, annex_name, !!.gemrtables.pkg.env$region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),

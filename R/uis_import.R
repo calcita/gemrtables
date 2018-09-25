@@ -103,7 +103,7 @@ uis <- function() {
     #vars 8:9  (GPIA to be calculated)
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/LR.PT._Z._Z.M+F.Y_GE15+Y15T24..._Z............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 12:15
-    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/FTP.PT.L02+L1+L2_3+L5T8._T.._T..INST_T._T............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/GER.PT.L02+L1+L2_3+L5T8._T.F+M.SCH_AGE_GROUP._T.INST_T..._T._T.........?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 20:21, 24:25, 28:29
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/CR.GLPIA+WPIA.L1+L2+L3._T._T._T.GLAST.INST_T._Z._T._T._T.........?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 22:23, 26:27, 30:31

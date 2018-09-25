@@ -112,10 +112,10 @@ LR.Ag15t24.GPIA,NA,"Youth literacy rate, gender parity index (GPIA)",UIS,5,1,med
 LR.Ag15t99.GPIA,NA,"Adult literacy rate, gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,9
 adult.profiliteracy.gpia,NA,"Percentage of population (aged 16 -65) achieving at least a fixed level of proficiency in functional literacy skills (level 2), GPIA",PIAAC,5,1,median,,NA,4,33,10
 adult.profinumeracy.gpia,NA,"Percentage of population (aged 16 -65) achieving at least a fixed level of proficiency in functional numeracy skills (level 2), GPIA",PIAAC,5,1,median,,NA,4,33,11
-FTP.02,FTP_PT_L02__T_F__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Percentage of teachers in pre-primary education who are female (%),UIS,5,1,w_mean,TEACH_L02,FALSE,4,33,12
-FTP.1,FTP_PT_L1__T_F__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Percentage of teachers in primary education who are female (%),UIS,5,1,w_mean,TEACH_L1,FALSE,4,33,13
-FTP.2t3,FTP_PT_L2_3__T_F__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Percentage of teachers in secondary education who are female (%),UIS,5,1,w_mean,TEACH_L2_3,FALSE,4,33,14
-FTP.5t8,FTP_PT_L5T8__T_F__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Percentage of teachers in tertiary education who are female (%),UIS,5,1,w_mean,TEACH_L5T8,FALSE,4,33,15
+GER.02.GPIA,,"Gross enrolment ratio, pre-primary, adjusted gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,12
+GER.1.GPIA,,"Gross enrolment ratio, primary, adjusted gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,13
+GER.2t3.GPIA,,"Gross enrolment ratio,secondary, adjusted gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,14
+GER.5t8.GPIA,,"Gross enrolment ratio, teriary, adjusted gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,15
 chores.28plus.12t14,NA,Percentage of children (12-14) involved in household chores during the previous week (more than 28h),UNICEF,5,1,median,,NA,4,33,16
 chores.28plus.12t14.GPIA,NA,"Percentage of children (12-14) involved in household chores during the previous week (more than 28h), GPIA",UNICEF,5,1,median,,NA,4,33,17
 chores.28plus.12t14,NA,Percentage of children (12-14) involved in household chores during the previous week (more than 28h),cedar,5,2,median,,NA,4,33,16
