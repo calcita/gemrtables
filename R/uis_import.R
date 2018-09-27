@@ -73,7 +73,7 @@ uis <- function() {
     #var 1
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/PRYA.PT._T._T._T.Y_GE15...............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #var 2
-    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/STU.PT.L2_3.C5._T.Y15T24._T.INST_T.............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
+    "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,3.0/STU.PT.L2T5.C5._T.Y15T24................?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 3:4
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/GTVP.PT.L4+L2_3.C5._T._T._T.INST_T.............?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #var 5

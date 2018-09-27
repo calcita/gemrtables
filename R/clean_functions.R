@@ -719,7 +719,7 @@ format_wide <- function(df) {
                                                    TRUE ~ ''),
                   val_utf = ifelse(value_str == 'NA' | is.na(value_str),
                                     "\u2026",
-                                    paste0(stringr::str_trim(value_str), ifelse(stringr::str_detect(ind, "admi|esd"), "", year_diff_utf), val_status_utf, sep = ""))) %>%
+                                    paste0(stringr::str_trim(value_str), ifelse(stringr::str_detect(ind, "admi|esd|odaflow"), "", year_diff_utf), val_status_utf, sep = ""))) %>%
     dplyr::select(sheet, annex_name, !!.gemrtables.pkg.env$region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),

@@ -53,7 +53,7 @@ compute_aggregate <- function(df, region, entity) {
                      median = median(value, na.rm = TRUE),
                      w_mean = sum(value*wt_value, na.rm = TRUE)/sum(wt_value, na.rm = TRUE), #weighted.mean(value, wt_value, na.rm = TRUE),
                      pc_true = (sum(value)/dplyr::n())*100,
-                     pc_true2 = (sum(value/count1*100)),
+                     #pc_true2 = (sum(value/count1*100)),
                      wt_share = 100 * sum(wt_value[!is.na(value) & val_status == 'A'], na.rm = TRUE)/wt_total[1],
                      pop_share = 100 * sum(pop[!is.na(value) & val_status == 'A'], na.rm = TRUE)/pop_total[1],
                      count2 = dplyr::n()) %>%
