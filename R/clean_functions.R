@@ -683,7 +683,7 @@ format_wide <- function(df) {
         max(value, na.rm = TRUE) < 2 | stringr::str_detect(ind, 'sal.rel') ~ 2,
         # (ind %in% redenominate_6 | ind %in% redenominate_3) & value >= 1000000 ~ 1,
         # (ind %in% redenominate_6 | ind %in% redenominate_3) & value < 1000000 ~ 3,
-        value < 0.5 | stringr::str_detect(ind, "XGDP") ~ 1,
+        value < 0.5 | stringr::str_detect(ind, "XGDP|XGovExp") ~ 1,
         TRUE ~ 0)) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
@@ -719,7 +719,7 @@ format_wide <- function(df) {
                                                    TRUE ~ ''),
                   val_utf = ifelse(value_str == 'NA' | is.na(value_str),
                                     "\u2026",
-                                    paste0(stringr::str_trim(value_str), ifelse(stringr::str_detect(ind, "admi|esd|odaflow"), "", year_diff_utf), val_status_utf, sep = ""))) %>%
+                                    paste0(stringr::str_trim(value_str), ifelse(stringr::str_detect(ind, "admi|esd|odaflow|Entry\\.age|Years\\.dur"), "", year_diff_utf), val_status_utf, sep = ""))) %>%
     dplyr::select(sheet, annex_name, !!.gemrtables.pkg.env$region, ind, val_utf, entity) %>%
     dplyr::mutate(ind = factor(ind, levels = unique(ind)),
                   is_aggregate = ifelse(entity == "country", "country", "aggregate"),

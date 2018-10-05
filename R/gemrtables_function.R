@@ -205,7 +205,11 @@ gemrtables <- function(
     # dplyr::left_join(weights_data[, -3], by = c("iso2c", "wt_var")) %>%
     dplyr::mutate(entity = "country") %>%
     # dplyr::left_join(select(pop_data, -year), by = c('iso2c')) %>%
-    ungroup()
+    ungroup() %>%
+    dplyr::mutate(year = ifelse(stringr::str_detect(ind, stringr::regex("XGDP|XGovExp", ignore_case = TRUE)) & iso2c == "ST", 2016, year),
+                  value = case_when(stringr::str_detect(ind, stringr::regex("XGDP", ignore_case = TRUE)) & iso2c == "ST" ~ 5.07533,
+                                    stringr::str_detect(ind, stringr::regex("XGovExp", ignore_case = TRUE)) & iso2c == "ST" ~ 15.96804,
+                                    TRUE ~ value))
 
   uis_aggregates_extra <- R.cache::evalWithMemoization(uis_extra_aggs())
 
@@ -231,7 +235,6 @@ gemrtables <- function(
   long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, entity),
     fill = list(value = NA, val_status = "", year_diff = 0)) %>%
-    #dplyr::mutate(value = ifelse(stringr::str_detect(ind, stringr::regex("admi", ignore_case = TRUE)) & entity == "country" & is.na(value), 0, value)) %>%
     dplyr::arrange(sheet, position, !!.gemrtables.pkg.env$region, entity, annex_name)
 
   wide_data <- long_data %>%
