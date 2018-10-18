@@ -72,7 +72,7 @@ GER.02,GER_PT_L02__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W0
 NERA.AgM1.cp,NERA_PT_L1__T__T_UNDER1_AGE__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Adjusted net enrolment rate, one year before the official primary entry age, both sexes",UIS,3,1,w_mean,L02,FALSE,4,33,6
 prya.25t64,PRYA_PT__T__T__T_Y_GE15__T__Z__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Participation rate in adult non-formal and formal education and training (25-64 years),UIS,4,2,w_mean,Y25T64,FALSE,4,33,1
 prya.25t64,NA,Participation rate in adult non-formal and formal education and training (25-64 years),eurostat,4,1,w_mean,Y25T64,FALSE,4,33,1
-EV1524P.2t5.V,STU_PT_L2T5_C5__T_Y15T24__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Percentage of 15-24 year-olds enrolled in vocational secondary education, both sexes (%)",UIS,4,1,w_mean,Y15T24,FALSE,4,33,2
+EV1524P.2t5.V,STU_PT_L2T5_C5__T_Y15T24__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of 15-24 year-olds enrolled in technical and vocational programmes (ISCED 2 - 5) (%),UIS,4,1,w_mean,Y15T24,FALSE,4,33,2
 GTVP.2t3.V,GTVP_PT_L2_3_C5__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Percentage of students in secondary education enrolled in vocational programmes, both sexes (%)",UIS,4,1,w_mean,L2_3_STU,FALSE,4,33,3
 GTVP.4.V,GTVP_PT_L4_C5__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Percentage of students in post-secondary non-tertiary education enrolled in vocational programmes, both sexes (%)",UIS,4,1,w_mean,L4_STU,FALSE,4,33,4
 GTranR.5t8,GTRANR_PT_L3__T__T__T_G1_INST_T__Z__Z__T_INIT__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Gross transition ratio from secondary to tertiary education, based on students in all secondary programmes, both sexes (%)",UIS,4,1,w_mean,L3_STU,TRUE,4,33,5
@@ -88,10 +88,10 @@ EA.1t8.Ag25t99,EA_PT__Z__Z__T_Y_GE25__T_INST_T_L1T8__Z__T__T__T__T__Z__Z__Z__Z_W
 EA.2t8.Ag25t99,EA_PT__Z__Z__T_Y_GE25__T_INST_T_L2T8__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Educational attainment: at least completed lower secondary (ISCED 2 or higher), population 25+ years, both sexes (%)",UIS,4,1,w_mean,Y_GE25,FALSE,4,33,12
 EA.3t8.Ag25t99,EA_PT__Z__Z__T_Y_GE25__T_INST_T_L3T8__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Educational attainment: at least completed upper secondary (ISCED 3 or higher), population 25+ years, both sexes (%)",UIS,4,1,w_mean,Y_GE25,FALSE,4,33,13
 EA.4t8.Ag25t99,EA_PT__Z__Z__T_Y_GE25__T_INST_T_L4T8__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Educational attainment: at least completed post-secondary non-teriary (ISCED 4 or higher), population 25+ years, both sexes (%)",UIS,4,1,w_mean,Y_GE25,FALSE,4,33,14
-adult.profiliteracy,NA,"Percentage of population (aged 16 -65) achieving at least a fixed level of proficiency in functional literacy skills (level 2), both sexes",PIAAC,4,1,w_mean,Y15T64,TRUE,4,33,15
-youth.profiliteracy,NA,"Percentage of youth (aged 16-24 ) achieving at least a fixed level of proficiency in functional literacy skills (level2), both sexes",PIAAC,4,1,w_mean,Y15T24,TRUE,4,33,16
-adult.profinumeracy,NA,"Percentage of population (aged 16 -65) achieving at least a fixed level of proficiency in functional  numeracy skills (level 2), both sexes",PIAAC,4,1,w_mean,Y15T64,TRUE,4,33,17
-youth.profinumeracy,NA,"Percentage of youth (aged 16-24 ) achieving at least a fixed level of proficiency in functional numeracy skills (level2), both sexes",PIAAC,4,1,w_mean,Y15T24,TRUE,4,33,18
+adult.profiliteracy,NA,"Percentage of population (aged 16 -65) achieving at least a fixed level of proficiency in functional literacy skills (level 2), both sexes",PIAAC,4,1,w_mean,Y15T64,TRUE,4,33,16
+youth.profiliteracy,NA,"Percentage of youth (aged 16-24 ) achieving at least a fixed level of proficiency in functional literacy skills (level2), both sexes",PIAAC,4,1,w_mean,Y15T24,TRUE,4,33,15
+adult.profinumeracy,NA,"Percentage of population (aged 16 -65) achieving at least a fixed level of proficiency in functional  numeracy skills (level 2), both sexes",PIAAC,4,1,w_mean,Y15T64,TRUE,4,33,18
+youth.profinumeracy,NA,"Percentage of youth (aged 16-24 ) achieving at least a fixed level of proficiency in functional numeracy skills (level2), both sexes",PIAAC,4,1,w_mean,Y15T24,TRUE,4,33,17
 LR.Ag15t24,LR_PT__Z__Z__T_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Youth literacy rate, both sexes",UIS,4,1,w_mean,Y15T24,FALSE,4,33,19
 LR.Ag15t99,LR_PT__Z__Z__T_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Adult literacy rate, both sexes",UIS,4,1,w_mean,Y_GE15,FALSE,4,33,20
 IllPop.Ag15t24,ILLPOP_PER__Z__Z__T_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Youth illiterate population, 15-24 years, both sexes (number)",UIS,4,1,sum,,NA,4,33,23

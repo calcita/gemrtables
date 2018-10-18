@@ -21,7 +21,7 @@ other <- function() {
       cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
 
       wb_up <- wbstats::wb(country = "countries_only", indicator = c("SH.STA.STNT.ZS",
-                                                                     "LO.TIMSS.SCI8.LOW", "LO.PISA.SCI.0.MA", "LO.PISA.SCI.1B.MA", "LO.PISA.SCI.1A.MA",
+                                                                     "LO.TIMSS.SCI8.LOW", "LO.PISA.SCI.0", "LO.PISA.SCI.1B", "LO.PISA.SCI.1A",
                                                                      "LO.PIAAC.LIT.YOU.BE", "LO.PIAAC.LIT.YOU.1", "LO.PIAAC.LIT.BE", "LO.PIAAC.LIT.1",
                                                                      "LO.PIAAC.NUM.YOU.BE", "LO.PIAAC.NUM.YOU.1", "LO.PIAAC.NUM.BE", "LO.PIAAC.NUM.1",
                                                                      "LO.PIAAC.LIT.FE.BE", "LO.PIAAC.LIT.FE.1", "LO.PIAAC.LIT.MA.BE", "LO.PIAAC.LIT.MA.1",
