@@ -33,7 +33,6 @@
 #' These functions largely serve as a wrapper for import and clean functions.
 #'
 #' @import utils
-#' @importFrom magrittr %>%
 #'
 #' @docType package
 #' @name gemrtables

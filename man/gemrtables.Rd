@@ -18,7 +18,7 @@ are `GEMR.region`, `UIS.region` or `SDG.region`. Defaults to `SDG.region`.}
 years prior to the current year.}
 
 \item{export}{If `TRUE` returns an xlsx workbook in 'wide' format, with
-  seperate worksheets per table.
+  separate worksheets per table.
 If `FALSE` (the default) returns a data frame in 'long' format.}
 
 \item{path}{File path to write xlsx workbook (character). Overwrites existing
