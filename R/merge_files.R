@@ -8,7 +8,7 @@
 #'@family import/clean
 
 inds <- function() {
-  read.csv(system.file("config", "indicators.csv", package = "gemrtables"), stringsAsFactors = FALSE) %>%
+  readr::read_csv(system.file("config", "indicators.csv", package = "gemrtables")) %>%
   # read.csv("https://drive.google.com/uc?export=download&id=1_VGBQ3x4DDrcmEO_5192oPP4xjOuz12I", stringsAsFactors = FALSE) %>%
     dplyr::mutate(var_concat = ifelse(var_concat == "", NA, var_concat)) %>%
     dplyr::as_tibble()
@@ -23,7 +23,7 @@ inds <- function() {
 #'@family import/clean
 #'
 region_groups <- function() {
-  read.csv(system.file("config", "regions.csv", package = "gemrtables"), stringsAsFactors = FALSE) %>%
+  readr::read_csv(system.file("config", "regions.csv", package = "gemrtables")) %>%
   # read.csv("https://drive.google.com/uc?export=download&id=13-dMaPNS6-DwzMTxhIR4OKP2zrm5s_dx", stringsAsFactors = FALSE) %>%
     dplyr::mutate(iso2c = ifelse(annex_name == "Namibia", "NA", iso2c))
 }
@@ -35,7 +35,7 @@ region_groups <- function() {
 #'@family import/clean
 #'
 region_groups2 <- function() {
-  read.csv(system.file("config", "regions2.csv", package = "gemrtables"), stringsAsFactors = FALSE)
+  readr::read_csv(system.file("config", "regions2.csv", package = "gemrtables"))
   # read.csv("https://drive.google.com/uc?export=download&id=1Izklg_r1eNPN-ECLGkagRnp5u9K2EfYt", stringsAsFactors = FALSE)
 }
 
@@ -55,7 +55,7 @@ weights <- function() {
   weights_up <- R.cache::loadCache(key)
 
   if(is.null(weights_up)) {
-    cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
+    message(glue::glue("generating {key} from scratch..."))
 
     uis <- list("https://api.uis.unesco.org/sdmx/data/UNESCO,DEM_ECO,1.0/POP.PER._T.Y15T24+Y_GE65+_T.?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2017&subscription-key=",
                 "https://api.uis.unesco.org/sdmx/data/UNESCO,DEM_ECO,1.0/ILO_POP.PER._T.Y_GE15.?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2017&subscription-key=",
@@ -81,6 +81,7 @@ weights <- function() {
                 "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/TEACH.PER.L1+L02+L2_3+L5T8._T._T._T..INST_T.............?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=",
                 "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/SAP.PER._T.._T.Y12T14...............?format=sdmx-compact-2.1&startPeriod=2005&endPeriod=2030&subscription-key=") %>%
     read_urls(key = .gemrtables.pkg.env$key)
+
 
   unpd <-  read_urls("http://data.un.org/ws/rest/data/DF_UNDATA_WPP/SP_POP_TOTL.A.Y_LT5+Y5T10+Y10T14._T.....?startPeriod=2005&endPeriod=2017")
 

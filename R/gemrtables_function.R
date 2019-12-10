@@ -15,7 +15,7 @@
 #' @param ref_year A four digit numeric of the reference year. Default is two
 #'   years prior to the current year.
 #' @param export If `TRUE` returns an xlsx workbook in 'wide' format, with
-#'   seperate worksheets per table.
+#'   separate worksheets per table.
 #' If `FALSE` (the default) returns a data frame in 'long' format.
 #' @param path File path to write xlsx workbook (character). Overwrites existing
 #'   file.
@@ -140,12 +140,12 @@ gemrtables <- function(
     }
 
     if (!is.null(data)) {
-      cat(paste("Loaded cached", df, "\n", sep = " " ))
+      message(glue::glue("Loaded cached {df}"))
       return(data);
     }
 
     # 2. If not available, generate it.
-    cat(paste("Building", df, "...\n", sep = " "))
+    message(glue::glue("Building {df} ..."))
     if(df == "country_data") {
       data <- c_data()
       R.cache::saveCache(data, key=key_country, comment=df)
@@ -241,7 +241,7 @@ gemrtables <- function(
     format_wide()
 
   if(nrow(unmatched > 0)) {
-    cat(paste("The following variables are missing:\n"))
+    message(glue::glue("The following variables are missing:"))
     cat(paste(capture.output(print(unmatched)), collapse = "\n"))
   }
 

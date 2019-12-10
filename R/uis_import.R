@@ -13,7 +13,7 @@ uis <- function() {
 
   if(is.null(uis_up)) {
 
-    cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
+    message(glue::glue("generating {key} from scratch..."))
 
     uis_up <- list(
 
@@ -129,8 +129,7 @@ uis <- function() {
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/TEACH+PTR.PER.L02+L1+L2_3._T._T._T._T.INST_T......_T..._T....?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=",
     #vars 3:6, 10:13, 17:20
     "https://api.uis.unesco.org/sdmx/data/UNESCO,EDU_NON_FINANCE,2.0/QUTP+TRTP+TISP+TATTRR.PT.L02+L1+L2_3._T._T._T..INST_T......_T..._T._T...?format=sdmx-compact-2.1&lastNObservations=1&subscription-key=") %>%
-  read_urls(key = .gemrtables.pkg.env$key)
-
+    read_urls(key = .gemrtables.pkg.env$key)
     R.cache::saveCache(uis_up, key=key, comment="uis_up")
 }
 
@@ -138,11 +137,4 @@ uis <- function() {
     uis_clean()
 
 }
-
-
-
-
-
-
-
 

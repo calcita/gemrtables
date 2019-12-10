@@ -18,7 +18,7 @@ other <- function() {
     wb_up <- R.cache::loadCache(key)
 
     if(is.null(wb_up)) {
-      cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
+      message(glue::glue("generating {key} from scratch..."))
 
       wb_up <- wbstats::wb(country = "countries_only", indicator = c("SH.STA.STNT.ZS",
                                                                      "LO.TIMSS.SCI8.LOW", "LO.PISA.SCI.0", "LO.PISA.SCI.1B", "LO.PISA.SCI.1A",
@@ -44,7 +44,7 @@ other <- function() {
     eurostat_up <- R.cache::loadCache(key)
 
     if(is.null(eurostat_up)) {
-      cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
+      message(glue::glue("generating {key} from scratch..."))
 
       eurostat_up <- list("http://ec.europa.eu/eurostat/SDMX/diss-web/rest/data/trng_aes_100/.T.FE_NFE.PC../?startperiod=2010&endPeriod=2050",
                           "ec.europa.eu/eurostat/SDMX/diss-web/rest/data/isoc_sk_cskl_i/A.I_CCPY.IND_TOTAL.PC_IND./?startperiod=2010&endPeriod=2050") %>%
@@ -67,7 +67,7 @@ other <- function() {
     oecd_up <- R.cache::loadCache(key)
 
     if(is.null(oecd_up)) {
-      cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
+      message(glue::glue("generating {key} from scratch..."))
 
       oecd_up <- list("https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/CRS1/20005..1000.100.100.D.112.E01+E02/all?startTime=2016&endTime=2050",
                       "https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/EAG_TS_ACT/..L0+L1+L2_C4+L3_C4.Y25T64.T.RATIO_ACTL_TER/all?",
@@ -85,28 +85,28 @@ other <- function() {
 
   #google drive data
 
-  un_aids_data <- read.csv("https://drive.google.com/uc?export=download&id=1S6E4WwosJHjpu-d557tUjlJ6awMAwLsa", stringsAsFactors = FALSE) %>%
+  un_aids_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1S6E4WwosJHjpu-d557tUjlJ6awMAwLsa") %>%
     un_aids_clean()
 
-  gcpea_data <- read.csv("https://drive.google.com/uc?export=download&id=1tlya_2MkfFuAZC_fXw8Q3BZqZ3Qq08Q1", stringsAsFactors = FALSE) %>%
+  gcpea_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1tlya_2MkfFuAZC_fXw8Q3BZqZ3Qq08Q1") %>%
     gcpea_clean()
 
-  unicef_wash_data <- read.csv("https://drive.google.com/uc?export=download&id=1I4XbP4fCzlkE-e-98BVgh6UPjM0oEHDI", stringsAsFactors = FALSE) %>%
+  unicef_wash_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1I4XbP4fCzlkE-e-98BVgh6UPjM0oEHDI") %>%
     unicef_wash_clean()
 
-  unicef_ecce_learn_data <- read.csv("https://drive.google.com/uc?export=download&id=1JzOo7rt8O3ZE9eSAL3v1jKexLwbICtM3", stringsAsFactors = FALSE) %>%
+  unicef_ecce_learn_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1JzOo7rt8O3ZE9eSAL3v1jKexLwbICtM3") %>%
     unicef_ecce_clean(ind = "home.lrn.env.3t7", source = "UNICEF")
 
-  unicef_ecce_books_data <- read.csv("https://drive.google.com/uc?export=download&id=15oDSTYqYm4Z4lHx7nQi31k_G1tjHfcGz", stringsAsFactors = FALSE) %>%
+  unicef_ecce_books_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=15oDSTYqYm4Z4lHx7nQi31k_G1tjHfcGz") %>%
     unicef_ecce_clean(ind = "home.book.u5", source = "UNICEF")
 
-  bullying_data <- read.csv("https://drive.google.com/uc?export=download&id=1QgrTGKWuhlgd_oYtCKAiUw4SSgdj4xts", stringsAsFactors = FALSE) %>%
+  bullying_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1QgrTGKWuhlgd_oYtCKAiUw4SSgdj4xts") %>%
     bullying_clean()
 
-  ict_skills_data <- read.csv("https://drive.google.com/uc?export=download&id=1dV4T7RSDbJmYvhy7ydUzLCkLCTcUkZzl", stringsAsFactors = FALSE) %>%
+  ict_skills_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1dV4T7RSDbJmYvhy7ydUzLCkLCTcUkZzl") %>%
     ict_skills_clean()
 
-  chores_data <-  read.csv("https://drive.google.com/uc?export=download&id=1tTQB6CtgGkBwj4SBsjLdfR7l_4mVlFfs", stringsAsFactors = FALSE) %>%
+  chores_data <-  readr::read_csv("https://drive.google.com/uc?export=download&id=1tTQB6CtgGkBwj4SBsjLdfR7l_4mVlFfs") %>%
     chores_clean()
 
   #bind all

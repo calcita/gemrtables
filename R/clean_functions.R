@@ -124,10 +124,8 @@ uis_clean <- function(df) {
     filter(year == max(year)) %>%
     ungroup()
 
-  parity_indices <- list(df = list("clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1",
-                                   "clean1", "clean1", "clean1", "clean1"),
-                         col = list("var_concat",  "var_concat", "var_concat", "var_concat", "var_concat",  "var_concat", "var_concat",
-                                    "var_concat", "var_concat", "var_concat", "var_concat", "var_concat",  "var_concat", "var_concat"),
+  parity_indices <- list(df = rep(list("clean1"), 14),
+                         col = rep(list("var_concat"), 14),
                          a = list("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
@@ -160,7 +158,7 @@ uis_clean <- function(df) {
                                         "LR.Ag15t24.GPIA", "LR.Ag15t99.GPIA", "Read.Primary.WPIA", "Math.Primary.WPIA",
                                         "Read.LowerSec.WPIA", "Math.LowerSec.WPIA", "GER.02.GPIA", "GER.1.GPIA", "GER.2t3.GPIA",
                                         "GER.5t8.GPIA"),
-                         val_status = list(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)) %>%
+                         val_status = rep(list(TRUE), 14)) %>%
     purrr::pmap(parity_adj) %>%
     purrr::reduce(dplyr::bind_rows)
 
