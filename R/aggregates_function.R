@@ -35,9 +35,9 @@ agg_preprocess <- function(df) {
 compute_aggregate <- function(df, region, entity) {
 
   wt <- .gemrtables.pkg.env$weights_data %>%
-    filter(wt_region == region) %>%
-    select(-wt_region) %>%
-    identity
+  filter(wt_region == region) %>%
+  select(-wt_region) %>%
+  identity
 
   region <- as.name(region)
   entity <- as.character(entity)

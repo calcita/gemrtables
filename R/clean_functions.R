@@ -124,7 +124,7 @@ uis_clean <- function(df) {
     filter(year == max(year)) %>%
     ungroup()
 
-  parity_indices <- list(df = rep(list("clean1"), 14),
+  parity_indices <- list(df = list("clean1","clean1","clean1","clean1","clean1","clean1","clean1","clean1","clean1","clean1","clean1","clean1","clean1","clean1"),
                          col = rep(list("var_concat"), 14),
                          a = list("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
                                   "STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
@@ -228,8 +228,8 @@ cedar_clean <- function(df) {
     dplyr::inner_join(.gemrtables.pkg.env$regions, by = c("country_code" = "iso3c")) %>%
     dplyr::filter(!is.na(ind))
 
-  parity_indices <- list(df = list("clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1", "clean1"),
-                         col = list("ind",  "ind", "ind", "ind", "ind",  "ind", "ind", "ind", "ind", "ind"),
+  parity_indices <- list(df = rep(list("clean1"), 10),
+                         col = rep(list("ind"), 10),
                          a = list("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f"),
                          b = list("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m"),
                          varname = list("CR.1.GPIA", "CR.1.LPIA", "CR.1.WPIA", "CR.2.GPIA", "CR.2.LPIA", "CR.2.WPIA",
@@ -648,7 +648,7 @@ weights_clean <- function(df) {
         dplyr::mutate(year = .gemrtables.pkg.env$ref_year + 2)
     )} %>%
     dplyr::group_by(iso2c, wt_var) %>% #na.omit %>% filter(n() == 1)
-    dplyr::mutate(wt_value = stats::approx(year, wt_value, xout = year, rule = 2)$y) %>%
+    dplyr::mutate(wt_value = wt_value) %>%#stats::approx(year, wt_value, xout = year, rule = 2)$y
     dplyr::filter(year == .gemrtables.pkg.env$ref_year) %>%
     dplyr::ungroup()
 }

@@ -9,43 +9,43 @@
 
 cedar <- function() {
 
-  # key <- list("cedar_up")
-  # cedar_up <- R.cache::loadCache(key)
-  #
-  # if(is.null(cedar_up)) {
-  #   #cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
-  #   message(glue::glue("generating {key} from scratch..."))
-  #
-  #   cedar_up <- list(sc = list("wide_dimension",
-  #                              "wide_dimension",
-  #                              "other_dimension",
-  #                              "other_dimension",
-  #                              "other_dimension",
-  #                              "other_dimension"),
-  #                    level = list(1,
-  #                                 c(13:15, 31),
-  #                                 NA,
-  #                                 NA,
-  #                                 NA,
-  #                                 NA),
-  #                    table = list("wide_1",
-  #                                 "wide_1",
-  #                                 "other_school_readiness",
-  #                                 "other_facilities",
-  #                                 "other_social_norms",
-  #                                 "other_curriculum"),
-  #                    ind = list(c("trans_prim_m", "comp_prim_v2_m", "comp_lowsec_v2_m", "comp_upsec_v2_m"),
-  #                               c("comp_prim_v2_m", "comp_lowsec_v2_m", "comp_upsec_v2_m"),
-  #                               c("u5_posit_home_learn", "u5_child_book", "school_child_track"),
-  #                               c("stu_exper_bully_13_17", "stu_exper_violence_13_17"),
-  #                               "child_chores_more_28_12_14",
-  #                               c("esd_gced_curr_ge", "esd_gced_curr_hr", "esd_gced_glo_cit", "esd_gced_sus_dev"))) %>%
-  #   purrr::pmap(read_cedar) %>%
-  #   dplyr::bind_rows()
-  #
-  # R.cache::saveCache(cedar_up, key=key, comment="cedar_up")
-  #
-  # }
+  key <- list("cedar_up")
+  cedar_up <- R.cache::loadCache(key)
+
+  if(is.null(cedar_up)) {
+    #cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
+    message(glue::glue("generating {key} from scratch..."))
+
+    cedar_up <- list(sc = list("wide_dimension",
+                               "wide_dimension",
+                               "other_dimension",
+                               "other_dimension",
+                               "other_dimension",
+                               "other_dimension"),
+                     level = list(1,
+                                  c(13:15, 31),
+                                  NA,
+                                  NA,
+                                  NA,
+                                  NA),
+                     table = list("wide_1",
+                                  "wide_1",
+                                  "other_school_readiness",
+                                  "other_facilities",
+                                  "other_social_norms",
+                                  "other_curriculum"),
+                     ind = list(c("trans_prim_m", "comp_prim_v2_m", "comp_lowsec_v2_m", "comp_upsec_v2_m"),
+                                c("comp_prim_v2_m", "comp_lowsec_v2_m", "comp_upsec_v2_m"),
+                                c("u5_posit_home_learn", "u5_child_book", "school_child_track"),
+                                c("stu_exper_bully_13_17", "stu_exper_violence_13_17"),
+                                "child_chores_more_28_12_14",
+                                c("esd_gced_curr_ge", "esd_gced_curr_hr", "esd_gced_glo_cit", "esd_gced_sus_dev"))) %>%
+    purrr::pmap(read_cedar) %>%
+    dplyr::bind_rows()
+
+  R.cache::saveCache(cedar_up, key=key, comment="cedar_up")
+
+  }
 
   cedar_local <-  read.csv(system.file("local_data", "WIDE_2018_completion.csv", package = "gemrtables"), stringsAsFactors = FALSE)
   cedar_local <- cedar_local[-c(4648:4649),] %>%
