@@ -33,8 +33,15 @@ parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
   indice <- df %>%
     dplyr::filter(!!col %in% c(a, b))
 
+  if(isTRUE(.gemrtables.pkg.env$level_country)){
   indice <- dplyr::group_by(indice, iso2c, year) %>%
-    dplyr::filter(n()==2 ) %>%
+    dplyr::filter(n()==2 )
+  } else {
+   indice <- dplyr::group_by(indice, !!region, year) %>%
+      dplyr::filter(n()==2 )
+  }
+
+  indice %>%
     {if(val_status == FALSE) dplyr::summarise(., value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]))
       else
         dplyr::summarise(., value = ifelse(value[!!col == !!a] > value[!!col == !!b], 2 - (1/(value[!!col == !!a]/value[!!col == !!b])), value[!!col == !!a]/value[!!col == !!b]),
@@ -174,10 +181,10 @@ uis_clean <- function(df) {
   } else {
 
     clean1 <- clean1 %>%
-      filter(var_concat %in% c(vars_f, vars_m)) %>%
-      mutate(ind = var_concat)
+      dplyr::filter(var_concat %in% c(vars_f, vars_m)) %>%
+      R.cache::saveCache(key=list("uis_cleaned"), comment="uis_cleaned")
 
-    cleaned <- dplyr::bind_rows(clean2, inbound_stu, clean1) %>%
+    cleaned <- dplyr::bind_rows(clean2, inbound_stu) %>%
       dplyr::mutate(source = "UIS", year = as.numeric(year)) %>%
       dplyr::select(iso2c, year, ind, value, val_status, source) %>%
       dplyr::filter(!is.na(value))
@@ -244,10 +251,12 @@ cedar_clean <- function(df) {
     dplyr::filter(!is.na(ind))
 
   if(isTRUE(.gemrtables.pkg.env$level_country)){
+    vars_f = c("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
+    vars_m = c("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
   parity_indices <- list(df = rep(list("clean1"), 10),
                          col = rep(list("ind"), 10),
-                         a = list("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f"),
-                         b = list("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m"),
+                         a = list(vars_f),
+                         b = list(vars_m),
                          varname = list("CR.1.GPIA", "CR.1.LPIA", "CR.1.WPIA", "CR.2.GPIA", "CR.2.LPIA", "CR.2.WPIA",
                                         "CR.3.GPIA", "CR.3.LPIA", "CR.3.WPIA", "chores.28plus.12t14.GPIA")) %>%
     purrr::pmap(parity_adj) %>%
@@ -263,8 +272,13 @@ cedar_clean <- function(df) {
     dplyr::ungroup() %>%
     unique()
   } else {
+    cedar_clean <- clean1 %>%
+      dplyr::filter(var_concat %in% c(vars_f, vars_m)) %>%
+      R.cache::saveCache(key=list("cedar_cleaned"), comment="cedar_cleaned")
+
     cleaned <- clean1 %>%
       dplyr::ungroup() %>%
+      dplyr::filter(!var_concat %in% c(vars_f, vars_m)) %>%
       dplyr::select(iso2c, year, ind, value, val_status) %>%
       dplyr::mutate(source = "cedar") %>%
       dplyr::filter(!is.na(value)) %>%
