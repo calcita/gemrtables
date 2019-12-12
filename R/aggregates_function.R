@@ -98,4 +98,44 @@ aggregates <- function(df) {
     dplyr::filter(!is.na(annex_name) | annex_name != "")
 }
 
+#' compute_aggregate_values
+#'
+#' \code{compute_aggregate_values} computes medians on country_data
+#' for a specified aggregate grouping.
+#'
+#' @param df a data frame with a key / value columns.
+#' @param region aggregate grouping on which to compute (corresponds to the
+#'   relevent column in `.gemrtables.pkg.env$indicators`.
+#' @param entity type of aggregate (character)
+#' @return A data frame.
+#' @family summarise
 
+
+compute_aggregate_values <- function(df, region, entity){
+  region <- as.name(region)
+  entity <- as.character(entity)
+  computed <- df %>%
+    dplyr::group_by(var_concat,!!region) %>%
+    summarise(value = median(value, na.rm = TRUE))
+}
+
+#' aggregates_values
+#'
+#' \code{aggregates_values} Is a wrapper function for \code{compute_aggregate_values}.
+#' Aggregates values by medians at the region level.
+#'
+#' @param df a data frame with a key / value columns.
+#' @return A data frame.
+#' @family summarise
+
+aggregates_values <- function(df){
+  world <- compute_aggregate_values(df, region = "World", entity = "world")
+  regional <- compute_aggregate_values(df, region = region, entity = "region")
+  subregional <- compute_aggregate_values(df, region = .gemrtables.pkg.env$subregion, entity = "subregion")
+  income <- compute_aggregate_values(df, region = "income_group", entity = "income_group")
+  subincome <- compute_aggregate_values(df, region = "income_subgroup", entity = "income_subgroup")
+
+  aggregates <- dplyr::bind_rows(world, regional, subregional, income, subincome) %>%
+    dplyr::filter(!is.na(var_concat))
+
+}
