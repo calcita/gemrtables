@@ -21,6 +21,8 @@
 #'   file.
 #' @param key UIS api subcription key.
 #' @param password password to cedar database.
+#' @param level_country If it is TRUE, parity indices are calculated at the country level
+#' @param drake If it is TRUE, the drake plan is run instead load or generate data
 #' @param removeCache Character vector of unprocessed dataframes. Options are c("uis_up", "cedar_up", "wb_up", "eurostat_up", "oecd_up")
 #' @return A data frame or an xlsx workbook.
 #' @export
@@ -38,6 +40,8 @@ gemrtables <- function(
   password,
   pc_flag_cut = 66,
   pc_comp_cut2 = 33,
+  level_country = TRUE,
+  drake = TRUE,
   removeCache
   ) {
 
@@ -54,7 +58,7 @@ gemrtables <- function(
 
   .gemrtables.pkg.env$pc_comp_cut2 <- pc_comp_cut2
 
-
+  .gemrtables.pkg.env$level_country <- level_country
 
   if(region == "SDG.region") {
     .gemrtables.pkg.env$subregion <- as.name("SDG.subregion")
@@ -103,6 +107,7 @@ gemrtables <- function(
     unique()
   .gemrtables.pkg.env$regions2 <- region_groups2() %>%
     dplyr::filter(grouping == as.character(.gemrtables.pkg.env$region))
+
 
   #load/ cache for imported/cleaned country data and weights
 
@@ -184,6 +189,11 @@ gemrtables <- function(
     dplyr::left_join(select(pop_data, -year), by = c('iso2c', 'wt_region', 'group')) %>%
     dplyr::select(-year)
 
+  # if level_country is not TRUE parity indices are calculated directly at the region level
+  if(!isTRUE(.gemrtables.pkg.env$level_country)){
+    country_data <- parity_indices_region()
+  }
+
   #clean country data and export statistical tables
 
   country_data1 <- country_data %>%
@@ -250,4 +260,5 @@ gemrtables <- function(
   }else {
     return(long_data)
   }
-}
+ }
+
