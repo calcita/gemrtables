@@ -189,20 +189,12 @@ gemrtables <- function(
     dplyr::left_join(select(pop_data, -year), by = c('iso2c', 'wt_region', 'group')) %>%
     dplyr::select(-year)
 
-  # if level_country is not TRUE parity indices are calculated directly at the region level
-  if(!isTRUE(.gemrtables.pkg.env$level_country)){
-    country_data <- parity_indices_region()
-  }
-
   #clean country data and export statistical tables
 
   country_data1 <- country_data %>%
     dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
     dplyr::left_join(.gemrtables.pkg.env$indicators, by = c("ind", "source")) %>%
     dplyr::filter(year >= .gemrtables.pkg.env$ref_year - year_cut)
-
-  unmatched <- dplyr::anti_join(.gemrtables.pkg.env$indicators, country_data1, by = c("ind", "source")) %>%
-    dplyr::select(ind, source, sheet, position)
 
   country_data2 <- country_data1 %>%
     dplyr::select(iso2c, annex_name, World, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, income_group, income_subgroup, year, ind, value, val_status, source) %>%
@@ -241,6 +233,17 @@ gemrtables <- function(
     dplyr::mutate(value = dplyr::case_when(annex_name == "World" & ind == "odaflow.volumescholarship" ~ value + schol_unspec[[2,2]],
                                            annex_name == "World" & ind == "odaflow.imputecost" ~ value + schol_unspec[[1,2]],
                                            TRUE ~ value))
+
+    # if level_country is not TRUE parity indices are calculated directly at the region level
+    if(!isTRUE(.gemrtables.pkg.env$level_country)){
+      region_data <- parity_indices_region()
+      region_data1 <- region_data %>%
+        right_join(.gemrtables.pkg.env$regions2[,1:3], by = c("annex_name"))
+        left_join(.gemrtables.pkg.env$indicators, by = c("ind", "source"))
+    }
+
+  unmatched <- dplyr::anti_join(.gemrtables.pkg.env$indicators, country_data1, by = c("ind", "source")) %>%
+      dplyr::select(ind, source, sheet, position)
 
   long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, entity),

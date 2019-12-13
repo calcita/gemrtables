@@ -842,8 +842,6 @@ parity_indices_region <- function(){
                              val_status = rep(list(TRUE), 14)) %>%
     purrr::pmap(parity_adj) %>%
     purrr::reduce(dplyr::bind_rows) %>%
-    dplyr::mutate(source = "UIS", year = as.numeric(year)) %>%
-    dplyr::select(iso2c, year, ind, value, val_status, source) %>%
     dplyr::filter(!is.na(value))
 
   # cedar
@@ -883,12 +881,8 @@ parity_indices_region <- function(){
                          varname = list("adult.profiliteracy.gpia", "adult.profinumeracy.gpia")) %>%
     purrr::pmap(parity_adj) %>%
     purrr::reduce(dplyr::bind_rows) %>%
-    dplyr::mutate(source = "PIAAC") %>%
-    dplyr::group_by(iso2c, ind) %>%
-    dplyr::filter(year == max(year), !is.na(value)) %>%
-    dplyr::mutate(val_status = "A",
-                  year = as.numeric(year)) %>%
-    dplyr::select(iso2c, year, ind, value, val_status, source)
+    dplyr::mutate(source = "PIAAC")
+
   # Added parity indices to country_data
-  country_data <- dplyr::bind_rows(country_data, parity_indices_uis, parity_indices_cedar)
+  region_data <- dplyr::bind_rows(parity_indices_uis, parity_indices_cedar)
 }
