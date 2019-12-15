@@ -13,7 +13,6 @@ cedar <- function() {
   cedar_up <- R.cache::loadCache(key)
 
   if(is.null(cedar_up)) {
-    #cat(paste("   generating", key[[1]], "from scratch...\n", sep = " "))
     message(glue::glue("generating {key} from scratch..."))
 
     cedar_up <- list(sc = list("wide_dimension",
