@@ -904,5 +904,5 @@ parity_indices_region <- function(){
     dplyr::mutate(source = "PIAAC")
 
   # Binded parity indices
-  region_data <- dplyr::bind_rows(parity_indices_uis, parity_indices_cedar, parity_indices_wb)
+  dplyr::bind_rows(parity_indices_uis, parity_indices_cedar, parity_indices_wb)
 }
