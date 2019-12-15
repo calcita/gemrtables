@@ -27,7 +27,7 @@
 
 parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
 
-  #df <- dynGet(df)
+  df <- dynGet(df)
   col <- as.name(col)
 
     if(isTRUE(.gemrtables.pkg.env$level_country)){
@@ -37,8 +37,8 @@ parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
     dplyr::filter(n()==2 )
   } else {
     indice <- df %>%
-      #dplyr::filter(!!col %in% c(a, b))
-      dplyr::group_by(var_concat,region) %>%
+      dplyr::filter(!!col %in% c(a, b))
+    indice <- dplyr::group_by(indice, region, year) %>%
       dplyr::filter(n()==2)
   }
 
@@ -132,38 +132,39 @@ uis_clean <- function(df) {
     filter(year == max(year)) %>%
     ungroup()
 
+  # auxiliary
+  vars_f <- c("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
+              "LR_PT__Z__Z_F_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+              "LR_PT__Z__Z_F_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+              "GER_PT_L02__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+              "GER_PT_L1__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+              "GER_PT_L2_3__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+              "GER_PT_L5T8__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA")
+
+  vars_m <- c("STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L2__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L2__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
+              "LR_PT__Z__Z_M_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+              "LR_PT__Z__Z_M_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+              "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+              "GER_PT_L02__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+              "GER_PT_L1__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+              "GER_PT_L2_3__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+              "GER_PT_L5T8__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA")
+
   if(isTRUE(.gemrtables.pkg.env$level_country)){
-    vars_f <- c("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                "STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                "LR_PT__Z__Z_F_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                "LR_PT__Z__Z_F_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
-                "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
-                "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
-                "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
-                "GER_PT_L02__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                "GER_PT_L1__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                "GER_PT_L2_3__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                "GER_PT_L5T8__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA")
-
-    vars_m <- c("STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
-               "STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
-               "STU_PT_L2__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
-               "STU_PT_L2__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
-               "LR_PT__Z__Z_M_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-               "LR_PT__Z__Z_M_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-               "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
-               "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
-               "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
-               "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
-               "GER_PT_L02__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-               "GER_PT_L1__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-               "GER_PT_L2_3__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-               "GER_PT_L5T8__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA")
-
-  parity_indices <- list(df = rep(list("clean1"), 14),
+    parity_indices <- list(df = rep(list("clean1"), 14),
                          col = rep(list("var_concat"), 14),
                          a = list(vars_f),
                          b = list(vars_m),
@@ -251,9 +252,11 @@ cedar_clean <- function(df) {
     dplyr::inner_join(.gemrtables.pkg.env$regions, by = c("country_code" = "iso3c")) %>%
     dplyr::filter(!is.na(ind))
 
+  vars_f = c("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
+  vars_m = c("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
+
   if(isTRUE(.gemrtables.pkg.env$level_country)){
-    vars_f = c("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
-    vars_m = c("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
+
   parity_indices <- list(df = rep(list("clean1"), 10),
                          col = rep(list("ind"), 10),
                          a = list(vars_f),
@@ -343,12 +346,7 @@ wb_clean <- function(df) {
            year = as.numeric(year)) %>%
     dplyr::select(iso2c, year, ind, value, val_status, source)
   } else {
-    cleaned <- clean2 %>%
-      dplyr::group_by(iso2c, ind) %>%
-      dplyr::filter(year == max(year), !is.na(value)) %>%
-      dplyr::mutate(val_status = "A",
-                    year = as.numeric(year)) %>%
-      dplyr::select(iso2c, year, ind, value, val_status, source)
+    cleaned <- clean2
   }
 }
 
@@ -789,6 +787,25 @@ format_wide <- function(df) {
     purrr::map(function(.) dplyr::select(., -sheet, -is_aggregate, -entity, -!!.gemrtables.pkg.env$region, - regionx, -region_order))
 }
 
+#' parity_indices_region
+#'
+#' \code{parity_indices_region} calculates adjusted parity ratios at the region level.
+#'
+#' @param df a data frame with a key / value columns.
+#' @param col indicator key column.
+#' @param a indicator for 'disadvantaged' group (numerator).
+#' @param b indicator for 'advantaged' group  (denominator).
+#' @param varname name for calculated indice (character).
+#' @param val_status For use with data with flags for estimated observations. If
+#'   `TRUE` will calculate flag for indice (requires flag column to be named
+#'   `val_status` and estimates lablled as `E`.
+#' @return A data frame.
+#' @export
+#' @family summarise
+#'
+
+
+
 parity_indices_region <- function(){
   uis_cleaned1 <- R.cache::loadCache(uis_cleaned) %>%
     dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
@@ -825,7 +842,7 @@ parity_indices_region <- function(){
                  "GER_PT_L5T8__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA")
 
   uis_cleaned_aggregates <- aggregates_values(uis_cleaned1) %>%
-    filter(var_concat %in% c(unclass(vars_f), unclass(vars_m))) %>%
+    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
     mutate(region = paste(World, SDG.region, SDG.subregion, income_group, income_subgroup) %>%
              stringr::str_replace_all("NA", "") %>%
              stringr::str_squish()) %>%
@@ -842,6 +859,7 @@ parity_indices_region <- function(){
                              val_status = rep(list(TRUE), 14)) %>%
     purrr::pmap(parity_adj) %>%
     purrr::reduce(dplyr::bind_rows) %>%
+    dplyr::mutate(source = "UIS") %>%
     dplyr::filter(!is.na(value))
 
   # cedar
@@ -861,20 +879,22 @@ parity_indices_region <- function(){
                                varname = list("CR.1.GPIA", "CR.1.LPIA", "CR.1.WPIA", "CR.2.GPIA", "CR.2.LPIA", "CR.2.WPIA",
                                               "CR.3.GPIA", "CR.3.LPIA", "CR.3.WPIA", "chores.28plus.12t14.GPIA")) %>%
     purrr::pmap(parity_adj) %>%
-    purrr::reduce(dplyr::bind_rows)
+    purrr::reduce(dplyr::bind_rows)%>%
+    dplyr::mutate(source = "cedar")
 
   # WB
   vars_f <- list("adult.profiliteracy.f","adult.profinumeracy.f")
   vars_m <- list("adult.profiliteracy.m", "adult.profinumeracy.m")
 
-  wb_cleaned <- country_data %>% filter(ind %in% c(vars_f, vars_m)) %>%
+  wb_cleaned <- country_data %>%
+    filter(ind %in% c(unlist(vars_f), unlist(vars_m))) %>%
     dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
     dplyr::filter(!is.na(ind)) %>%
     dplyr::mutate(var_concat = ind)
 
   wb_cleaned_aggregates <- aggregates_values(wb_cleaned)
 
-  parity_indices <- list(df = list("wb_cleaned_aggregates","wb_cleaned_aggregates"),
+  parity_indices_wb <- list(df = list("wb_cleaned_aggregates","wb_cleaned_aggregates"),
                          col = list("ind",  "ind"),
                          a = list("adult.profiliteracy.f","adult.profinumeracy.f"),
                          b = list("adult.profiliteracy.m", "adult.profinumeracy.m"),
@@ -883,6 +903,6 @@ parity_indices_region <- function(){
     purrr::reduce(dplyr::bind_rows) %>%
     dplyr::mutate(source = "PIAAC")
 
-  # Added parity indices to country_data
-  region_data <- dplyr::bind_rows(parity_indices_uis, parity_indices_cedar)
+  # Binded parity indices
+  region_data <- dplyr::bind_rows(parity_indices_uis, parity_indices_cedar, parity_indices_wb)
 }
