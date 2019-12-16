@@ -252,8 +252,8 @@ cedar_clean <- function(df) {
     dplyr::inner_join(.gemrtables.pkg.env$regions, by = c("country_code" = "iso3c")) %>%
     dplyr::filter(!is.na(ind))
 
-  vars_f = c("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
-  vars_m = c("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
+  vars_f = list("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
+  vars_m = list("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
 
   if(isTRUE(.gemrtables.pkg.env$level_country)){
 
@@ -960,8 +960,6 @@ long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates
 #' @family summarise
 #'
 
-
-
 parity_indices_region <- function(){
   uis_cleaned1 <- R.cache::loadCache(uis_cleaned) %>%
     dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
@@ -997,9 +995,10 @@ parity_indices_region <- function(){
                  "GER_PT_L2_3__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
                  "GER_PT_L5T8__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA")
 
-  uis_cleaned_aggregates <- aggregates_values(uis_cleaned1) %>%
+  uis_cleaned_aggregates <- uis_cleaned1 %>%
+    aggregates_values() %>%
     filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    mutate(region = paste(World, SDG.region, SDG.subregion, income_group, income_subgroup) %>%
+    mutate(region = paste(World, !!region, income_group, income_subgroup) %>%
              stringr::str_replace_all("NA", "") %>%
              stringr::str_squish()) %>%
     filter(nchar(region) != 0)
@@ -1024,7 +1023,12 @@ parity_indices_region <- function(){
     mutate(ind = var_concat)
 
   cedar_cleaned_aggregates <- cedar_cleaned1 %>%
-    aggregates()
+    aggregates_values() %>%
+    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
+    mutate(region = paste(World, !!region, income_group, income_subgroup) %>%
+             stringr::str_replace_all("NA", "") %>%
+             stringr::str_squish()) %>%
+    filter(nchar(region) != 0)
 
   vars_f = list("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
   vars_m = list("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
@@ -1048,7 +1052,14 @@ parity_indices_region <- function(){
     dplyr::filter(!is.na(ind)) %>%
     dplyr::mutate(var_concat = ind)
 
-  wb_cleaned_aggregates <- aggregates_values(wb_cleaned)
+  wb_cleaned_aggregates <- wb_cleaned %>%
+    aggregates_values() %>%
+    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
+    mutate(region = paste(World, !!region, income_group, income_subgroup) %>%
+             stringr::str_replace_all("NA", "") %>%
+             stringr::str_squish()) %>%
+    filter(nchar(region) != 0)
+
 
   parity_indices_wb <- list(df = list("wb_cleaned_aggregates","wb_cleaned_aggregates"),
                          col = list("ind",  "ind"),
