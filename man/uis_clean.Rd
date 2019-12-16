@@ -19,8 +19,8 @@ Math.Primary.WPIA, Read.LowerSec.WPIA, Math.LowerSec.WPIA)
 \seealso{
 Other clean: \code{\link{agg_preprocess}},
   \code{\link{bullying_clean}}, \code{\link{cedar_clean}},
-  \code{\link{chores_clean}}, \code{\link{format_wide}},
-  \code{\link{gcpea_clean}},
+  \code{\link{chores_clean}}, \code{\link{format_long}},
+  \code{\link{format_wide}}, \code{\link{gcpea_clean}},
   \code{\link{ict_skills_clean}}, \code{\link{oecd_clean}},
   \code{\link{un_aids_clean}},
   \code{\link{unicef_ecce_clean}},

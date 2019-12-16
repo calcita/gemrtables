@@ -8,7 +8,8 @@
 Report statistical tables.}
 \usage{
 gemrtables(region = "SDG.region", ref_year, export = TRUE, path, key,
-  password, pc_flag_cut = 66, pc_comp_cut2 = 33, removeCache)
+  password, pc_flag_cut = 66, pc_comp_cut2 = 33,
+  level_country = TRUE, drake = TRUE, removeCache)
 }
 \arguments{
 \item{region}{regional grouping on which to compute aggregate values. Options
@@ -27,6 +28,10 @@ file.}
 \item{key}{UIS api subcription key.}
 
 \item{password}{password to cedar database.}
+
+\item{level_country}{If it is TRUE, parity indices are calculated at the country level}
+
+\item{drake}{If it is TRUE, the drake plan is run instead load or generate data}
 
 \item{removeCache}{Character vector of unprocessed dataframes. Options are c("uis_up", "cedar_up", "wb_up", "eurostat_up", "oecd_up")}
 }
