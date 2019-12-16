@@ -68,6 +68,17 @@ gemrtables <- function(
     .gemrtables.pkg.env$subregion <- as.name("GEMR.subregion")
   }
 
+  #import / generate other merge files
+  .gemrtables.pkg.env$indicators <- inds()
+  .gemrtables.pkg.env$regions <- region_groups()
+  indicators_unique <- .gemrtables.pkg.env$indicators %>%
+    dplyr::select(-source, -var_concat, -priority, -ind_lab) %>%
+    unique()
+  .gemrtables.pkg.env$regions2 <- region_groups2() %>%
+    dplyr::filter(grouping == as.character(.gemrtables.pkg.env$region))
+
+  if(isFALSE(drake)){
+
   #Set directory for cache (users current working directory)
 
   dir.create(path="./.Rcache", showWarnings=FALSE)
@@ -99,14 +110,6 @@ gemrtables <- function(
     path <- as.character(path)
   }
 
-  #import / generate other merge files
-  .gemrtables.pkg.env$indicators <- inds()
-  .gemrtables.pkg.env$regions <- region_groups()
-  indicators_unique <- .gemrtables.pkg.env$indicators %>%
-    dplyr::select(-source, -var_concat, -priority, -ind_lab) %>%
-    unique()
-  .gemrtables.pkg.env$regions2 <- region_groups2() %>%
-    dplyr::filter(grouping == as.character(.gemrtables.pkg.env$region))
 
 
   #load/ cache for imported/cleaned country data and weights
@@ -196,6 +199,9 @@ gemrtables <- function(
     dplyr::left_join(.gemrtables.pkg.env$indicators, by = c("ind", "source")) %>%
     dplyr::filter(year >= .gemrtables.pkg.env$ref_year - year_cut)
 
+  unmatched <- dplyr::anti_join(.gemrtables.pkg.env$indicators, country_data1, by = c("ind", "source")) %>%
+    dplyr::select(ind, source, sheet, position)
+
   country_data2 <- country_data1 %>%
     dplyr::select(iso2c, annex_name, World, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, income_group, income_subgroup, year, ind, value, val_status, source) %>%
     dplyr::right_join(.gemrtables.pkg.env$indicators, by = c("ind", "source")) %>%
@@ -240,10 +246,13 @@ gemrtables <- function(
       region_data1 <- region_data %>%
         right_join(.gemrtables.pkg.env$regions2[,1:3], by = c("annex_name"))
         left_join(.gemrtables.pkg.env$indicators, by = c("ind", "source"))
+        #binding aggregates data
+        computed_aggregates <- dplyr::bind_rows(computed_aggregates, region_data1)
+        # unmatched indicators
+        unmatched <- dplyr::anti_join(unmatched, region_data1, by = c("ind", "source")) %>%
+          dplyr::select(ind, source, sheet, position)
     }
 
-  unmatched <- dplyr::anti_join(.gemrtables.pkg.env$indicators, country_data1, by = c("ind", "source")) %>%
-      dplyr::select(ind, source, sheet, position)
 
   long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates)  %>%
     tidyr:: complete(tidyr::nesting(ind, sheet, position), tidyr::nesting(annex_name, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, entity),
@@ -265,3 +274,4 @@ gemrtables <- function(
   }
  }
 
+}
