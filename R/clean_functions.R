@@ -166,8 +166,8 @@ uis_clean <- function(df) {
   if(isTRUE(.gemrtables.pkg.env$level_country)){
     parity_indices <- list(df = rep(list("clean1"), 14),
                          col = rep(list("var_concat"), 14),
-                         a = list(vars_f),
-                         b = list(vars_m),
+                         a = vars_f,
+                         b = vars_m,
                          varname = list("Read.Primary.GPIA", "Math.Primary.GPIA", "Read.LowerSec.GPIA", "Math.LowerSec.GPIA",
                                         "LR.Ag15t24.GPIA", "LR.Ag15t99.GPIA", "Read.Primary.WPIA", "Math.Primary.WPIA",
                                         "Read.LowerSec.WPIA", "Math.LowerSec.WPIA", "GER.02.GPIA", "GER.1.GPIA", "GER.2t3.GPIA",
