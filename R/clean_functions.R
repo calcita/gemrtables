@@ -38,7 +38,7 @@ parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
   } else {
     indice <- df %>%
       dplyr::filter(!!col %in% c(a, b))
-    indice <- dplyr::group_by(indice, region, year) %>%
+    indice <- dplyr::group_by(indice, annex_name, year) %>%
       dplyr::filter(n()==2)
   }
 
@@ -183,7 +183,7 @@ uis_clean <- function(df) {
   } else {
 
     clean1 <- clean1 %>%
-      dplyr::filter(var_concat %in% c(vars_f, vars_m)) %>%
+      dplyr::filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
       R.cache::saveCache(key=list("uis_cleaned"), comment="uis_cleaned")
 
     cleaned <- dplyr::bind_rows(clean2, inbound_stu) %>%
@@ -259,8 +259,8 @@ cedar_clean <- function(df) {
 
   parity_indices <- list(df = rep(list("clean1"), 10),
                          col = rep(list("ind"), 10),
-                         a = list(vars_f),
-                         b = list(vars_m),
+                         a = vars_f,
+                         b = vars_m,
                          varname = list("CR.1.GPIA", "CR.1.LPIA", "CR.1.WPIA", "CR.2.GPIA", "CR.2.LPIA", "CR.2.WPIA",
                                         "CR.3.GPIA", "CR.3.LPIA", "CR.3.WPIA", "chores.28plus.12t14.GPIA")) %>%
     purrr::pmap(parity_adj) %>%
@@ -277,12 +277,12 @@ cedar_clean <- function(df) {
     unique()
   } else {
     cedar_clean <- clean1 %>%
-      dplyr::filter(var_concat %in% c(vars_f, vars_m)) %>%
+      dplyr::filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
       R.cache::saveCache(key=list("cedar_cleaned"), comment="cedar_cleaned")
 
     cleaned <- clean1 %>%
       dplyr::ungroup() %>%
-      dplyr::filter(!var_concat %in% c(vars_f, vars_m)) %>%
+      dplyr::filter(!var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
       dplyr::select(iso2c, year, ind, value, val_status) %>%
       dplyr::mutate(source = "cedar") %>%
       dplyr::filter(!is.na(value)) %>%
@@ -927,8 +927,8 @@ computed_aggregates <- country_data2 %>%
 if(!isTRUE(.gemrtables.pkg.env$level_country)){
   region_data <- parity_indices_region()
   region_data1 <- region_data %>%
-    right_join(.gemrtables.pkg.env$regions2[,1:3], by = c("annex_name"))
-  left_join(.gemrtables.pkg.env$indicators, by = c("ind", "source"))
+    right_join(.gemrtables.pkg.env$regions2[,1:3], by = c("annex_name")) %>%
+    left_join(.gemrtables.pkg.env$indicators, by = c("ind", "source"))
   #binding aggregates data
   computed_aggregates <- dplyr::bind_rows(computed_aggregates, region_data1)
   # unmatched indicators
@@ -998,10 +998,10 @@ parity_indices_region <- function(){
   uis_cleaned_aggregates <- uis_cleaned1 %>%
     aggregates_values() %>%
     filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    mutate(region = paste(World, !!region, income_group, income_subgroup) %>%
+    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
              stringr::str_replace_all("NA", "") %>%
              stringr::str_squish()) %>%
-    filter(nchar(region) != 0)
+    filter(nchar(annex_name) != 0)
 
   parity_indices_uis <- list(df = rep(list("uis_cleaned_aggregates"), 14),
                              col = rep(list("var_concat"), 14),
@@ -1025,10 +1025,10 @@ parity_indices_region <- function(){
   cedar_cleaned_aggregates <- cedar_cleaned1 %>%
     aggregates_values() %>%
     filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    mutate(region = paste(World, !!region, income_group, income_subgroup) %>%
+    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
              stringr::str_replace_all("NA", "") %>%
              stringr::str_squish()) %>%
-    filter(nchar(region) != 0)
+    filter(nchar(annex_name) != 0)
 
   vars_f = list("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
   vars_m = list("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
@@ -1055,10 +1055,10 @@ parity_indices_region <- function(){
   wb_cleaned_aggregates <- wb_cleaned %>%
     aggregates_values() %>%
     filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    mutate(region = paste(World, !!region, income_group, income_subgroup) %>%
+    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
              stringr::str_replace_all("NA", "") %>%
              stringr::str_squish()) %>%
-    filter(nchar(region) != 0)
+    filter(nchar(annex_name) != 0)
 
 
   parity_indices_wb <- list(df = list("wb_cleaned_aggregates","wb_cleaned_aggregates"),

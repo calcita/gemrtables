@@ -116,7 +116,8 @@ compute_aggregate_values <- function(df, region, entity){
   entity <- as.character(entity)
   computed <- df %>%
     dplyr::group_by(var_concat,!!region) %>%
-    summarise(value = median(value, na.rm = TRUE))
+    summarise(value = median(value, na.rm = TRUE),
+              year = max(year))
 }
 
 #' aggregates_values
@@ -129,9 +130,13 @@ compute_aggregate_values <- function(df, region, entity){
 #' @family summarise
 
 aggregates_values <- function(df){
+
+  region <- as.character(.gemrtables.pkg.env$region)
+  subregion <- as.character(.gemrtables.pkg.env$subregion)
+
   world <- compute_aggregate_values(df, region = "World", entity = "world")
   regional <- compute_aggregate_values(df, region = region, entity = "region")
-  subregional <- compute_aggregate_values(df, region = .gemrtables.pkg.env$subregion, entity = "subregion")
+  subregional <- compute_aggregate_values(df, region = subregion, entity = "subregion")
   income <- compute_aggregate_values(df, region = "income_group", entity = "income_group")
   subincome <- compute_aggregate_values(df, region = "income_subgroup", entity = "income_subgroup")
 
