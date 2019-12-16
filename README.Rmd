@@ -1,0 +1,110 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# gemrtables
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of gemrtables is to generate the Global Education Monitoring (GEM)
+Report statistical tables.
+
+The Global Education Monitoring Report (GEM Report), is an editorially independent, authoritative, and evidence-based annual report that monitors progress towards the global education goal and targets adopted at the UN General Assembly in September 2015. The gemrtables package provides an easy way to obtain data from the UNESCO Institute for Statistics ([UIS](https://apiportal.uis.unesco.org/)) by accessing its API and several others sources.
+
+## Installation
+
+You can install the development version from [GitHub](https://github.com/) with:
+
+```{r install, eval=FALSE}
+# install.packages("devtools")
+devtools::install_github("northeastloon/gemrtables")
+```
+
+## Usage
+
+gemrtables() is the primary function for this package, generating the statistical tables in a 'wide' data format in excel, or a 'long' format.
+
+In addition, the gemrtables package provides three categories of functions: import, clean, and summarise. The import functions read data from SDMX url queries, the GEM cedar SQL database, and other sources.
+
+Some indices are calculated at the country level and then are aggregated at the regional level or the income level. Also, it is possible to calculate those indices directly at the regional or the income level.
+
+### Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example, eval=FALSE}
+library(gemrtables)
+df <- gemrtables(region = "UIS.region", ref_year = 2016, export = FALSE, key = y, password = z)
+```
+You should substitute 'key' for the UIS api subscription key and 'password' for the password to cedar database.
+
+## Drake plan
+
+In a complex analysis pipeline, like gemrtables, it is useful a workflow manager for the R code. With the 'drake' package changing the code is easier and more efficient.
+Downloading and caching data requires time, it is not efficient re-runs all the code every time a piece of code change a little. When something changes, drake rebuilds only things that need to be rebuilt. This saves time and reduces errors.
+
+This is an example which shows you how to use drake in the gemrtables code:
+```{r drake, eval=FALSE}
+# source("pkgs.R")
+source("R/aggregates_function.R")
+source("R/cedar_import.R")
+source("R/clean_functions.R")
+source("R/import_functions.R")
+source("R/merge_files.R")
+source("R/other_import.R")
+source("R/uis_alternative_access.R")
+source("R/uis_import.R")
+source("R/gemrtables_function.R")
+
+# drake_plan() stores the plan as targets and commands in a dataframe.
+param_plan <-
+  drake::drake_plan(
+    gem_params = gemrtables(ref_year = 2016, drake = TRUE)
+  )
+
+# import/clean functions
+import_clean_plan <-
+  drake::drake_plan(
+    uis_data = uis(),
+    cedar_data = cedar(),
+    other_data = other()
+  )
+
+# Summarize
+summary_plan <-
+  drake::drake_plan(
+    # other_data = dplyr::bind_rows(wb_data, eurostat_data, oecd_data, un_aids_data, gcpea_data, unicef_wash_data,
+    #                               unicef_ecce_learn_data, unicef_ecce_books_data, bullying_data, ict_skills_data, chores_data),
+    all_data = dplyr::bind_rows(uis_data, cedar_data, other_data),
+    long_data = long_format(),
+    wide_format = format_wide(long_data)
+  )
+
+# Create a workflow plan data frame for the whole plan
+gemrtables_plan <- dplyr::bind_rows(param_plan, import_clean_plan, summary_plan)
+
+# Run the plan
+drake::make(gemrtables_plan) #prework = "devtools::load_all()"
+
+# Configuration list object
+config <- drake::drake_config(gemrtables_plan)
+
+# Interactive dependency graph of all inputs and outputs
+drake::vis_drake_graph(config)
+
+# Clean: drake::which_clean(), clean(), file_out()
+# Explore chache: drake::cached()
+```
+

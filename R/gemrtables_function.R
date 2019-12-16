@@ -19,7 +19,7 @@
 #' If `FALSE` (the default) returns a data frame in 'long' format.
 #' @param path File path to write xlsx workbook (character). Overwrites existing
 #'   file.
-#' @param key UIS api subcription key.
+#' @param key UIS api subscription key.
 #' @param password password to cedar database.
 #' @param level_country If it is TRUE, parity indices are calculated at the country level
 #' @param drake If it is TRUE, the drake plan is run instead load or generate data
