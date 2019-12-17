@@ -346,6 +346,8 @@ wb_clean <- function(df) {
            year = as.numeric(year)) %>%
     dplyr::select(iso2c, year, ind, value, val_status, source)
   } else {
+    cleaned <- clean2 %>%
+      R.cache::saveCache(key=list("wb_cleaned"), comment="wb_cleaned")
     cleaned <- clean2
   }
 }
@@ -1046,7 +1048,7 @@ parity_indices_region <- function(){
   vars_f <- list("adult.profiliteracy.f","adult.profinumeracy.f")
   vars_m <- list("adult.profiliteracy.m", "adult.profinumeracy.m")
 
-  wb_cleaned <- country_data %>%
+  wb_cleaned <- wb_cleaned <- R.cache::loadCache(key = list("wb_cleaned")) %>%
     filter(ind %in% c(unlist(vars_f), unlist(vars_m))) %>%
     dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
     dplyr::filter(!is.na(ind)) %>%
