@@ -105,7 +105,7 @@ summary_plan <-
 gemrtables_plan <- dplyr::bind_rows(param_plan, import_clean_plan, summary_plan)
 
 # Run the plan
-drake::make(gemrtables_plan) #prework = "devtools::load_all()"
+drake::make(gemrtables_plan) #prework = "devtools::load_all()", lock_envir = FALSE
 
 # Configuration list object
 config <- drake::drake_config(gemrtables_plan)
