@@ -702,92 +702,138 @@ weights_clean <- function(df) {
     dplyr::ungroup()
 }
 
-
-#' format_wide
+#' parity_indices_region
 #'
-#' \code{format_wide} is a function to format stat table data to 'wide' format.
+#' \code{parity_indices_region} calculates adjusted parity ratios at the region level.
 #'
-#' Rounds values, converts binary values to 'Yes/No'; converts value to unicode
-#' with subscript flags; converts to list of dataframes for export to xlsx.
-#'@family clean
+#' @param df a data frame with a key / value columns.
+#' @param col indicator key column.
+#' @param a indicator for 'disadvantaged' group (numerator).
+#' @param b indicator for 'advantaged' group  (denominator).
+#' @param varname name for calculated indice (character).
+#' @param val_status For use with data with flags for estimated observations. If
+#'   `TRUE` will calculate flag for indice (requires flag column to be named
+#'   `val_status` and estimates lablled as `E`.
+#' @return A data frame.
+#' @export
+#' @family summarise
+#'
 
-format_wide <- function(df) {
+parity_indices_region <- function(){
+  uis_cleaned1 <- R.cache::loadCache(uis_cleaned) %>%
+    dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
+    mutate(ind = var_concat)
 
-  redenominate_6 <- c("IllPop.Ag15t24", "IllPop.Ag15t99", "OFST.1.cp", "OFST.2.cp", "OFST.3.cp", "SAP.02", "SAP.1", "SAP.2t3",
-                      "SAP.5t8", "stu.per.02", "stu.per.1", "stu.per.2t3", "stu.per.5t8",
-                      "odaflow.volumescholarship", "odaflow.imputecost")
+  vars_f <- list("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
+                 "LR_PT__Z__Z_F_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                 "LR_PT__Z__Z_F_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
+                 "GER_PT_L02__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                 "GER_PT_L1__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                 "GER_PT_L2_3__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                 "GER_PT_L5T8__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA")
 
-  redenominate_3 <- c("IE.5t8.40510", "teach.per.02", "OE.5t8.40510", "teach.per.1", "teach.per.2t3")
+  vars_m <- list("STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L2__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L2__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
+                 "LR_PT__Z__Z_M_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                 "LR_PT__Z__Z_M_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+                 "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
+                 "GER_PT_L02__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                 "GER_PT_L1__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                 "GER_PT_L2_3__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
+                 "GER_PT_L5T8__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA")
 
-  wide_data <-
-    df %>%
-    dplyr::mutate(value = dplyr::case_when(ind %in% redenominate_6 ~ value/1000000,
-                                           ind %in% redenominate_3 ~ value/1000,
-                                           TRUE ~ value)) %>%
-    dplyr::group_by(ind) %>%
-    dplyr::mutate(
-      digits = case_when(
-        max(value, na.rm = TRUE) < 2 | stringr::str_detect(ind, 'sal.rel') ~ 2,
-        # (ind %in% redenominate_6 | ind %in% redenominate_3) & value >= 1000000 ~ 1,
-        # (ind %in% redenominate_6 | ind %in% redenominate_3) & value < 1000000 ~ 3,
-        value < 0.5 | stringr::str_detect(ind, "XGDP|XGovExp") ~ 1,
-        TRUE ~ 0)) %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(
-      value_str = format(round(value, digits),
-                     big.mark = ',', trim = TRUE,
-                     zero.print = '-',
-                     nsmall = digits,
-                     drop0trailing = FALSE,
-                     scientific = FALSE,
-                     digits = digits
-                     )) %>%
-    dplyr::mutate(
-      value_str = ifelse(is.na(value) | entity != "country" | !stringr::str_detect(ind, "bully|esd|attack|admi"), value_str,
-        ifelse(stringr::str_detect(ind, "bully"), c('Low', 'Medium', 'High')[value],
-        ifelse(stringr::str_detect(ind, "esd"), c('None', 'Low', 'Medium', 'High')[value + 1],
-        ifelse(stringr::str_detect(ind, "attack"), c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
-        ifelse(stringr::str_detect(ind, "admi"), c('No', 'Yes')[value + 1], value_str)
-      ))))) %>%
-    # dplyr::select(entity, value, val_status, ind, value_str) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(
-                  val_status = ifelse(val_status == "A", "", tolower(val_status)),
-                  year_diff = year - .gemrtables.pkg.env$ref_year,
-                  year_diff = ifelse(year_diff == 0, "", year_diff),
-                  val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
-                                                    # val_status == "m" ~ "\u2099",
-                                                    TRUE ~ ''),
-                  year_diff_utf = dplyr::case_when(year_diff  ==  1 ~ "\u208A\u2081",
-                                                    year_diff == -1 ~ "\u208B\u2081",
-                                                    year_diff == -2 ~ "\u208B\u2082",
-                                                    year_diff == -3 ~ "\u208B\u2083",
-                                                    year_diff == -4 ~ "\u208B\u2084",
-                                                   TRUE ~ ''),
-                  val_utf = ifelse(value_str == 'NA' | is.na(value_str),
-                                    "\u2026",
-                                    paste0(stringr::str_trim(value_str), ifelse(stringr::str_detect(ind, "admi|esd|odaflow|Entry\\.age|Years\\.dur"), "", year_diff_utf), val_status_utf, sep = ""))) %>%
-    dplyr::select(sheet, annex_name, !!.gemrtables.pkg.env$region, ind, val_utf, entity) %>%
-    dplyr::mutate(ind = factor(ind, levels = unique(ind)),
-                  is_aggregate = ifelse(entity == "country", "country", "aggregate"),
-                  sheet = paste("sheet", sheet),
-                  val_utf = stringr::str_replace_all(val_utf, "NA", ""),
-                  regionx = !!.gemrtables.pkg.env$region,
-                  regionx = ifelse(is_aggregate == "aggregate", annex_name, regionx)) %>%
-    dplyr::left_join(.gemrtables.pkg.env$regions2[, c(1,4)], by = c("regionx" = "annex_name")) %>%
-    split(list(.$is_aggregate, .$sheet)) %>%
-    purrr::map(tidyr::spread, key=ind, value = val_utf) %>%
-    purrr::map(function(.) dplyr::mutate(., annex_name = ifelse(entity == "subregion" | entity == "income_subgroup", paste("  ", annex_name), annex_name))) %>%
-    purrr::map(function(.) dplyr::mutate(., entity = dplyr::case_when(entity == "subregion" ~ "region",
-                                                                      entity == "income_subgroup" ~ "income_group",
-                                                                      TRUE ~ entity))) %>%
-    purrr::map(function(.) dplyr::arrange(., region_order, annex_name)) %>%
-    purrr::map(mutate_all, as.character) %>%
-    purrr::map_if(suppressWarnings(stringr::str_detect(., "country")), function(.) dplyr::left_join(., .gemrtables.pkg.env$regions[, c("annex_name", "iso3c")], by = "annex_name")) %>%
-    purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
-    purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(.gemrtables.pkg.env$region)]$V1][!.N]) %>%
-    purrr::map(function(.) dplyr::select(., -sheet, -is_aggregate, -entity, -!!.gemrtables.pkg.env$region, - regionx, -region_order))
+  uis_cleaned_aggregates <- uis_cleaned1 %>%
+    aggregates_values() %>%
+    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
+    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
+             stringr::str_replace_all("NA", "") %>%
+             stringr::str_squish()) %>%
+    filter(nchar(annex_name) != 0)
+
+  parity_indices_uis <- list(df = rep(list("uis_cleaned_aggregates"), 14),
+                             col = rep(list("var_concat"), 14),
+                             a = vars_f,
+                             b = vars_m,
+                             varname = list("Read.Primary.GPIA", "Math.Primary.GPIA", "Read.LowerSec.GPIA", "Math.LowerSec.GPIA",
+                                            "LR.Ag15t24.GPIA", "LR.Ag15t99.GPIA", "Read.Primary.WPIA", "Math.Primary.WPIA",
+                                            "Read.LowerSec.WPIA", "Math.LowerSec.WPIA", "GER.02.GPIA", "GER.1.GPIA", "GER.2t3.GPIA",
+                                            "GER.5t8.GPIA"),
+                             val_status = rep(list(TRUE), 14)) %>%
+    purrr::pmap(parity_adj) %>%
+    purrr::reduce(dplyr::bind_rows) %>%
+    dplyr::mutate(source = "UIS") %>%
+    dplyr::filter(!is.na(value))
+
+  # cedar
+  cedar_cleaned1 <- R.cache::loadCache(cedar_cleaned) %>%
+    dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
+    mutate(ind = var_concat)
+
+  cedar_cleaned_aggregates <- cedar_cleaned1 %>%
+    aggregates_values() %>%
+    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
+    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
+             stringr::str_replace_all("NA", "") %>%
+             stringr::str_squish()) %>%
+    filter(nchar(annex_name) != 0)
+
+  vars_f = list("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
+  vars_m = list("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
+  parity_indices_cedar <- list(df = rep(list("cedar_cleaned_aggregates"), 10),
+                               col = rep(list("ind"), 10),
+                               a = vars_f,
+                               b = vars_m,
+                               varname = list("CR.1.GPIA", "CR.1.LPIA", "CR.1.WPIA", "CR.2.GPIA", "CR.2.LPIA", "CR.2.WPIA",
+                                              "CR.3.GPIA", "CR.3.LPIA", "CR.3.WPIA", "chores.28plus.12t14.GPIA")) %>%
+    purrr::pmap(parity_adj) %>%
+    purrr::reduce(dplyr::bind_rows)%>%
+    dplyr::mutate(source = "cedar")
+
+  # WB
+  vars_f <- list("adult.profiliteracy.f","adult.profinumeracy.f")
+  vars_m <- list("adult.profiliteracy.m", "adult.profinumeracy.m")
+
+  wb_cleaned <- wb_cleaned <- R.cache::loadCache(key = list("wb_cleaned")) %>%
+    filter(ind %in% c(unlist(vars_f), unlist(vars_m))) %>%
+    dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
+    dplyr::filter(!is.na(ind)) %>%
+    dplyr::mutate(var_concat = ind)
+
+  wb_cleaned_aggregates <- wb_cleaned %>%
+    aggregates_values() %>%
+    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
+    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
+             stringr::str_replace_all("NA", "") %>%
+             stringr::str_squish(),
+           year = as.numeric(year)) %>%
+    filter(nchar(annex_name) != 0)
+
+
+  parity_indices_wb <- list(df = list("wb_cleaned_aggregates","wb_cleaned_aggregates"),
+                            col = list("var_concat",  "var_concat"),
+                            a = list("adult.profiliteracy.f","adult.profinumeracy.f"),
+                            b = list("adult.profiliteracy.m", "adult.profinumeracy.m"),
+                            varname = list("adult.profiliteracy.gpia", "adult.profinumeracy.gpia")) %>%
+    purrr::pmap(parity_adj) %>%
+    purrr::reduce(dplyr::bind_rows) %>%
+    dplyr::mutate(source = "PIAAC")
+
+  # Binded parity indices
+  dplyr::bind_rows(parity_indices_uis, parity_indices_cedar, parity_indices_wb)
 }
+
 
 #' format_long
 #'
@@ -945,133 +991,88 @@ long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates
 
 }
 
-#' parity_indices_region
+#' format_wide
 #'
-#' \code{parity_indices_region} calculates adjusted parity ratios at the region level.
+#' \code{format_wide} is a function to format stat table data to 'wide' format.
 #'
-#' @param df a data frame with a key / value columns.
-#' @param col indicator key column.
-#' @param a indicator for 'disadvantaged' group (numerator).
-#' @param b indicator for 'advantaged' group  (denominator).
-#' @param varname name for calculated indice (character).
-#' @param val_status For use with data with flags for estimated observations. If
-#'   `TRUE` will calculate flag for indice (requires flag column to be named
-#'   `val_status` and estimates lablled as `E`.
-#' @return A data frame.
-#' @export
-#' @family summarise
-#'
+#' Rounds values, converts binary values to 'Yes/No'; converts value to unicode
+#' with subscript flags; converts to list of dataframes for export to xlsx.
+#'@family clean
 
-parity_indices_region <- function(){
-  uis_cleaned1 <- R.cache::loadCache(uis_cleaned) %>%
-    dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
-    mutate(ind = var_concat)
+format_wide <- function(df) {
 
-  vars_f <- list("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L2__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                 "LR_PT__Z__Z_F_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                 "LR_PT__Z__Z_F_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_READING__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q1__T__T_ISC_F00_MATH__Z_LOW__Z__Z_W00_W00_NA_NA_NA",
-                 "GER_PT_L02__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                 "GER_PT_L1__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                 "GER_PT_L2_3__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                 "GER_PT_L5T8__T_F_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA")
+  redenominate_6 <- c("IllPop.Ag15t24", "IllPop.Ag15t99", "OFST.1.cp", "OFST.2.cp", "OFST.3.cp", "SAP.02", "SAP.1", "SAP.2t3",
+                      "SAP.5t8", "stu.per.02", "stu.per.1", "stu.per.2t3", "stu.per.5t8",
+                      "odaflow.volumescholarship", "odaflow.imputecost")
 
-  vars_m <- list("STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L1__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L2__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L2__T_M__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
-                 "LR_PT__Z__Z_M_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                 "LR_PT__Z__Z_M_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L1__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_READING__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
-                 "STU_PT_L2__T__T__T_GLAST_INST_T__Z_Q5__T__T_ISC_F00_MATH__Z_HIGH__Z__Z_W00_W00_NA_NA_NA",
-                 "GER_PT_L02__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                 "GER_PT_L1__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                 "GER_PT_L2_3__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA",
-                 "GER_PT_L5T8__T_M_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA")
+  redenominate_3 <- c("IE.5t8.40510", "teach.per.02", "OE.5t8.40510", "teach.per.1", "teach.per.2t3")
 
-  uis_cleaned_aggregates <- uis_cleaned1 %>%
-    aggregates_values() %>%
-    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
-             stringr::str_replace_all("NA", "") %>%
-             stringr::str_squish()) %>%
-    filter(nchar(annex_name) != 0)
-
-  parity_indices_uis <- list(df = rep(list("uis_cleaned_aggregates"), 14),
-                             col = rep(list("var_concat"), 14),
-                             a = vars_f,
-                             b = vars_m,
-                             varname = list("Read.Primary.GPIA", "Math.Primary.GPIA", "Read.LowerSec.GPIA", "Math.LowerSec.GPIA",
-                                            "LR.Ag15t24.GPIA", "LR.Ag15t99.GPIA", "Read.Primary.WPIA", "Math.Primary.WPIA",
-                                            "Read.LowerSec.WPIA", "Math.LowerSec.WPIA", "GER.02.GPIA", "GER.1.GPIA", "GER.2t3.GPIA",
-                                            "GER.5t8.GPIA"),
-                             val_status = rep(list(TRUE), 14)) %>%
-    purrr::pmap(parity_adj) %>%
-    purrr::reduce(dplyr::bind_rows) %>%
-    dplyr::mutate(source = "UIS") %>%
-    dplyr::filter(!is.na(value))
-
-  # cedar
-  cedar_cleaned1 <- R.cache::loadCache(cedar_cleaned) %>%
-    dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
-    mutate(ind = var_concat)
-
-  cedar_cleaned_aggregates <- cedar_cleaned1 %>%
-    aggregates_values() %>%
-    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
-             stringr::str_replace_all("NA", "") %>%
-             stringr::str_squish()) %>%
-    filter(nchar(annex_name) != 0)
-
-  vars_f = list("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
-  vars_m = list("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
-  parity_indices_cedar <- list(df = rep(list("cedar_cleaned_aggregates"), 10),
-                               col = rep(list("ind"), 10),
-                               a = vars_f,
-                               b = vars_m,
-                               varname = list("CR.1.GPIA", "CR.1.LPIA", "CR.1.WPIA", "CR.2.GPIA", "CR.2.LPIA", "CR.2.WPIA",
-                                              "CR.3.GPIA", "CR.3.LPIA", "CR.3.WPIA", "chores.28plus.12t14.GPIA")) %>%
-    purrr::pmap(parity_adj) %>%
-    purrr::reduce(dplyr::bind_rows)%>%
-    dplyr::mutate(source = "cedar")
-
-  # WB
-  vars_f <- list("adult.profiliteracy.f","adult.profinumeracy.f")
-  vars_m <- list("adult.profiliteracy.m", "adult.profinumeracy.m")
-
-  wb_cleaned <- wb_cleaned <- R.cache::loadCache(key = list("wb_cleaned")) %>%
-    filter(ind %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
-    dplyr::filter(!is.na(ind)) %>%
-    dplyr::mutate(var_concat = ind)
-
-  wb_cleaned_aggregates <- wb_cleaned %>%
-    aggregates_values() %>%
-    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
-             stringr::str_replace_all("NA", "") %>%
-             stringr::str_squish()) %>%
-    filter(nchar(annex_name) != 0)
-
-
-  parity_indices_wb <- list(df = list("wb_cleaned_aggregates","wb_cleaned_aggregates"),
-                         col = list("ind",  "ind"),
-                         a = list("adult.profiliteracy.f","adult.profinumeracy.f"),
-                         b = list("adult.profiliteracy.m", "adult.profinumeracy.m"),
-                         varname = list("adult.profiliteracy.gpia", "adult.profinumeracy.gpia")) %>%
-    purrr::pmap(parity_adj) %>%
-    purrr::reduce(dplyr::bind_rows) %>%
-    dplyr::mutate(source = "PIAAC")
-
-  # Binded parity indices
-  dplyr::bind_rows(parity_indices_uis, parity_indices_cedar, parity_indices_wb)
+  wide_data <-
+    df %>%
+    dplyr::mutate(value = dplyr::case_when(ind %in% redenominate_6 ~ value/1000000,
+                                           ind %in% redenominate_3 ~ value/1000,
+                                           TRUE ~ value)) %>%
+    dplyr::group_by(ind) %>%
+    dplyr::mutate(
+      digits = case_when(
+        max(value, na.rm = TRUE) < 2 | stringr::str_detect(ind, 'sal.rel') ~ 2,
+        # (ind %in% redenominate_6 | ind %in% redenominate_3) & value >= 1000000 ~ 1,
+        # (ind %in% redenominate_6 | ind %in% redenominate_3) & value < 1000000 ~ 3,
+        value < 0.5 | stringr::str_detect(ind, "XGDP|XGovExp") ~ 1,
+        TRUE ~ 0)) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      value_str = format(round(value, digits),
+                         big.mark = ',', trim = TRUE,
+                         zero.print = '-',
+                         nsmall = digits,
+                         drop0trailing = FALSE,
+                         scientific = FALSE,
+                         digits = digits
+      )) %>%
+    dplyr::mutate(
+      value_str = ifelse(is.na(value) | entity != "country" | !stringr::str_detect(ind, "bully|esd|attack|admi"), value_str,
+                         ifelse(stringr::str_detect(ind, "bully"), c('Low', 'Medium', 'High')[value],
+                                ifelse(stringr::str_detect(ind, "esd"), c('None', 'Low', 'Medium', 'High')[value + 1],
+                                       ifelse(stringr::str_detect(ind, "attack"), c('None', 'Sporadic', 'Affected', 'Heavy', 'Very heavy')[value + 1],
+                                              ifelse(stringr::str_detect(ind, "admi"), c('No', 'Yes')[value + 1], value_str)
+                                       ))))) %>%
+    # dplyr::select(entity, value, val_status, ind, value_str) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(
+      val_status = ifelse(val_status == "A", "", tolower(val_status)),
+      year_diff = year - .gemrtables.pkg.env$ref_year,
+      year_diff = ifelse(year_diff == 0, "", year_diff),
+      val_status_utf = dplyr::case_when(val_status == "e" ~ "\u1d62",
+                                        # val_status == "m" ~ "\u2099",
+                                        TRUE ~ ''),
+      year_diff_utf = dplyr::case_when(year_diff  ==  1 ~ "\u208A\u2081",
+                                       year_diff == -1 ~ "\u208B\u2081",
+                                       year_diff == -2 ~ "\u208B\u2082",
+                                       year_diff == -3 ~ "\u208B\u2083",
+                                       year_diff == -4 ~ "\u208B\u2084",
+                                       TRUE ~ ''),
+      val_utf = ifelse(value_str == 'NA' | is.na(value_str),
+                       "\u2026",
+                       paste0(stringr::str_trim(value_str), ifelse(stringr::str_detect(ind, "admi|esd|odaflow|Entry\\.age|Years\\.dur"), "", year_diff_utf), val_status_utf, sep = ""))) %>%
+    dplyr::select(sheet, annex_name, !!.gemrtables.pkg.env$region, ind, val_utf, entity) %>%
+    dplyr::mutate(ind = factor(ind, levels = unique(ind)),
+                  is_aggregate = ifelse(entity == "country", "country", "aggregate"),
+                  sheet = paste("sheet", sheet),
+                  val_utf = stringr::str_replace_all(val_utf, "NA", ""),
+                  regionx = !!.gemrtables.pkg.env$region,
+                  regionx = ifelse(is_aggregate == "aggregate", annex_name, regionx)) %>%
+    dplyr::left_join(.gemrtables.pkg.env$regions2[, c(1,4)], by = c("regionx" = "annex_name")) %>%
+    split(list(.$is_aggregate, .$sheet)) %>%
+    purrr::map(tidyr::spread, key=ind, value = val_utf) %>%
+    purrr::map(function(.) dplyr::mutate(., annex_name = ifelse(entity == "subregion" | entity == "income_subgroup", paste("  ", annex_name), annex_name))) %>%
+    purrr::map(function(.) dplyr::mutate(., entity = dplyr::case_when(entity == "subregion" ~ "region",
+                                                                      entity == "income_subgroup" ~ "income_group",
+                                                                      TRUE ~ entity))) %>%
+    purrr::map(function(.) dplyr::arrange(., region_order, annex_name)) %>%
+    purrr::map(mutate_all, as.character) %>%
+    purrr::map_if(suppressWarnings(stringr::str_detect(., "country")), function(.) dplyr::left_join(., .gemrtables.pkg.env$regions[, c("annex_name", "iso3c")], by = "annex_name")) %>%
+    purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
+    purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(.gemrtables.pkg.env$region)]$V1][!.N]) %>%
+    purrr::map(function(.) dplyr::select(., -sheet, -is_aggregate, -entity, -!!.gemrtables.pkg.env$region, - regionx, -region_order))
 }

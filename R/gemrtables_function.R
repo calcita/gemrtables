@@ -77,12 +77,12 @@ gemrtables <- function(
   .gemrtables.pkg.env$regions2 <- region_groups2() %>%
     dplyr::filter(grouping == as.character(.gemrtables.pkg.env$region))
 
-  if(isFALSE(drake)){
-
   #Set directory for cache (users current working directory)
 
   dir.create(path="./.Rcache", showWarnings=FALSE)
   R.cache::setCacheRootPath(path="./.Rcache")
+
+  if(isFALSE(drake)){
 
   if(!missing(removeCache)) {
     for(i in 1:length(removeCache)) {
