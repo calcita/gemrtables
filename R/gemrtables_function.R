@@ -104,10 +104,12 @@ gemrtables <- function(
     .gemrtables.pkg.env$password <- as.character(password)
   }
 
-  if (missing(path) & isTRUE(export)) {
-    stop("file path not specified")
-  } else {
-    path <- as.character(path)
+  if (isTRUE(export)) {
+    if (missing(path)) {
+      stop("file path not specified")
+    } else {
+      path <- as.character(path)
+    }
   }
 
   long_data <- format_long()
