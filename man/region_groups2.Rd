@@ -10,9 +10,12 @@ region_groups2()
 \code{region_groups2} is a function import regional groupings, ordering, and REF_AREA api codes.
 }
 \seealso{
-Other import/clean: \code{\link{cedar}},
-  \code{\link{inds}}, \code{\link{other}},
-  \code{\link{region_groups}}, \code{\link{uis}},
-  \code{\link{weights}}
+Other import/clean: 
+\code{\link{cedar}()},
+\code{\link{inds}()},
+\code{\link{other}()},
+\code{\link{region_groups}()},
+\code{\link{uis}()},
+\code{\link{weights}()}
 }
 \concept{import/clean}

@@ -22,10 +22,11 @@ A data frame.
 for a specified aggregate grouping.
 }
 \seealso{
-Other summarise: \code{\link{aggregates_values}},
-  \code{\link{aggregates}},
-  \code{\link{compute_aggregate_values}},
-  \code{\link{parity_adj}},
-  \code{\link{parity_indices_region}}
+Other summarise: 
+\code{\link{aggregates_values}()},
+\code{\link{aggregates}()},
+\code{\link{compute_aggregate_values}()},
+\code{\link{parity_adj}()},
+\code{\link{parity_indices_region}()}
 }
 \concept{summarise}

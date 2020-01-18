@@ -15,9 +15,12 @@ It's purpose is to filter, rename and order variables, and define methods of
 aggregation.
 }
 \seealso{
-Other import/clean: \code{\link{cedar}},
-  \code{\link{other}}, \code{\link{region_groups2}},
-  \code{\link{region_groups}}, \code{\link{uis}},
-  \code{\link{weights}}
+Other import/clean: 
+\code{\link{cedar}()},
+\code{\link{other}()},
+\code{\link{region_groups2}()},
+\code{\link{region_groups}()},
+\code{\link{uis}()},
+\code{\link{weights}()}
 }
 \concept{import/clean}

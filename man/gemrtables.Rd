@@ -3,13 +3,21 @@
 \docType{package}
 \name{gemrtables}
 \alias{gemrtables}
-\alias{gemrtables-package}
 \title{gemrtables: A package for generating the Global Education Monitoring (GEM)
 Report statistical tables.}
 \usage{
-gemrtables(region = "SDG.region", ref_year, export = TRUE, path, key,
-  password, pc_flag_cut = 66, pc_comp_cut2 = 33,
-  level_country = TRUE, drake = TRUE, removeCache)
+gemrtables(
+  region = "SDG.region",
+  ref_year,
+  export = TRUE,
+  path,
+  key,
+  pc_flag_cut = 66,
+  pc_comp_cut2 = 33,
+  level_country = TRUE,
+  drake = TRUE,
+  removeCache
+)
 }
 \arguments{
 \item{region}{regional grouping on which to compute aggregate values. Options
@@ -25,15 +33,13 @@ If `FALSE` (the default) returns a data frame in 'long' format.}
 \item{path}{File path to write xlsx workbook (character). Overwrites existing
 file.}
 
-\item{key}{UIS api subcription key.}
-
-\item{password}{password to cedar database.}
+\item{key}{UIS api subscription key.}
 
 \item{level_country}{If it is TRUE, parity indices are calculated at the country level}
 
 \item{drake}{If it is TRUE, the drake plan is run instead load or generate data}
 
-\item{removeCache}{Character vector of unprocessed dataframes. Options are c("uis_up", "cedar_up", "wb_up", "eurostat_up", "oecd_up")}
+\item{removeCache}{Character vector of unprocessed dataframes. Options are c("uis_up", "wb_up", "eurostat_up", "oecd_up")}
 }
 \value{
 A data frame or an xlsx workbook.
@@ -84,7 +90,7 @@ These functions largely serve as a wrapper for import and clean functions.
 }
 
 \examples{
-gemrtables(ref_year = 2016, export = TRUE, path = x, key = y, password = z)
+gemrtables(ref_year = 2016, export = TRUE, path = x, key = y)
 
-df <- gemrtables(region = "UIS.region", ref_year = 2016, export = FALSE, key = y, password = z)
+df <- gemrtables(region = "UIS.region", ref_year = 2016, export = FALSE, key = y)
 }

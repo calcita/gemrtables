@@ -28,9 +28,11 @@ A data frame.
 \code{parity_indices_region} calculates adjusted parity ratios at the region level.
 }
 \seealso{
-Other summarise: \code{\link{aggregates_values}},
-  \code{\link{aggregates}},
-  \code{\link{compute_aggregate_values}},
-  \code{\link{compute_aggregate}}, \code{\link{parity_adj}}
+Other summarise: 
+\code{\link{aggregates_values}()},
+\code{\link{aggregates}()},
+\code{\link{compute_aggregate_values}()},
+\code{\link{compute_aggregate}()},
+\code{\link{parity_adj}()}
 }
 \concept{summarise}

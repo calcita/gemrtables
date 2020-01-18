@@ -16,9 +16,12 @@ function
 \seealso{
 \code{\link{weights_clean}}
 
-Other import/clean: \code{\link{cedar}},
-  \code{\link{inds}}, \code{\link{other}},
-  \code{\link{region_groups2}},
-  \code{\link{region_groups}}, \code{\link{uis}}
+Other import/clean: 
+\code{\link{cedar}()},
+\code{\link{inds}()},
+\code{\link{other}()},
+\code{\link{region_groups2}()},
+\code{\link{region_groups}()},
+\code{\link{uis}()}
 }
 \concept{import/clean}

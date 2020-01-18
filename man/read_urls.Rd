@@ -44,7 +44,5 @@ list(
 }
 \seealso{
 \code{\link[rsdmx]{readSDMX}}
-
-Other import: \code{\link{read_cedar}}
 }
 \concept{import}
