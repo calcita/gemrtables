@@ -193,106 +193,6 @@ uis_clean <- function(df) {
   }
 }
 
-#' cedar_clean
-#'
-#' \code{cedar_clean} is a function to clean data imported by \code{read_cedar}.
-#'
-#' Cleans data imported from cedar database and computes several variables
-#' (CR.1.GPIA, CR.1.LPIA, CR.1.WPIA, CR.2.GPIA, CR.2.LPIA, CR.2.WPIA, CR.3.GPIA,
-#' CR.3.LPIA, CR.3.WPIA, chores.28plus.12t14.GPIA)
-#'@family clean
-#'@seealso \code{\link{read_cedar}}
-
-cedar_clean <- function(df) {
-
-  clean1 <- df %>%
-    dplyr::mutate(ind = dplyr::case_when(indicator == "trans_prim_m" & is.na(sex_id) ~ "TranRA.2.GPV.cp",
-                           indicator == "comp_prim_v2_m" & is.na(sex_id)  & is.na(location_id) & is.na(wealth_id) ~ "CR.1",
-                           indicator == "comp_prim_v2_m" & sex_id == 1 & is.na(wealth_id) ~ "CR.1.f",
-                           indicator == "comp_prim_v2_m" & sex_id == 2 & is.na(wealth_id) ~ "CR.1.m",
-                           indicator == "comp_prim_v2_m" & location_id == 5 ~ "CR.1.rural",
-                           indicator == "comp_prim_v2_m" & location_id == 6 ~ "CR.1.urban",
-                           indicator == "comp_prim_v2_m" & wealth_id == 6 & is.na(sex_id) ~ "CR.1.q1",
-                           indicator == "comp_prim_v2_m" & wealth_id == 10 & is.na(sex_id) ~ "CR.1.q5",
-                           indicator == "comp_prim_v2_m" & wealth_id == 6 & sex_id == 1 ~ "CR.1.q1.f",
-                           indicator == "comp_prim_v2_m" & wealth_id == 6 & sex_id == 2 ~ "CR.1.q1.m",
-                           indicator == "comp_lowsec_v2_m"  & is.na(sex_id)  & is.na(location_id) & is.na(wealth_id) ~ "CR.2",
-                           indicator == "comp_lowsec_v2_m" & sex_id == 1 & is.na(location_id) & is.na(wealth_id) ~ "CR.2.f",
-                           indicator == "comp_lowsec_v2_m" & sex_id == 2 & is.na(location_id) & is.na(wealth_id) ~ "CR.2.m",
-                           indicator == "comp_lowsec_v2_m" & location_id == 5 ~ "CR.2.rural",
-                           indicator == "comp_lowsec_v2_m" & location_id == 6 ~ "CR.2.urban",
-                           indicator == "comp_lowsec_v2_m" & wealth_id == 6 & is.na(sex_id) ~ "CR.2.q1",
-                           indicator == "comp_lowsec_v2_m" & wealth_id == 10 & is.na(sex_id) ~ "CR.2.q5",
-                           indicator == "comp_lowsec_v2_m" & wealth_id == 6 & sex_id == 1 ~ "CR.2.q1.f",
-                           indicator == "comp_lowsec_v2_m" & wealth_id == 6 & sex_id == 2 ~ "CR.2.q1.m",
-                           indicator == "comp_upsec_v2_m" & is.na(sex_id)  & is.na(location_id) & is.na(wealth_id) ~ "CR.3",
-                           indicator == "comp_upsec_v2_m" & sex_id == 1 & is.na(wealth_id) ~ "CR.3.f",
-                           indicator == "comp_upsec_v2_m" & sex_id == 2 & is.na(wealth_id) ~ "CR.3.m",
-                           indicator == "comp_upsec_v2_m" & location_id == 5 ~ "CR.3.rural",
-                           indicator == "comp_upsec_v2_m" & location_id == 6 ~ "CR.3.urban",
-                           indicator == "comp_upsec_v2_m" & wealth_id == 6 & is.na(sex_id) ~ "CR.3.q1",
-                           indicator == "comp_upsec_v2_m" & wealth_id == 10 & is.na(sex_id) ~ "CR.3.q5",
-                           indicator == "comp_upsec_v2_m" & wealth_id == 6 & sex_id == 1 ~ "CR.3.q1.f",
-                           indicator == "comp_upsec_v2_m" & wealth_id == 6 & sex_id == 2 ~ "CR.3.q1.m",
-                           indicator == "u5_posit_home_learn"  ~ "home.lrn.env.3t7",
-                           indicator == "u5_child_book"  ~ "home.book.u5",
-                           indicator == "school_child_track"  ~ "OnTrack.three.domains",
-                           indicator == "stu_exper_violence_13_17" & sex_id ==4  ~ "stu.viol.13t17",
-                           indicator == "stu_exper_bully_13_17"  & sex_id == 4 ~ "stu.bully.13t17",
-                           indicator == "esd_gced_curr_ge"  ~ "esd.curr.ge",
-                           indicator == "esd_gced_curr_hr"  ~ "esd.curr.hr",
-                           indicator == "esd_gced_glo_cit"  ~ "esd.curr.cit",
-                           indicator == "esd_gced_sus_dev"  ~ "esd.sus.dev",
-                           indicator == "child_chores_more_28_12_14" & sex_id == 4 ~ "chores.28plus.12t14",
-                           indicator == "child_chores_more_28_12_14" & sex_id == 1 ~ "chores.28plus.12t14.f",
-                           indicator == "child_chores_more_28_12_14" & sex_id == 2 ~ "chores.28plus.12t14.m"),
-                  value = ifelse(stringr::str_detect(ind, stringr::regex("CR\\.|TranRA")), value*100, value),
-                  val_status = ifelse(stringr::str_detect(ind, stringr::regex("CR\\.|TranRA")), "A", NA)) %>%
-
-    dplyr::inner_join(.gemrtables.pkg.env$regions, by = c("country_code" = "iso3c")) %>%
-    dplyr::filter(!is.na(ind))
-
-  vars_f = list("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
-  vars_m = list("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
-
-  if(isTRUE(.gemrtables.pkg.env$level_country)){
-
-  parity_indices <- list(df = rep(list("clean1"), 10),
-                         col = rep(list("ind"), 10),
-                         a = vars_f,
-                         b = vars_m,
-                         varname = list("CR.1.GPIA", "CR.1.LPIA", "CR.1.WPIA", "CR.2.GPIA", "CR.2.LPIA", "CR.2.WPIA",
-                                        "CR.3.GPIA", "CR.3.LPIA", "CR.3.WPIA", "chores.28plus.12t14.GPIA")) %>%
-    purrr::pmap(parity_adj) %>%
-    purrr::reduce(dplyr::bind_rows)
-
-  cleaned <- dplyr::bind_rows(clean1, parity_indices) %>%
-    dplyr::ungroup() %>%
-    dplyr::select(iso2c, year, ind, value, val_status) %>%
-    dplyr::mutate(source = "cedar") %>%
-    dplyr::filter(!is.na(value)) %>%
-    dplyr::group_by(iso2c, ind) %>%
-    dplyr::filter(year == max(year)) %>%
-    dplyr::ungroup() %>%
-    unique()
-  } else {
-    cedar_clean <- clean1 %>%
-      dplyr::filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-      R.cache::saveCache(key=list("cedar_cleaned"), comment="cedar_cleaned")
-
-    cleaned <- clean1 %>%
-      dplyr::ungroup() %>%
-      dplyr::filter(!var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-      dplyr::select(iso2c, year, ind, value, val_status) %>%
-      dplyr::mutate(source = "cedar") %>%
-      dplyr::filter(!is.na(value)) %>%
-      dplyr::group_by(iso2c, ind) %>%
-      dplyr::filter(year == max(year)) %>%
-      dplyr::ungroup() %>%
-      unique()
-  }
-}
-
 #' wb_clean
 #'
 #' \code{wb_clean} is a function to clean data imported by \code{[wbstats]{wb}} within \code{\link{other}} .
@@ -608,8 +508,9 @@ ict_skills_clean <- function(df) {
 #'@family clean
 #'@seealso \code{\link{other}}
 
-  chores_clean <- function(df) {
-    cleaned <- df %>%
+chores_clean <- function(df) {
+
+  cleaned <- df %>%
       dplyr::mutate(chores.28plus.12t14 = total,
                     chores.28plus.12t14.GPIA = ifelse(GPI > 1, 1+(1-(1/GPI)), GPI),
                     iso2c = countrycode::countrycode(sourcevar = .$country, origin = "country.name", destination = "iso2c", warn = T),
@@ -720,6 +621,7 @@ weights_clean <- function(df) {
 #'
 
 parity_indices_region <- function(){
+
   uis_cleaned1 <- R.cache::loadCache(uis_cleaned) %>%
     dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
     mutate(ind = var_concat)
@@ -776,31 +678,6 @@ parity_indices_region <- function(){
     dplyr::mutate(source = "UIS") %>%
     dplyr::filter(!is.na(value))
 
-  # cedar
-  cedar_cleaned1 <- R.cache::loadCache(cedar_cleaned) %>%
-    dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
-    mutate(ind = var_concat)
-
-  cedar_cleaned_aggregates <- cedar_cleaned1 %>%
-    aggregates_values() %>%
-    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
-             stringr::str_replace_all("NA", "") %>%
-             stringr::str_squish()) %>%
-    filter(nchar(annex_name) != 0)
-
-  vars_f = list("CR.1.f", "CR.1.rural", "CR.1.q1", "CR.2.f", "CR.2.rural", "CR.2.q1", "CR.3.f", "CR.3.rural", "CR.3.q1", "chores.28plus.12t14.f")
-  vars_m = list("CR.1.m", "CR.1.urban", "CR.1.q5","CR.2.m", "CR.2.urban", "CR.2.q5", "CR.3.m", "CR.3.urban", "CR.3.q5", "chores.28plus.12t14.m")
-  parity_indices_cedar <- list(df = rep(list("cedar_cleaned_aggregates"), 10),
-                               col = rep(list("ind"), 10),
-                               a = vars_f,
-                               b = vars_m,
-                               varname = list("CR.1.GPIA", "CR.1.LPIA", "CR.1.WPIA", "CR.2.GPIA", "CR.2.LPIA", "CR.2.WPIA",
-                                              "CR.3.GPIA", "CR.3.LPIA", "CR.3.WPIA", "chores.28plus.12t14.GPIA")) %>%
-    purrr::pmap(parity_adj) %>%
-    purrr::reduce(dplyr::bind_rows)%>%
-    dplyr::mutate(source = "cedar")
-
   # WB
   vars_f <- list("adult.profiliteracy.f","adult.profinumeracy.f")
   vars_m <- list("adult.profiliteracy.m", "adult.profinumeracy.m")
@@ -831,7 +708,7 @@ parity_indices_region <- function(){
     dplyr::mutate(source = "PIAAC")
 
   # Binded parity indices
-  dplyr::bind_rows(parity_indices_uis, parity_indices_cedar, parity_indices_wb)
+  dplyr::bind_rows(parity_indices_uis, parity_indices_wb)
 }
 
 
@@ -843,22 +720,21 @@ parity_indices_region <- function(){
 
 format_long <- function(){
 
-#load/ cache for imported/cleaned country data and weights
+# load/ cache for imported/cleaned country data and weights
 
 # function to generate country_data
 c_data <- function() {
 
   uis_data <- uis()
-  cedar_data <- cedar()
   other_data <- other()
-  dplyr::bind_rows(uis_data, cedar_data, other_data)
+  dplyr::bind_rows(uis_data, other_data)
 }
 
 load_cache_data <- function(df, ref_year = .gemrtables.pkg.env$ref_year) {
 
   #convert file_paths into of unprocessed datasets into character vector
 
-  source_keys = c("uis_up", "cedar_up", "wb_up", "eurostat_up", "oecd_up")
+  source_keys = c("uis_up", "wb_up", "eurostat_up", "oecd_up")
   sources <- list()
   for(i in seq_along(source_keys)) {
     sources[[i]] <- R.cache::findCache(list(source_keys[i]))
@@ -871,7 +747,7 @@ load_cache_data <- function(df, ref_year = .gemrtables.pkg.env$ref_year) {
 
   if(df == "country_data") {
     data <- R.cache::loadCache(key_country, sources = sources, removeOldCache=TRUE)
-    if(length(sources) !=5) {
+    if(length(sources) != length(source_keys)) {
       data <- NULL
     }
   }else if (df == "weights_data"){
@@ -902,14 +778,11 @@ country_data <- load_cache_data("country_data")
 #   is.null(.gemrtables.pkg.env$uis_comp),
 #   FALSE)) {clearCache(prompt = FALSE)}
 
-dac_recipients <- read.csv(system.file("config", "DAC_recipients.csv", package = "gemrtables"),
-                           stringsAsFactors = FALSE) %>% na.omit
 
 weights_data <-
   load_cache_data("weights_data") %>%
   dplyr::left_join(select(.gemrtables.pkg.env$regions, iso3c, iso2c, World, SDG.region, SDG.subregion, income_group, income_subgroup), by = 'iso2c') %>%
   tidyr::gather(wt_region, group, World:income_subgroup) %>%
-  #dplyr::filter(!stringr::str_detect(ind, 'odaflow') | iso3c %in% dac_recipients$iso3c) %>%
   dplyr::select(-iso3c) %>%
   dplyr::group_by(wt_var, wt_region, group) %>%
   dplyr::mutate(wt_total = sum(wt_value, na.rm = TRUE)) %>%

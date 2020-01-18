@@ -112,6 +112,7 @@ aggregates <- function(df) {
 
 
 compute_aggregate_values <- function(df, region, entity){
+
   region <- as.name(region)
   entity <- as.character(entity)
   computed <- df %>%

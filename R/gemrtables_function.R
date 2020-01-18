@@ -20,16 +20,15 @@
 #' @param path File path to write xlsx workbook (character). Overwrites existing
 #'   file.
 #' @param key UIS api subscription key.
-#' @param password password to cedar database.
 #' @param level_country If it is TRUE, parity indices are calculated at the country level
 #' @param drake If it is TRUE, the drake plan is run instead load or generate data
-#' @param removeCache Character vector of unprocessed dataframes. Options are c("uis_up", "cedar_up", "wb_up", "eurostat_up", "oecd_up")
+#' @param removeCache Character vector of unprocessed dataframes. Options are c("uis_up", "wb_up", "eurostat_up", "oecd_up")
 #' @return A data frame or an xlsx workbook.
 #' @export
 #' @examples
-#' gemrtables(ref_year = 2016, export = TRUE, path = x, key = y, password = z)
+#' gemrtables(ref_year = 2016, export = TRUE, path = x, key = y)
 #'
-#' df <- gemrtables(region = "UIS.region", ref_year = 2016, export = FALSE, key = y, password = z)
+#' df <- gemrtables(region = "UIS.region", ref_year = 2016, export = FALSE, key = y)
 
 gemrtables <- function(
   region = "SDG.region",
@@ -37,7 +36,6 @@ gemrtables <- function(
   export = TRUE,
   path,
   key,
-  password,
   pc_flag_cut = 66,
   pc_comp_cut2 = 33,
   level_country = TRUE,
@@ -96,12 +94,6 @@ gemrtables <- function(
     stop("Key for UIS API is missing")
   } else {
     .gemrtables.pkg.env$key <- as.character(key)
-  }
-
-  if (missing(password)) {
-    stop("Password for cedar sql database is missing")
-  } else {
-    .gemrtables.pkg.env$password <- as.character(password)
   }
 
   if (isTRUE(export)) {
