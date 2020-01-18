@@ -111,7 +111,7 @@ aggregates <- function(df) {
 #' @family summarise
 
 
-compute_aggregate_values <- function(df, region, entity){
+compute_aggregate_values <- function(df, region, entity) {
 
   region <- as.name(region)
   entity <- as.character(entity)
@@ -130,7 +130,7 @@ compute_aggregate_values <- function(df, region, entity){
 #' @return A data frame.
 #' @family summarise
 
-aggregates_values <- function(df){
+aggregates_values <- function(df) {
 
   region <- as.character(.gemrtables.pkg.env$region)
   subregion <- as.character(.gemrtables.pkg.env$subregion)

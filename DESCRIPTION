@@ -20,7 +20,6 @@ Imports:
     dplyr,
     purrr,
     lubridate,
-    RMariaDB,
     R.cache,
     rsdmx,
     stringi,

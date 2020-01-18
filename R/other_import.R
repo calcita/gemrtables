@@ -85,28 +85,28 @@ other <- function() {
 
   #google drive data
 
-  un_aids_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1S6E4WwosJHjpu-d557tUjlJ6awMAwLsa") %>%
+  un_aids_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1S6E4WwosJHjpu-d557tUjlJ6awMAwLsa", col_types = readr::cols()) %>%
     un_aids_clean()
 
-  gcpea_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1tlya_2MkfFuAZC_fXw8Q3BZqZ3Qq08Q1") %>%
+  gcpea_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1tlya_2MkfFuAZC_fXw8Q3BZqZ3Qq08Q1", col_types = readr::cols()) %>%
     gcpea_clean()
 
-  unicef_wash_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1I4XbP4fCzlkE-e-98BVgh6UPjM0oEHDI") %>%
+  unicef_wash_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1I4XbP4fCzlkE-e-98BVgh6UPjM0oEHDI", col_types = readr::cols()) %>%
     unicef_wash_clean()
 
-  unicef_ecce_learn_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1JzOo7rt8O3ZE9eSAL3v1jKexLwbICtM3") %>%
+  unicef_ecce_learn_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1JzOo7rt8O3ZE9eSAL3v1jKexLwbICtM3", col_types = readr::cols()) %>%
     unicef_ecce_clean(ind = "home.lrn.env.3t7", source = "UNICEF")
 
-  unicef_ecce_books_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=15oDSTYqYm4Z4lHx7nQi31k_G1tjHfcGz") %>%
+  unicef_ecce_books_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=15oDSTYqYm4Z4lHx7nQi31k_G1tjHfcGz", col_types = readr::cols()) %>%
     unicef_ecce_clean(ind = "home.book.u5", source = "UNICEF")
 
-  bullying_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1QgrTGKWuhlgd_oYtCKAiUw4SSgdj4xts") %>%
+  bullying_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1QgrTGKWuhlgd_oYtCKAiUw4SSgdj4xts", col_types = readr::cols()) %>%
     bullying_clean()
 
-  ict_skills_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1dV4T7RSDbJmYvhy7ydUzLCkLCTcUkZzl") %>%
+  ict_skills_data <- readr::read_csv("https://drive.google.com/uc?export=download&id=1dV4T7RSDbJmYvhy7ydUzLCkLCTcUkZzl", col_types = readr::cols()) %>%
     ict_skills_clean()
 
-  chores_data <-  readr::read_csv("https://drive.google.com/uc?export=download&id=1tTQB6CtgGkBwj4SBsjLdfR7l_4mVlFfs") %>%
+  chores_data <-  readr::read_csv("https://drive.google.com/uc?export=download&id=1tTQB6CtgGkBwj4SBsjLdfR7l_4mVlFfs", col_types = readr::cols()) %>%
     chores_clean()
 
   #bind all

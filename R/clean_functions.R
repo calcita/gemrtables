@@ -553,7 +553,7 @@ weights_clean <- function(df) {
   unpd <- df[[2]] %>%
     dplyr::mutate(REF_AREA = as.numeric(stringi::stri_replace_all_regex(REF_AREA, "\\b0*(\\d+)\\b", "$1"))) %>%
     dplyr::mutate(wt_value = as.numeric(obsValue) * 1000,
-                  iso2c = countrycode::countrycode(sourcevar = .$REF_AREA, origin = "iso3n", destination = "iso2c")) %>%
+                  iso2c = countrycode::countrycode(sourcevar = .$REF_AREA, origin = "iso3n", destination = "iso2c",  warn = FALSE)) %>%
     dplyr::select(iso2c, year = obsTime, wt_var = AGE, wt_value)
 
   clean1 <- bind_rows(uis, unpd) %>%
@@ -936,6 +936,8 @@ format_wide <- function(df) {
                   regionx = !!.gemrtables.pkg.env$region,
                   regionx = ifelse(is_aggregate == "aggregate", annex_name, regionx)) %>%
     dplyr::left_join(.gemrtables.pkg.env$regions2[, c(1,4)], by = c("regionx" = "annex_name")) %>%
+    group_by(ind) %>%
+    mutate(grouped_id = row_number()) %>%
     split(list(.$is_aggregate, .$sheet)) %>%
     purrr::map(tidyr::spread, key=ind, value = val_utf) %>%
     purrr::map(function(.) dplyr::mutate(., annex_name = ifelse(entity == "subregion" | entity == "income_subgroup", paste("  ", annex_name), annex_name))) %>%
@@ -947,5 +949,5 @@ format_wide <- function(df) {
     purrr::map_if(suppressWarnings(stringr::str_detect(., "country")), function(.) dplyr::left_join(., .gemrtables.pkg.env$regions[, c("annex_name", "iso3c")], by = "annex_name")) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(.gemrtables.pkg.env$region)]$V1][!.N]) %>%
-    purrr::map(function(.) dplyr::select(., -sheet, -is_aggregate, -entity, -!!.gemrtables.pkg.env$region, - regionx, -region_order))
+    purrr::map(function(.) dplyr::select(., -grouped_id,-sheet, -is_aggregate, -entity, -!!.gemrtables.pkg.env$region, - regionx, -region_order))
 }
