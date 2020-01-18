@@ -18,10 +18,11 @@ Aggregates are computed for each type of grouping and binded. Redundant
 aggregations are dropped through a join.
 }
 \seealso{
-Other summarise: \code{\link{aggregates_values}},
-  \code{\link{compute_aggregate_values}},
-  \code{\link{compute_aggregate}},
-  \code{\link{parity_adj}},
-  \code{\link{parity_indices_region}}
+Other summarise: 
+\code{\link{aggregates_values}()},
+\code{\link{compute_aggregate_values}()},
+\code{\link{compute_aggregate}()},
+\code{\link{parity_adj}()},
+\code{\link{parity_indices_region}()}
 }
 \concept{summarise}

@@ -11,7 +11,7 @@
 
 agg_preprocess <- function(df) {
   df %>%
-    mutate(value = case_when(
+    dplyr::mutate(value = dplyr::case_when(
        ind == "Comp.02" | ind == "Free.02"  ~ as.numeric(value >= 1),
        ind == "Comp.2t3" ~ as.numeric(value >= 9),
        ind == "Free.2t3" ~ as.numeric(value >= 12),
@@ -35,8 +35,8 @@ agg_preprocess <- function(df) {
 compute_aggregate <- function(df, region, entity) {
 
   wt <- .gemrtables.pkg.env$weights_data %>%
-  filter(wt_region == region) %>%
-  select(-wt_region) %>%
+  dplyr::filter(wt_region == region) %>%
+  dplyr::select(-wt_region) %>%
   identity
 
   region <- as.name(region)
@@ -89,7 +89,7 @@ aggregates <- function(df) {
     dplyr::mutate(year = .gemrtables.pkg.env$ref_year) %>%
     dplyr::filter(!(aggregation != 'w_mean' & pc_comp < .gemrtables.pkg.env$pc_comp_cut2) &
                   !(aggregation == 'w_mean' & wt_share < .gemrtables.pkg.env$pc_comp_cut2)) %>%
-    dplyr::mutate(val_status = case_when(
+    dplyr::mutate(val_status = dplyr::case_when(
       aggregation == 'sum' & (pc_comp < .gemrtables.pkg.env$pc_flag_cut | pop_share < 95) ~ 'E',
       aggregation != 'w_mean' & pc_comp < .gemrtables.pkg.env$pc_flag_cut ~ 'E',
       aggregation == 'w_mean' & pmin(wt_share, pop_share, na.rm = TRUE) < .gemrtables.pkg.env$pc_flag_cut ~ 'E',
@@ -117,7 +117,7 @@ compute_aggregate_values <- function(df, region, entity) {
   entity <- as.character(entity)
   computed <- df %>%
     dplyr::group_by(var_concat,!!region) %>%
-    summarise(value = median(value, na.rm = TRUE),
+    dplyr::summarise(value = median(value, na.rm = TRUE),
               year = max(year))
 }
 

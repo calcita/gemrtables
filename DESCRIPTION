@@ -10,14 +10,11 @@ Description: This package imports, transforms and exports data for use in the GE
 License: GPL-3 
 Encoding: UTF-8
 LazyData: true
-Depends:
-    dplyr,
-    data.table
 Imports:
-    countrycode,
-    data.table,
-    dbplyr,
     dplyr,
+    data.table,
+    countrycode,
+    dbplyr,
     purrr,
     lubridate,
     R.cache,
@@ -27,7 +24,9 @@ Imports:
     tidyr,
     wbstats,
     writexl,
-    magrittr
-RoxygenNote: 6.1.1
+    magrittr,
+    glue,
+    readr
+RoxygenNote: 7.0.2
 Suggests: 
     testthat (>= 2.1.0)

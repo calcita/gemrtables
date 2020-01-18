@@ -15,9 +15,12 @@ Defines relvent tables and filters for cedar sql tables and applies the `cedar_c
 \seealso{
 \code{\link{cedar_clean}}
 
-Other import/clean: \code{\link{inds}},
-  \code{\link{other}}, \code{\link{region_groups2}},
-  \code{\link{region_groups}}, \code{\link{uis}},
-  \code{\link{weights}}
+Other import/clean: 
+\code{\link{inds}()},
+\code{\link{other}()},
+\code{\link{region_groups2}()},
+\code{\link{region_groups}()},
+\code{\link{uis}()},
+\code{\link{weights}()}
 }
 \concept{import/clean}

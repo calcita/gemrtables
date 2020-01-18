@@ -23,6 +23,7 @@
 #' @param level_country If it is TRUE, parity indices are calculated at the country level
 #' @param drake If it is TRUE, the drake plan is run instead load or generate data
 #' @param removeCache Character vector of unprocessed dataframes. Options are c("uis_up", "wb_up", "eurostat_up", "oecd_up")
+#' @importFrom dplyr select filter %>%
 #' @return A data frame or an xlsx workbook.
 #' @export
 #' @examples
