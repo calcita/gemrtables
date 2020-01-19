@@ -6,6 +6,9 @@
 \usage{
 eurostat_clean(df)
 }
+\arguments{
+\item{df}{a data frame from eurostat}
+}
 \description{
 \code{eurostat_clean} is a function to clean data from eurostat API queries
 defined in \code{other}.

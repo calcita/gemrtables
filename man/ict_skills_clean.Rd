@@ -6,6 +6,9 @@
 \usage{
 ict_skills_clean(df)
 }
+\arguments{
+\item{df}{a data frame from ITU ICT}
+}
 \description{
 \code{ict_skills_clean} is a function to clean the ITU ICT data on
 google drive.
@@ -13,19 +16,13 @@ google drive.
 \seealso{
 \code{\link{other}}
 
-Other clean: 
-\code{\link{agg_preprocess}()},
-\code{\link{bullying_clean}()},
-\code{\link{chores_clean}()},
-\code{\link{format_long}()},
-\code{\link{format_wide}()},
-\code{\link{gcpea_clean}()},
-\code{\link{oecd_clean}()},
-\code{\link{uis_clean}()},
-\code{\link{un_aids_clean}()},
-\code{\link{unicef_ecce_clean}()},
-\code{\link{unicef_wash_clean}()},
-\code{\link{wb_clean}()},
-\code{\link{weights_clean}()}
+Other clean: \code{\link{agg_preprocess}},
+  \code{\link{bullying_clean}}, \code{\link{chores_clean}},
+  \code{\link{format_long}}, \code{\link{format_wide}},
+  \code{\link{gcpea_clean}}, \code{\link{oecd_clean}},
+  \code{\link{uis_clean}}, \code{\link{un_aids_clean}},
+  \code{\link{unicef_ecce_clean}},
+  \code{\link{unicef_wash_clean}}, \code{\link{wb_clean}},
+  \code{\link{weights_clean}}
 }
 \concept{clean}

@@ -3,21 +3,13 @@
 \docType{package}
 \name{gemrtables}
 \alias{gemrtables}
+\alias{gemrtables-package}
 \title{gemrtables: A package for generating the Global Education Monitoring (GEM)
 Report statistical tables.}
 \usage{
-gemrtables(
-  region = "SDG.region",
-  ref_year,
-  export = TRUE,
-  path,
-  key,
-  pc_flag_cut = 66,
-  pc_comp_cut2 = 33,
-  level_country = TRUE,
-  drake = TRUE,
-  removeCache
-)
+gemrtables(region = "SDG.region", ref_year, export = TRUE, path, key,
+  pc_flag_cut = 66, pc_comp_cut2 = 33, level_country = TRUE,
+  drake = TRUE, removeCache)
 }
 \arguments{
 \item{region}{regional grouping on which to compute aggregate values. Options
@@ -34,6 +26,10 @@ If `FALSE` (the default) returns a data frame in 'long' format.}
 file.}
 
 \item{key}{UIS api subscription key.}
+
+\item{pc_flag_cut}{threshold}
+
+\item{pc_comp_cut2}{threshold}
 
 \item{level_country}{If it is TRUE, parity indices are calculated at the country level}
 

@@ -14,12 +14,8 @@ This dataframe defines various country names, iso / OECD CRS codes, and
 regional groupings on which to calculate aggregates.
 }
 \seealso{
-Other import/clean: 
-\code{\link{cedar}()},
-\code{\link{inds}()},
-\code{\link{other}()},
-\code{\link{region_groups2}()},
-\code{\link{uis}()},
-\code{\link{weights}()}
+Other import/clean: \code{\link{inds}},
+  \code{\link{other}}, \code{\link{region_groups2}},
+  \code{\link{uis}}, \code{\link{weights}}
 }
 \concept{import/clean}

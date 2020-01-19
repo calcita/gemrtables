@@ -1,6 +1,9 @@
-# fallback access to data.uis.unesco.org SDMX interface,
-# for aggregates missing from api.uis.unesco.org
-
+#' get_uis_altcodes
+#' @description Fallback access to data.uis.unesco.org SDMX interface, for aggregates missing from api.uis.unesco.org
+#' @return
+#' @export
+#'
+#' @examples
 get_uis_altcodes <- function() {
 
   dsd_uis <- rsdmx::readSDMX("http://data.uis.unesco.org/RestSDMX/sdmx.ashx/GetDataStructure/EDULIT_DS", resource = "datastructure")

@@ -18,19 +18,13 @@ order to caclulate the percentage of countries meeting a condition in the
 aggregates tables
 }
 \seealso{
-Other clean: 
-\code{\link{bullying_clean}()},
-\code{\link{chores_clean}()},
-\code{\link{format_long}()},
-\code{\link{format_wide}()},
-\code{\link{gcpea_clean}()},
-\code{\link{ict_skills_clean}()},
-\code{\link{oecd_clean}()},
-\code{\link{uis_clean}()},
-\code{\link{un_aids_clean}()},
-\code{\link{unicef_ecce_clean}()},
-\code{\link{unicef_wash_clean}()},
-\code{\link{wb_clean}()},
-\code{\link{weights_clean}()}
+Other clean: \code{\link{bullying_clean}},
+  \code{\link{chores_clean}}, \code{\link{format_long}},
+  \code{\link{format_wide}}, \code{\link{gcpea_clean}},
+  \code{\link{ict_skills_clean}}, \code{\link{oecd_clean}},
+  \code{\link{uis_clean}}, \code{\link{un_aids_clean}},
+  \code{\link{unicef_ecce_clean}},
+  \code{\link{unicef_wash_clean}}, \code{\link{wb_clean}},
+  \code{\link{weights_clean}}
 }
 \concept{clean}

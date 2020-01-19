@@ -6,21 +6,6 @@
 \usage{
 parity_indices_region()
 }
-\arguments{
-\item{df}{a data frame with a key / value columns.}
-
-\item{col}{indicator key column.}
-
-\item{a}{indicator for 'disadvantaged' group (numerator).}
-
-\item{b}{indicator for 'advantaged' group  (denominator).}
-
-\item{varname}{name for calculated indice (character).}
-
-\item{val_status}{For use with data with flags for estimated observations. If
-`TRUE` will calculate flag for indice (requires flag column to be named
-`val_status` and estimates lablled as `E`.}
-}
 \value{
 A data frame.
 }
@@ -28,11 +13,9 @@ A data frame.
 \code{parity_indices_region} calculates adjusted parity ratios at the region level.
 }
 \seealso{
-Other summarise: 
-\code{\link{aggregates_values}()},
-\code{\link{aggregates}()},
-\code{\link{compute_aggregate_values}()},
-\code{\link{compute_aggregate}()},
-\code{\link{parity_adj}()}
+Other summarise: \code{\link{aggregates_values}},
+  \code{\link{aggregates}},
+  \code{\link{compute_aggregate_values}},
+  \code{\link{compute_aggregate}}, \code{\link{parity_adj}}
 }
 \concept{summarise}

@@ -6,9 +6,12 @@
 \usage{
 gcpea_clean(df)
 }
+\arguments{
+\item{df}{a data frame from GCPEA}
+}
 \description{
 \code{gcpea_clean} is a function to clean data from Global Campaign to
-protect education from attack (GCPEA) on google drive.
+Protect Education from Attack (GCPEA) on google drive.
 }
 \details{
 'm' val_status indicates observation comes from a multi-year period and does
@@ -17,19 +20,13 @@ not reflect the number of attacks on education in a single year period).
 \seealso{
 \code{\link{other}}
 
-Other clean: 
-\code{\link{agg_preprocess}()},
-\code{\link{bullying_clean}()},
-\code{\link{chores_clean}()},
-\code{\link{format_long}()},
-\code{\link{format_wide}()},
-\code{\link{ict_skills_clean}()},
-\code{\link{oecd_clean}()},
-\code{\link{uis_clean}()},
-\code{\link{un_aids_clean}()},
-\code{\link{unicef_ecce_clean}()},
-\code{\link{unicef_wash_clean}()},
-\code{\link{wb_clean}()},
-\code{\link{weights_clean}()}
+Other clean: \code{\link{agg_preprocess}},
+  \code{\link{bullying_clean}}, \code{\link{chores_clean}},
+  \code{\link{format_long}}, \code{\link{format_wide}},
+  \code{\link{ict_skills_clean}}, \code{\link{oecd_clean}},
+  \code{\link{uis_clean}}, \code{\link{un_aids_clean}},
+  \code{\link{unicef_ecce_clean}},
+  \code{\link{unicef_wash_clean}}, \code{\link{wb_clean}},
+  \code{\link{weights_clean}}
 }
 \concept{clean}

@@ -6,6 +6,9 @@
 \usage{
 un_aids_clean(df)
 }
+\arguments{
+\item{df}{a data frame from the UN AIDS}
+}
 \description{
 \code{un_aids_clean} is a function to clean data from the UN AIDS spreadsheet
 on google drive.
@@ -16,19 +19,13 @@ Information on survey used per observation is removed.
 \seealso{
 \code{\link{other}}
 
-Other clean: 
-\code{\link{agg_preprocess}()},
-\code{\link{bullying_clean}()},
-\code{\link{chores_clean}()},
-\code{\link{format_long}()},
-\code{\link{format_wide}()},
-\code{\link{gcpea_clean}()},
-\code{\link{ict_skills_clean}()},
-\code{\link{oecd_clean}()},
-\code{\link{uis_clean}()},
-\code{\link{unicef_ecce_clean}()},
-\code{\link{unicef_wash_clean}()},
-\code{\link{wb_clean}()},
-\code{\link{weights_clean}()}
+Other clean: \code{\link{agg_preprocess}},
+  \code{\link{bullying_clean}}, \code{\link{chores_clean}},
+  \code{\link{format_long}}, \code{\link{format_wide}},
+  \code{\link{gcpea_clean}},
+  \code{\link{ict_skills_clean}}, \code{\link{oecd_clean}},
+  \code{\link{uis_clean}}, \code{\link{unicef_ecce_clean}},
+  \code{\link{unicef_wash_clean}}, \code{\link{wb_clean}},
+  \code{\link{weights_clean}}
 }
 \concept{clean}

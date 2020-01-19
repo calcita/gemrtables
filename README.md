@@ -87,7 +87,6 @@ param_plan <-
 import_clean_plan <-
   drake::drake_plan(
     uis_data = uis(),
-    cedar_data = cedar(),
     other_data = other()
   )
 
@@ -96,13 +95,15 @@ summary_plan <-
   drake::drake_plan(
     # other_data = dplyr::bind_rows(wb_data, eurostat_data, oecd_data, un_aids_data, gcpea_data, unicef_wash_data,
     #                               unicef_ecce_learn_data, unicef_ecce_books_data, bullying_data, ict_skills_data, chores_data),
-    all_data = dplyr::bind_rows(uis_data, cedar_data, other_data),
+    all_data = dplyr::bind_rows(uis_data, other_data),
     long_data = long_format(),
     wide_format = format_wide(long_data)
   )
 
 # Create a workflow plan data frame for the whole plan
-gemrtables_plan <- dplyr::bind_rows(param_plan, import_clean_plan, summary_plan)
+gemrtables_plan <- dplyr::bind_rows(param_plan, 
+                                    import_clean_plan, 
+                                    summary_plan)
 
 # Run the plan
 drake::make(gemrtables_plan) #prework = "devtools::load_all()", lock_envir = FALSE

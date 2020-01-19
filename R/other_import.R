@@ -20,13 +20,14 @@ other <- function() {
     if(is.null(wb_up)) {
       message(glue::glue("generating {key} from scratch..."))
 
-      wb_up <- wbstats::wb(country = "countries_only", indicator = c("SH.STA.STNT.ZS",
-                                                                     "LO.TIMSS.SCI8.LOW", "LO.PISA.SCI.0", "LO.PISA.SCI.1B", "LO.PISA.SCI.1A",
-                                                                     "LO.PIAAC.LIT.YOU.BE", "LO.PIAAC.LIT.YOU.1", "LO.PIAAC.LIT.BE", "LO.PIAAC.LIT.1",
-                                                                     "LO.PIAAC.NUM.YOU.BE", "LO.PIAAC.NUM.YOU.1", "LO.PIAAC.NUM.BE", "LO.PIAAC.NUM.1",
-                                                                     "LO.PIAAC.LIT.FE.BE", "LO.PIAAC.LIT.FE.1", "LO.PIAAC.LIT.MA.BE", "LO.PIAAC.LIT.MA.1",
-                                                                     "LO.PIAAC.NUM.FE.BE", "LO.PIAAC.NUM.FE.1", "LO.PIAAC.NUM.MA.BE", "LO.PIAAC.NUM.MA.1"))
-      R.cache::saveCache(wb_up, key=key, comment="wb_up")
+      wb_up <- wbstats::wb(country = "countries_only",
+                           indicator = c("SH.STA.STNT.ZS", "LO.TIMSS.SCI8.LOW", "LO.PISA.SCI.0", "LO.PISA.SCI.1B", "LO.PISA.SCI.1A",
+                                         "LO.PIAAC.LIT.YOU.BE", "LO.PIAAC.LIT.YOU.1", "LO.PIAAC.LIT.BE", "LO.PIAAC.LIT.1",
+                                         "LO.PIAAC.NUM.YOU.BE", "LO.PIAAC.NUM.YOU.1", "LO.PIAAC.NUM.BE", "LO.PIAAC.NUM.1",
+                                         "LO.PIAAC.LIT.FE.BE", "LO.PIAAC.LIT.FE.1", "LO.PIAAC.LIT.MA.BE", "LO.PIAAC.LIT.MA.1",
+                                         "LO.PIAAC.NUM.FE.BE", "LO.PIAAC.NUM.FE.1", "LO.PIAAC.NUM.MA.BE", "LO.PIAAC.NUM.MA.1")
+                           )
+      R.cache::saveCache(wb_up, key = key, comment = "wb_up")
     }
 
     wb_up %>%
@@ -50,7 +51,7 @@ other <- function() {
                           "ec.europa.eu/eurostat/SDMX/diss-web/rest/data/isoc_sk_cskl_i/A.I_CCPY.IND_TOTAL.PC_IND./?startperiod=2010&endPeriod=2050") %>%
         read_urls()
 
-      R.cache::saveCache(eurostat_up, key=key, comment="eurostat_up")
+      R.cache::saveCache(eurostat_up, key = key, comment = "eurostat_up")
     }
 
     eurostat_up %>%
@@ -74,7 +75,7 @@ other <- function() {
                       "https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/EDU_PERS_INST/.T.INST_T.T.L2+L3.T.TEACH.PER/all?startTime=2010&endTime=2050") %>%
         read_urls(bind = FALSE)
 
-      R.cache::saveCache(oecd_up, key=key, comment="oecd_up")
+      R.cache::saveCache(oecd_up, key = key, comment = "oecd_up")
     }
 
     oecd_up %>%
@@ -115,8 +116,4 @@ other <- function() {
                                  unicef_ecce_learn_data, unicef_ecce_books_data, bullying_data, ict_skills_data, chores_data)
 
 }
-
-
-
-
 

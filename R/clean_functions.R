@@ -61,6 +61,7 @@ parity_adj <- function(df, col, a, b, varname, val_status = FALSE) {
 #' Comp.2t3, Free.2t3, Read.Primary.GPIA, Math.Primary.GPIA, Read.LowerSec.GPIA,
 #' Math.LowerSec.GPIA, LR.Ag15t24.GPIA, LR.Ag15t99.GPIA, Read.Primary.WPIA,
 #' Math.Primary.WPIA, Read.LowerSec.WPIA, Math.LowerSec.WPIA)
+#' @param df a data frame with a key / value columns.
 #'@family clean
 
 uis_clean <- function(df) {
@@ -199,6 +200,7 @@ uis_clean <- function(df) {
 #'
 #' Cleans data imported by \code{[wbstats]{wb}} and computes two variables
 #' (adult.profiliteracy.gpia, adult.profinumeracy.gpia)
+#' @param df a data frame from WB
 #'@family clean
 #'@seealso \code{\link[wbstats]{wb}}, \code{\link{other}}
 
@@ -256,6 +258,7 @@ wb_clean <- function(df) {
 #'
 #' \code{eurostat_clean} is a function to clean data from eurostat API queries
 #' defined in \code{other}.
+#' @param df a data frame from eurostat
 #'
 #'@family clean function
 #'@seealso \code{\link{other}}
@@ -282,6 +285,7 @@ eurostat_clean <- function(df) {
 #' Cleans data from OECD api queries and computes one variable.
 #' (sal.rel.2t3,)
 #'
+#'@param df a data frame from OECD
 #'@family clean
 #'@seealso \code{\link{other}}
 
@@ -340,7 +344,7 @@ oecd_clean <- function(df) {
 #' on google drive.
 #'
 #' Information on survey used per observation is removed.
-#'
+#'@param df a data frame from the UN AIDS
 #'@family clean
 #'@seealso \code{\link{other}}
 
@@ -365,11 +369,12 @@ un_aids_clean <- function(df) {
 #' gcpea_clean
 #'
 #' \code{gcpea_clean} is a function to clean data from Global Campaign to
-#' protect education from attack (GCPEA) on google drive.
+#' Protect Education from Attack (GCPEA) on google drive.
 #'
 #' 'm' val_status indicates observation comes from a multi-year period and does
 #' not reflect the number of attacks on education in a single year period).
 #'
+#'@param df a data frame from GCPEA
 #'@family clean
 #'@seealso \code{\link{other}}
 
@@ -400,7 +405,6 @@ gcpea_clean <- function(df) {
 #' Information on survey used per observation is removed.
 #'@param df a datadrame in the same format as
 #'  \url{https://drive.google.com/uc?export=download&id=1JzOo7rt8O3ZE9eSAL3v1jKexLwbICtM3}
-#'
 #'@param ind name of the indicator of the `value` column in the csv file
 #'  (character).
 #'@param source name of the source of the data (i.e. UNICEF)
@@ -431,6 +435,7 @@ unicef_ecce_clean <- function(df, ind, source) {
 #' \code{unicef_wash_clean} is a function to clean data from the UNICEF WASH
 #' file on google drive.
 #'
+#'@param df a data frame from the UNICEF WASH
 #'@family clean
 #'@seealso \code{\link{other}}
 
@@ -460,6 +465,7 @@ unicef_wash_clean <- function(df) {
 #'
 #' Information on survey used per observation is removed.
 #'
+#'@param df a data frame from Innocenti
 #'@family clean
 #'@seealso \code{\link{other}}
 
@@ -486,6 +492,7 @@ bullying_clean <- function(df) {
 #' \code{ict_skills_clean} is a function to clean the ITU ICT data on
 #' google drive.
 #'
+#'@param df a data frame from ITU ICT
 #'@family clean
 #'@seealso \code{\link{other}}
 
@@ -505,6 +512,7 @@ ict_skills_clean <- function(df) {
 #' \code{chores_clean} is a function to clean the child chores data on
 #' google drive.
 #'
+#'@param df a data frame
 #'@family clean
 #'@seealso \code{\link{other}}
 
@@ -528,6 +536,7 @@ chores_clean <- function(df) {
 #'
 #' Several variables are calculated (Y25T65, Y_GE25, Y15T64, L1_GLAST_Q1_F,
 #' L1_GLAST_Q1_M, L2_GLAST_Q1_F, L2_GLAST_Q1_M, L3_Q1_F = L3_F, L3_Q1_M = L3_M).
+#'@param df a data frame from SDMX
 #'@family clean
 #'@seealso \code{\link{weights}}
 
@@ -577,7 +586,7 @@ weights_clean <- function(df) {
   clean3 <- dplyr::bind_rows(clean1, clean2) %>%
     dplyr::group_by(iso2c, wt_var) %>%
     dplyr::filter(!all(is.na(wt_value))) %>%
-    ungroup
+    dplyr::ungroup()
   #   dplyr::filter(!is.na(wt_value)) %>%
   #   dplyr::mutate(wt_value_z = wt_value / mean(wt_value))
 
@@ -607,14 +616,6 @@ weights_clean <- function(df) {
 #'
 #' \code{parity_indices_region} calculates adjusted parity ratios at the region level.
 #'
-#' @param df a data frame with a key / value columns.
-#' @param col indicator key column.
-#' @param a indicator for 'disadvantaged' group (numerator).
-#' @param b indicator for 'advantaged' group  (denominator).
-#' @param varname name for calculated indice (character).
-#' @param val_status For use with data with flags for estimated observations. If
-#'   `TRUE` will calculate flag for indice (requires flag column to be named
-#'   `val_status` and estimates lablled as `E`.
 #' @return A data frame.
 #' @export
 #' @family summarise
@@ -796,7 +797,7 @@ pop_data <-
   dplyr::left_join(select(pop_data, -year), by = c('iso2c', 'wt_region', 'group')) %>%
   dplyr::select(-year)
 
-#clean country data and export statistical tables
+# clean country data and export statistical tables
 
 country_data1 <- country_data %>%
   dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
@@ -870,6 +871,7 @@ long_data <- dplyr::bind_rows(country_data2, computed_aggregates, uis_aggregates
 #'
 #' Rounds values, converts binary values to 'Yes/No'; converts value to unicode
 #' with subscript flags; converts to list of dataframes for export to xlsx.
+#'@param df a data frame in 'long' format
 #'@family clean
 
 format_wide <- function(df) {

@@ -6,6 +6,9 @@
 \usage{
 weights_clean(df)
 }
+\arguments{
+\item{df}{a data frame from SDMX}
+}
 \description{
 \code{weights_clean} is a function to clean weights data imported from SDMX
 queries in `weights` function.
@@ -17,19 +20,13 @@ L1_GLAST_Q1_M, L2_GLAST_Q1_F, L2_GLAST_Q1_M, L3_Q1_F = L3_F, L3_Q1_M = L3_M).
 \seealso{
 \code{\link{weights}}
 
-Other clean: 
-\code{\link{agg_preprocess}()},
-\code{\link{bullying_clean}()},
-\code{\link{chores_clean}()},
-\code{\link{format_long}()},
-\code{\link{format_wide}()},
-\code{\link{gcpea_clean}()},
-\code{\link{ict_skills_clean}()},
-\code{\link{oecd_clean}()},
-\code{\link{uis_clean}()},
-\code{\link{un_aids_clean}()},
-\code{\link{unicef_ecce_clean}()},
-\code{\link{unicef_wash_clean}()},
-\code{\link{wb_clean}()}
+Other clean: \code{\link{agg_preprocess}},
+  \code{\link{bullying_clean}}, \code{\link{chores_clean}},
+  \code{\link{format_long}}, \code{\link{format_wide}},
+  \code{\link{gcpea_clean}},
+  \code{\link{ict_skills_clean}}, \code{\link{oecd_clean}},
+  \code{\link{uis_clean}}, \code{\link{un_aids_clean}},
+  \code{\link{unicef_ecce_clean}},
+  \code{\link{unicef_wash_clean}}, \code{\link{wb_clean}}
 }
 \concept{clean}
