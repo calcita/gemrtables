@@ -47,11 +47,10 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(gemrtables)
-df <- gemrtables(region = "UIS.region", ref_year = 2016, export = FALSE, key = y, password = z)
+df <- gemrtables(region = "UIS.region", ref_year = 2016, export = FALSE, key = y)
 ```
 
-You should substitute ‘key’ for the UIS api subscription key and
-‘password’ for the password to cedar database.
+You should substitute ‘key’ for the UIS api subscription.
 
 ## Drake plan
 
@@ -68,7 +67,6 @@ code:
 ``` r
 # source("pkgs.R")
 source("R/aggregates_function.R")
-source("R/cedar_import.R")
 source("R/clean_functions.R")
 source("R/import_functions.R")
 source("R/merge_files.R")
