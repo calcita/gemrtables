@@ -623,7 +623,7 @@ weights_clean <- function(df) {
 
 parity_indices_region <- function(){
 
-  uis_cleaned1 <- R.cache::loadCache(key = list("uis_cleaned")) %>%
+  uis_cleaned1 <- R.cache::loadCache(list("uis_cleaned")) %>%
     dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
     dplyr::mutate(ind = var_concat)
 
@@ -683,7 +683,7 @@ parity_indices_region <- function(){
   vars_f <- list("adult.profiliteracy.f","adult.profinumeracy.f")
   vars_m <- list("adult.profiliteracy.m", "adult.profinumeracy.m")
 
-  wb_cleaned <- wb_cleaned <- R.cache::loadCache(key = list("wb_cleaned")) %>%
+  wb_cleaned <- wb_cleaned <- R.cache::loadCache(list("wb_cleaned")) %>%
     filter(ind %in% c(unlist(vars_f), unlist(vars_m))) %>%
     dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
     dplyr::filter(!is.na(ind)) %>%

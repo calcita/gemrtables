@@ -111,8 +111,7 @@ gemrtables <- function(
 
   long_data <- format_long()
 
-  wide_data <- long_data %>%
-    format_wide()
+  wide_data <- long_data %>% format_wide()
 
   if(nrow(.gemrtables.pkg.env$unmatched > 0)) {
     message(glue::glue("The following variables are missing:"))
