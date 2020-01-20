@@ -623,7 +623,7 @@ weights_clean <- function(df) {
 
 parity_indices_region <- function(){
 
-  uis_cleaned1 <- R.cache::loadCache(uis_cleaned) %>%
+  uis_cleaned1 <- R.cache::loadCache(key = list("uis_cleaned")) %>%
     dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
     dplyr::mutate(ind = var_concat)
 
@@ -660,7 +660,7 @@ parity_indices_region <- function(){
   uis_cleaned_aggregates <- uis_cleaned1 %>%
     aggregates_values() %>%
     dplyr::filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    dplyr::mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
+    dplyr::mutate(annex_name = paste(World, .gemrtables.pkg.env$region, income_group, income_subgroup) %>%
              stringr::str_replace_all("NA", "") %>%
              stringr::str_squish()) %>%
     dplyr::filter(nchar(annex_name) != 0)
@@ -692,7 +692,7 @@ parity_indices_region <- function(){
   wb_cleaned_aggregates <- wb_cleaned %>%
     aggregates_values() %>%
     dplyr::filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    dplyr::mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
+    dplyr::mutate(annex_name = paste(World, .gemrtables.pkg.env$region, income_group, income_subgroup) %>%
              stringr::str_replace_all("NA", "") %>%
              stringr::str_squish(),
            year = as.numeric(year)) %>%
@@ -804,8 +804,8 @@ country_data1 <- country_data %>%
   dplyr::left_join(.gemrtables.pkg.env$indicators, by = c("ind", "source")) %>%
   dplyr::filter(year >= .gemrtables.pkg.env$ref_year - year_cut)
 
-unmatched <- dplyr::anti_join(.gemrtables.pkg.env$indicators, country_data1, by = c("ind", "source")) %>%
-  dplyr::select(ind, source, sheet, position)
+.gemrtables.pkg.env$unmatched <- dplyr::anti_join(.gemrtables.pkg.env$indicators, country_data1, by = c("ind", "source")) %>%
+    dplyr::select(ind, source, sheet, position)
 
 country_data2 <- country_data1 %>%
   dplyr::select(iso2c, annex_name, World, !!.gemrtables.pkg.env$region, !!.gemrtables.pkg.env$subregion, income_group, income_subgroup, year, ind, value, val_status, source) %>%
@@ -854,7 +854,7 @@ if(!isTRUE(.gemrtables.pkg.env$level_country)){
   #binding aggregates data
   computed_aggregates <- dplyr::bind_rows(computed_aggregates, region_data1)
   # unmatched indicators
-  unmatched <- dplyr::anti_join(unmatched, region_data1, by = c("ind", "source")) %>%
+  .gemrtables.pkg.env$unmatched <- dplyr::anti_join(.gemrtables.pkg.env$unmatched, region_data1, by = c("ind", "source")) %>%
     dplyr::select(ind, source, sheet, position)
 }
 
