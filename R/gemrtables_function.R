@@ -44,7 +44,7 @@ gemrtables <- function(
   pc_flag_cut = 66,
   pc_comp_cut2 = 33,
   level_country = TRUE,
-  drake = TRUE,
+  drake = FALSE,
   removeCache
   ) {
 
@@ -55,7 +55,7 @@ gemrtables <- function(
 
   .gemrtables.pkg.env$ref_year <- ifelse(missing(ref_year), lubridate::year(Sys.Date())-2, as.numeric(ref_year))
 
-  .gemrtables.pkg.env$region = as.name(region)
+  .gemrtables.pkg.env$region <- as.name(region)
 
   .gemrtables.pkg.env$pc_flag_cut <- pc_flag_cut
 
