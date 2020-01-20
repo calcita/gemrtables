@@ -129,9 +129,9 @@ uis_clean <- function(df) {
       val_status = ifelse(any(val_status == "E"), "E", "A")) %>%
     dplyr::mutate(ind = "IE.5t8.40510") %>%
     dplyr::select(iso2c, year, ind, value, val_status) %>%
-    group_by(iso2c, ind) %>%
-    filter(year == max(year)) %>%
-    ungroup()
+    dplyr::group_by(iso2c, ind) %>%
+    dplyr::filter(year == max(year)) %>%
+    dplyr::ungroup()
 
   # auxiliary
   vars_f <- list("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
@@ -625,7 +625,7 @@ parity_indices_region <- function(){
 
   uis_cleaned1 <- R.cache::loadCache(uis_cleaned) %>%
     dplyr::right_join(.gemrtables.pkg.env$regions, by = "iso2c") %>%
-    mutate(ind = var_concat)
+    dplyr::mutate(ind = var_concat)
 
   vars_f <- list("STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA",
                  "STU_PT_L1__T_F__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA",
@@ -659,11 +659,11 @@ parity_indices_region <- function(){
 
   uis_cleaned_aggregates <- uis_cleaned1 %>%
     aggregates_values() %>%
-    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
+    dplyr::filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
+    dplyr::mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
              stringr::str_replace_all("NA", "") %>%
              stringr::str_squish()) %>%
-    filter(nchar(annex_name) != 0)
+    dplyr::filter(nchar(annex_name) != 0)
 
   parity_indices_uis <- list(df = rep(list("uis_cleaned_aggregates"), 14),
                              col = rep(list("var_concat"), 14),
@@ -691,12 +691,12 @@ parity_indices_region <- function(){
 
   wb_cleaned_aggregates <- wb_cleaned %>%
     aggregates_values() %>%
-    filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
-    mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
+    dplyr::filter(var_concat %in% c(unlist(vars_f), unlist(vars_m))) %>%
+    dplyr::mutate(annex_name = paste(World, !!region, income_group, income_subgroup) %>%
              stringr::str_replace_all("NA", "") %>%
              stringr::str_squish(),
            year = as.numeric(year)) %>%
-    filter(nchar(annex_name) != 0)
+    dplyr::filter(nchar(annex_name) != 0)
 
 
   parity_indices_wb <- list(df = list("wb_cleaned_aggregates","wb_cleaned_aggregates"),
@@ -818,9 +818,9 @@ country_data2 <- country_data1 %>%
   # dplyr::left_join(weights_data[, -3], by = c("iso2c", "wt_var")) %>%
   dplyr::mutate(entity = "country") %>%
   # dplyr::left_join(select(pop_data, -year), by = c('iso2c')) %>%
-  ungroup() %>%
+  dplyr::ungroup() %>%
   dplyr::mutate(year = ifelse(stringr::str_detect(ind, stringr::regex("XGDP|XGovExp", ignore_case = TRUE)) & iso2c == "ST", 2016, year),
-                value = case_when(stringr::str_detect(ind, stringr::regex("XGDP", ignore_case = TRUE)) & iso2c == "ST" ~ 5.07533,
+                value = dplyr::case_when(stringr::str_detect(ind, stringr::regex("XGDP", ignore_case = TRUE)) & iso2c == "ST" ~ 5.07533,
                                   stringr::str_detect(ind, stringr::regex("XGovExp", ignore_case = TRUE)) & iso2c == "ST" ~ 15.96804,
                                   TRUE ~ value))
 
@@ -839,7 +839,7 @@ schol_unspec <- R.cache::loadCache(list("schol_unspec"))
 computed_aggregates <- country_data2 %>%
   aggregates() %>%
   dplyr::filter(!is.na(annex_name)) %>%
-  dplyr::inner_join(indicators_unique, by = c("ind", "aggregation", "pc_comp_cut")) %>%
+  dplyr::inner_join(.gemrtables.pkg.env$indicators_unique, by = c("ind", "aggregation", "pc_comp_cut")) %>%
   dplyr::anti_join(uis_aggregates, by = c("annex_name", "ind")) %>%
   dplyr::mutate(value = dplyr::case_when(annex_name == "World" & ind == "odaflow.volumescholarship" ~ value + schol_unspec[[2,2]],
                                          annex_name == "World" & ind == "odaflow.imputecost" ~ value + schol_unspec[[1,2]],
@@ -889,7 +889,7 @@ format_wide <- function(df) {
                                            TRUE ~ value)) %>%
     dplyr::group_by(ind) %>%
     dplyr::mutate(
-      digits = case_when(
+      digits = dplyr::case_when(
         max(value, na.rm = TRUE) < 2 | stringr::str_detect(ind, 'sal.rel') ~ 2,
         # (ind %in% redenominate_6 | ind %in% redenominate_3) & value >= 1000000 ~ 1,
         # (ind %in% redenominate_6 | ind %in% redenominate_3) & value < 1000000 ~ 3,
@@ -938,8 +938,8 @@ format_wide <- function(df) {
                   regionx = !!.gemrtables.pkg.env$region,
                   regionx = ifelse(is_aggregate == "aggregate", annex_name, regionx)) %>%
     dplyr::left_join(.gemrtables.pkg.env$regions2[, c(1,4)], by = c("regionx" = "annex_name")) %>%
-    group_by(ind) %>%
-    mutate(grouped_id = row_number()) %>%
+    dplyr::group_by(ind) %>%
+    dplyr::mutate(grouped_id = dplyr::row_number()) %>%
     split(list(.$is_aggregate, .$sheet)) %>%
     purrr::map(tidyr::spread, key=ind, value = val_utf) %>%
     purrr::map(function(.) dplyr::mutate(., annex_name = ifelse(entity == "subregion" | entity == "income_subgroup", paste("  ", annex_name), annex_name))) %>%
@@ -947,7 +947,7 @@ format_wide <- function(df) {
                                                                       entity == "income_subgroup" ~ "income_group",
                                                                       TRUE ~ entity))) %>%
     purrr::map(function(.) dplyr::arrange(., region_order, annex_name)) %>%
-    purrr::map(mutate_all, as.character) %>%
+    purrr::map(dplyr::mutate_all, as.character) %>%
     purrr::map_if(suppressWarnings(stringr::str_detect(., "country")), function(.) dplyr::left_join(., .gemrtables.pkg.env$regions[, c("annex_name", "iso3c")], by = "annex_name")) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), entity]$V1][!.N]) %>%
     purrr::map(function(.) data.table::setDT(.)[.[, c(.I, NA), eval(.gemrtables.pkg.env$region)]$V1][!.N]) %>%

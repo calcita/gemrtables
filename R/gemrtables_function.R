@@ -26,6 +26,8 @@
 #' @param pc_flag_cut threshold
 #' @param pc_comp_cut2 threshold
 #' @importFrom dplyr select filter %>%
+#' @importFrom writexl write_xlsx
+#' @importFrom R.cache setCacheRootPath findCache
 #' @return A data frame or an xlsx workbook.
 #' @export
 #' @examples
@@ -72,7 +74,7 @@ gemrtables <- function(
   #import / generate other merge files
   .gemrtables.pkg.env$indicators <- inds()
   .gemrtables.pkg.env$regions <- region_groups()
-  indicators_unique <- .gemrtables.pkg.env$indicators %>%
+  .gemrtables.pkg.env$indicators_unique <- .gemrtables.pkg.env$indicators %>%
     dplyr::select(-source, -var_concat, -priority, -ind_lab) %>%
     unique()
   .gemrtables.pkg.env$regions2 <- region_groups2() %>%
