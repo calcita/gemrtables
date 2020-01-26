@@ -1,71 +1,68 @@
 ind,var_concat,ind_lab,source,sheet,priority,aggregation,wt_var,sub_weight,year_cut,pc_comp_cut,position
-Comp.02,COMP_EDU_YR_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Number of years of compulsory pre-primary education ,UIS,1,1,pc_true,,NA,4,33,1
-Comp.2t3,COMP_EDU_YR_L1T3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Number of years of compulsory primary and secondary education ,UIS,1,1,pc_true,,NA,4,33,2
-Free.02,FREE_EDU_YR_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Number of years of free pre-primary education ,UIS,1,1,pc_true,,NA,4,33,3
-Free.2t3,FREE_EDU_YR_L1T3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Number of years of free primary and secondary education,UIS,1,1,pc_true,,NA,4,33,4
-Entry.age.1,TH_ENTRY_AGE_YR_L1__T__T_TH_ENTRY_AGE_G1_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Theoretical duration of pre-primary education (years),UIS,1,1,median,,NA,4,33,5
-Years.dur.02,TH_DUR_YR_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Theoretical duration of primary education (years),UIS,1,1,median,,NA,4,33,6
-Years.dur.1,TH_DUR_YR_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Theoretical duration of primary education (years),UIS,1,1,median,,NA,4,33,7
-Years.dur.2,TH_DUR_YR_L2__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Theoretical duration of lower-secondary education (years),UIS,1,1,median,,NA,4,33,8
-Years.dur.3,TH_DUR_YR_L3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Theoretical duration of upper-secondary education (years),UIS,1,1,median,,NA,4,33,9
-SAP.02,SAP_PER_L02__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for  pre-primary education, both sexes (number)",UIS,1,1,sum,,NA,4,33,10
-SAP.1,SAP_PER_L1__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for primary education, both sexes (number)",UIS,1,1,sum,,NA,4,33,11
-SAP.2t3,SAP_PER_L2_3__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for secondary education, both sexes (number)",UIS,1,1,sum,,NA,4,33,12
-SAP.5t8,SAP_PER_L5T8__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for secondary education, both sexes (number)",UIS,1,1,sum,,NA,4,33,13
-stu.per.2t3,STU_PER_L2_3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in secondary education, all programmes, both sexes (number)",UIS,1,1,sum,,NA,4,33,16
-stu.per.1,STU_PER_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in primary education, all programmes, both sexes (number)",UIS,1,1,sum,,NA,4,33,15
-stu.per.02,STU_PER_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in pre-primary education, all programmes, both sexes (number)",UIS,1,1,sum,,NA,4,33,14
-stu.per.5t8,STU_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in tertiary education, all programmes, both sexes (number)",UIS,1,1,sum,,NA,4,33,17
-XGDP.FSgov.FFntr,EDU_EXP_GDP__T__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure on education as % of GDP (%),UIS,1,1,median,,NA,4,33,18
-XGovExp.IMF,EDU_EXP_GOV_EXP_T__T__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV__T,Total Expenditure on education as % of total government expenditure (%),UIS,1,1,median,,NA,4,33,19
-XUNIT.PPPconst.02.FSgov.FFntr,XUNIT_PPP_CONST_L02__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per pre-primary student (constant PPP$),UIS,1,1,median,,NA,4,33,20
-XUNIT.PPPconst.1.FSgov.FFntr,XUNIT_PPP_CONST_L1__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per primary student (constant PPP$),UIS,1,1,median,,NA,4,33,21
-XUNIT.PPPconst.2t3.FSgov.FFntr,XUNIT_PPP_CONST_L2_3__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per secondary student (constant PPP$),UIS,1,1,median,,NA,4,33,22
-XUNIT.PPPconst.5t8.FSgov.FFntr,XUNIT_PPP_CONST_L5T8__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per tertiary student (constant PPP$),UIS,1,1,median,,NA,4,33,23
-XUNIT.GDPcap.02.FSgov.FFntr,XUNIT_GDP_CAP_L02__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per pre-primary student as % of GDP per capita (%),UIS,1,1,median,,NA,4,33,24
-XUNIT.GDPcap.1.FSgov.FFntr,XUNIT_GDP_CAP_L1__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per primary student as % of GDP per capita (%),UIS,1,1,median,,NA,4,33,25
-XUNIT.GDPcap.2t3.FSgov.FFntr,XUNIT_GDP_CAP_L2_3__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per secondary student as % of GDP per capita (%),UIS,1,1,median,,NA,4,33,26
-XUNIT.GDPcap.5t8.FSgov.FFntr,XUNIT_GDP_CAP_L5T8__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per teriary student as % of GDP per capita (%),UIS,1,1,median,,NA,4,33,27
-XGDP.FShh.FFntr,EDU_EXP_GDP__T__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_HH_FFNTR,Initial household expenditure on education as % of GDP,UIS,1,1,median,,NA,4,33,28
-OFST.1.cp,OFST_PER_L1__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Out-of-school children of primary school age, both sexes (number)",UIS,2,1,sum,,NA,4,33,1
+Comp.02,COMP_EDU_YR_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Number of years of compulsory pre-primary education,UIS,1,1,pc_true,NA,NA,4,33,1
+Comp.2t3,COMP_EDU_YR_L1T3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Number of years of compulsory primary and secondary education,UIS,1,1,pc_true,NA,NA,4,33,2
+Free.02,FREE_EDU_YR_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Number of years of free pre-primary education,UIS,1,1,pc_true,NA,NA,4,33,3
+Free.2t3,FREE_EDU_YR_L1T3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Number of years of free primary and secondary education,UIS,1,1,pc_true,NA,NA,4,33,4
+Entry.age.1,TH_ENTRY_AGE_YR_L1__T__T_TH_ENTRY_AGE_G1_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Theoretical duration of pre-primary education (years),UIS,1,1,median,NA,NA,4,33,5
+Years.dur.02,TH_DUR_YR_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Theoretical duration of primary education (years),UIS,1,1,median,NA,NA,4,33,6
+Years.dur.1,TH_DUR_YR_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Theoretical duration of primary education (years),UIS,1,1,median,NA,NA,4,33,7
+Years.dur.2,TH_DUR_YR_L2__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Theoretical duration of lower-secondary education (years),UIS,1,1,median,NA,NA,4,33,8
+Years.dur.3,TH_DUR_YR_L3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,Theoretical duration of upper-secondary education (years),UIS,1,1,median,NA,NA,4,33,9
+SAP.02,SAP_PER_L02__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for  pre-primary education, both sexes (number)",UIS,1,1,sum,NA,NA,4,33,10
+SAP.1,SAP_PER_L1__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for primary education, both sexes (number)",UIS,1,1,sum,NA,NA,4,33,11
+SAP.2t3,SAP_PER_L2_3__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for secondary education, both sexes (number)",UIS,1,1,sum,NA,NA,4,33,12
+SAP.5t8,SAP_PER_L5T8__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Population of the official age for secondary education, both sexes (number)",UIS,1,1,sum,NA,NA,4,33,13
+stu.per.2t3,STU_PER_L2_3__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in secondary education, all programmes, both sexes (number)",UIS,1,1,sum,NA,NA,4,33,16
+stu.per.1,STU_PER_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in primary education, all programmes, both sexes (number)",UIS,1,1,sum,NA,NA,4,33,15
+stu.per.02,STU_PER_L02__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in pre-primary education, all programmes, both sexes (number)",UIS,1,1,sum,NA,NA,4,33,14
+stu.per.5t8,STU_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Enrolment in tertiary education, all programmes, both sexes (number)",UIS,1,1,sum,NA,NA,4,33,17
+XGDP.FSgov.FFntr,EDU_EXP_GDP__T__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure on education as % of GDP (%),UIS,1,1,median,NA,NA,4,33,18
+XGovExp.IMF,EDU_EXP_GOV_EXP_T__T__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV__T,Total Expenditure on education as % of total government expenditure (%),UIS,1,1,median,NA,NA,4,33,19
+XUNIT.PPPconst.02.FSgov.FFntr,XUNIT_PPP_CONST_L02__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per pre-primary student (constant PPP$),UIS,1,1,median,NA,NA,4,33,20
+XUNIT.PPPconst.1.FSgov.FFntr,XUNIT_PPP_CONST_L1__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per primary student (constant PPP$),UIS,1,1,median,NA,NA,4,33,21
+XUNIT.PPPconst.2t3.FSgov.FFntr,XUNIT_PPP_CONST_L2_3__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per secondary student (constant PPP$),UIS,1,1,median,NA,NA,4,33,22
+XUNIT.PPPconst.5t8.FSgov.FFntr,XUNIT_PPP_CONST_L5T8__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per tertiary student (constant PPP$),UIS,1,1,median,NA,NA,4,33,23
+XUNIT.GDPcap.02.FSgov.FFntr,XUNIT_GDP_CAP_L02__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per pre-primary student as % of GDP per capita (%),UIS,1,1,median,NA,NA,4,33,24
+XUNIT.GDPcap.1.FSgov.FFntr,XUNIT_GDP_CAP_L1__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per primary student as % of GDP per capita (%),UIS,1,1,median,NA,NA,4,33,25
+XUNIT.GDPcap.2t3.FSgov.FFntr,XUNIT_GDP_CAP_L2_3__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per secondary student as % of GDP per capita (%),UIS,1,1,median,NA,NA,4,33,26
+XUNIT.GDPcap.5t8.FSgov.FFntr,XUNIT_GDP_CAP_L5T8__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_GOV_FFNTR,Initial government expenditure per teriary student as % of GDP per capita (%),UIS,1,1,median,NA,NA,4,33,27
+XGDP.FShh.FFntr,EDU_EXP_GDP__T__T_NA_NA_NA__T_NA_NA_NA_NA_NA_NA_NA_NA__Z__Z_NA_NA__T_HH_FFNTR,Initial household expenditure on education as % of GDP,UIS,1,1,median,NA,NA,4,33,28
+OFST.1.cp,OFST_PER_L1__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Out-of-school children of primary school age, both sexes (number)",UIS,2,1,sum,NA,NA,4,33,1
 ROFST.1.cp,ROFST_PT_L1__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Rate of out-of-school children of primary school age, both sexes (%)",UIS,2,1,w_mean,L1,FALSE,4,33,4
-OFST.2.cp,OFST_PER_L2__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Out-of-school children oflower-secondary school age, both sexes (number)",UIS,2,1,sum,,NA,4,33,2
+OFST.2.cp,OFST_PER_L2__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Out-of-school children oflower-secondary school age, both sexes (number)",UIS,2,1,sum,NA,NA,4,33,2
 ROFST.2.cp,ROFST_PT_L2__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Rate of out-of-school children of lower-secondary school age, both sexes (%)",UIS,2,1,w_mean,L2,FALSE,4,33,5
-OFST.3.cp,OFST_PER_L3__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Out-of-school children of upper-secondary school age, both sexes (number)",UIS,2,1,sum,,NA,4,33,3
+OFST.3.cp,OFST_PER_L3__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Out-of-school children of upper-secondary school age, both sexes (number)",UIS,2,1,sum,NA,NA,4,33,3
 ROFST.3.cp,ROFST_PT_L3__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Rate of out-of-school children of upper-secondary school age, both sexes (%)",UIS,2,1,w_mean,L3,FALSE,4,33,6
 CR.1,CR_PT_L1__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, both sexes (%)",UIS,2,2,w_mean,L1,FALSE,4,33,7
-CR.1,NA,"Completion rate, primary education, both sexes (%)",cedar,2,1,w_mean,L1,FALSE,4,33,7
+CR.1,NA,"Completion rate, primary education, both sexes (%)",WIDE,2,1,w_mean,L1,FALSE,4,33,7
 CR.2,CR_PT_L2__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower-secondary education, both sexes (%)",UIS,2,2,w_mean,L2,FALSE,4,33,8
-CR.2,NA,"Completion rate, lower-secondary education, both sexes (%)",cedar,2,1,w_mean,L2,FALSE,4,33,8
+CR.2,NA,"Completion rate, lower-secondary education, both sexes (%)",WIDE,2,1,w_mean,L2,FALSE,4,33,8
 CR.3,CR_PT_L3__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper-secondary education, both sexes (%)",UIS,2,2,w_mean,L3,FALSE,4,33,9
-CR.3,NA,"Completion rate, upper-secondary education, both sexes (%)",cedar,2,1,w_mean,L3,FALSE,4,33,9
+CR.3,NA,"Completion rate, upper-secondary education, both sexes (%)",WIDE,2,1,w_mean,L3,FALSE,4,33,9
 OAEP.1,STU_PT_L1__T__T_GE2_OVER_AGE__T_INST_T__Z__Z__T_INIT__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Percentage of pupils enrolled in primary education who are at least 2 years over-age for their current grade , both sexes (%)",UIS,2,1,w_mean,L1_STU,FALSE,4,33,10
 OAEP.2,STU_PT_L2_C4__T_GE2_OVER_AGE__T_INST_T__Z__Z__T_INIT__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Percentage of pupils enrolled in lower-secondary education who are at least 2 years over-age for their current grade , both sexes (%)",UIS,2,1,w_mean,L2_STU,FALSE,4,33,11
 GER.1,GER_PT_L1__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Gross enrolment ratio, primary, both sexes (%)",UIS,2,1,w_mean,L1,FALSE,4,33,12
 NERA.1.cp,NERA_PT_L1__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Adjusted net enrolment rate, primary, both sexes (%)",UIS,2,1,w_mean,L1,FALSE,4,33,13
 AIR.1.Glast,AIR_PT_L1__T__T__T_GLAST_INST_T__Z__Z__T_INIT__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Gross intake ratio to the last grade of primary education, both sexes (%)",UIS,2,1,w_mean,L1_GLAST,FALSE,4,33,14
 TranRA.2.GPV.cp,TRANRA_PT_L2_C4__T__T_G1_INST_T__Z__Z__T_INIT__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Effective transition rate from primary to lower secondary general education, both sexes (%)",UIS,2,1,w_mean,L1_STU_GLAST,FALSE,4,33,15
-TranRA.2.GPV.cp,NA,"transition rate from primary to lower secondary general education, both sexes (%)",cedar,2,2,w_mean,L1_STU_GLAST,FALSE,4,33,15
 NERT.3.cp,NERT_PT_L3__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Total net enrolment rate, upper secondary, both sexes (%)",UIS,2,1,w_mean,L3,FALSE,4,33,18
 AIR.2.GPV.Glast,AIR_PT_L2_C4__T__T_GLAST_INST_T__Z__Z__T_INIT__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Gross intake ratio to the last grade of lower-secondary education, both sexes (%)",UIS,2,1,w_mean,L2_GLAST,FALSE,4,33,17
 NERT.2.cp,NERT_PT_L2__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Total net enrolment rate, lower secondary, both sexes (%)",UIS,2,1,w_mean,L2,FALSE,4,33,16
-admi.grade2or3prim.READ,ADMIN_NB_L1__T__T__T_G2_3_INST_T__Z__Z__T__T__T_READING__Z__T__Z__Z_W00_W00_NA_NA_NA, Administration of a nationally representative learning assessment in grades 2 or 3 in reading or math,UIS,2,1,pc_true,,NA,4,33,19
-admi.grade2or3prim.MATH,ADMIN_NB_L1__T__T__T_G2_3_INST_T__Z__Z__T__T__T_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA, Administration of a nationally representative learning assessment in grades 2 or 3 in reading or math,UIS,2,1,pc_true,,NA,4,33,20
-admi.endofprim.READ,ADMIN_NB_L1__T__T__T_GLAST_INST_T__Z__Z__T__T__T_READING__Z__T__Z__Z_W00_W00_NA_NA_NA, Administration of a nationally representative learning assessment at the end of or during primary in reading or math,UIS,2,1,pc_true,,NA,4,33,21
-admi.endofprim.MATH,ADMIN_NB_L1__T__T__T_GLAST_INST_T__Z__Z__T__T__T_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA, Administration of a nationally representative learning assessment at the end of or during primary in reading or math,UIS,2,1,pc_true,,NA,4,33,22
-admi.endoflowersec.READ,ADMIN_NB_L2__T__T__T_GLAST_INST_T__Z__Z__T__T__T_READING__Z__T__Z__Z_W00_W00_NA_NA_NA, Administration of a nationally representative learning assessment at the end of or during lower secondary education in reading or math,UIS,2,1,pc_true,,NA,4,33,23
-admi.endoflowersec.MATH,ADMIN_NB_L2__T__T__T_GLAST_INST_T__Z__Z__T__T__T_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA, Administration of a nationally representative learning assessment at the end of or during lower secondary education in reading or math,UIS,2,1,pc_true,,NA,4,33,24
-Read.G2t3,STU_PT_L1__T__T__T_G2_3_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students in grades 2 or 3 achieving at least a minimum proficiency level in reading, both sexes",UIS,2,1,,,NA,4,NA,25
-Math.G2t3,STU_PT_L1__T__T__T_G2_3_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students in grades 2 or 3 achieving at least a minimum proficiency level in mathematics, both sexes",UIS,2,1,,,NA,4,NA,26
-Read.Primary,STU_PT_L1__T__T__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students at the end of or during primary achieving at least a minimum proficiency level in reading, both sexes",UIS,2,1,,,NA,4,NA,27
-Math.Primary,STU_PT_L1__T__T__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students at the end of or during primary achieving at least a minimum proficiency level in mathematics, both sexes",UIS,2,1,,,NA,4,NA,28
-Read.LowerSec,STU_PT_L2__T__T__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students at the end of or during lower secondary achieving at least a minimum proficiency level in reading, both sexes",UIS,2,1,,,NA,4,NA,29
-Math.LowerSec,STU_PT_L2__T__T__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students at the end of or during lower secondary achieving at least a minimum proficiency level in mathematics, both sexes",UIS,2,1,,,NA,4,NA,30
+admi.grade2or3prim.READ,ADMIN_NB_L1__T__T__T_G2_3_INST_T__Z__Z__T__T__T_READING__Z__T__Z__Z_W00_W00_NA_NA_NA,Administration of a nationally representative learning assessment in grades 2 or 3 in reading or math,UIS,2,1,pc_true,NA,NA,4,33,19
+admi.grade2or3prim.MATH,ADMIN_NB_L1__T__T__T_G2_3_INST_T__Z__Z__T__T__T_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA,Administration of a nationally representative learning assessment in grades 2 or 3 in reading or math,UIS,2,1,pc_true,NA,NA,4,33,20
+admi.endofprim.READ,ADMIN_NB_L1__T__T__T_GLAST_INST_T__Z__Z__T__T__T_READING__Z__T__Z__Z_W00_W00_NA_NA_NA,Administration of a nationally representative learning assessment at the end of or during primary in reading or math,UIS,2,1,pc_true,NA,NA,4,33,21
+admi.endofprim.MATH,ADMIN_NB_L1__T__T__T_GLAST_INST_T__Z__Z__T__T__T_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA,Administration of a nationally representative learning assessment at the end of or during primary in reading or math,UIS,2,1,pc_true,NA,NA,4,33,22
+admi.endoflowersec.READ,ADMIN_NB_L2__T__T__T_GLAST_INST_T__Z__Z__T__T__T_READING__Z__T__Z__Z_W00_W00_NA_NA_NA,Administration of a nationally representative learning assessment at the end of or during lower secondary education in reading or math,UIS,2,1,pc_true,NA,NA,4,33,23
+admi.endoflowersec.MATH,ADMIN_NB_L2__T__T__T_GLAST_INST_T__Z__Z__T__T__T_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA,Administration of a nationally representative learning assessment at the end of or during lower secondary education in reading or math,UIS,2,1,pc_true,NA,NA,4,33,24
+Read.G2t3,STU_PT_L1__T__T__T_G2_3_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students in grades 2 or 3 achieving at least a minimum proficiency level in reading, both sexes",UIS,2,1,NA,NA,NA,4,NA,25
+Math.G2t3,STU_PT_L1__T__T__T_G2_3_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students in grades 2 or 3 achieving at least a minimum proficiency level in mathematics, both sexes",UIS,2,1,NA,NA,NA,4,NA,26
+Read.Primary,STU_PT_L1__T__T__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students at the end of or during primary achieving at least a minimum proficiency level in reading, both sexes",UIS,2,1,NA,NA,NA,4,NA,27
+Math.Primary,STU_PT_L1__T__T__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students at the end of or during primary achieving at least a minimum proficiency level in mathematics, both sexes",UIS,2,1,NA,NA,NA,4,NA,28
+Read.LowerSec,STU_PT_L2__T__T__T_GLAST_INST_T__Z__T__T__T_ISC_F00_READING__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students at the end of or during lower secondary achieving at least a minimum proficiency level in reading, both sexes",UIS,2,1,NA,NA,NA,4,NA,29
+Math.LowerSec,STU_PT_L2__T__T__T_GLAST_INST_T__Z__T__T__T_ISC_F00_MATH__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of students at the end of or during lower secondary achieving at least a minimum proficiency level in mathematics, both sexes",UIS,2,1,NA,NA,NA,4,NA,30
 OnTrack.three.domains,CHILD_TRACK_T_PT__Z__Z__T_Y_LT5__Z__Z__Z__Z__T__Z__Z__Z__Z__T__Z__Z_W00_W00_NA_NA_NA,"Percentage of children 36-59 months who are developmentally on track in health, learning and psychosocial well-being",UIS,3,1,w_mean,Y3T7,FALSE,4,33,1
-OnTrack.three.domains,NA,"Percentage of children 36-59 months who are developmentally on track in health, learning and psychosocial well-being",cedar,3,2,w_mean,Y3T7,FALSE,4,33,1
 stunt.u5,NA,"Prevalence of stunting, height for age (% of children under 5), both sexes",World Bank,3,1,w_mean,Y_LT5,FALSE,4,33,2
 home.lrn.env.3t7,NA,"Percentage of children aged 36 to 59 months experiencing positive and stimulating home learning environments, both sexes",UNICEF,3,1,w_mean,Y3T7,FALSE,4,33,3
-home.lrn.env.3t7,NA,"Percentage of children aged 36 to 59 months experiencing positive and stimulating home learning environments, both sexes",cedar,3,2,w_mean,Y3T7,FALSE,4,33,3
 home.book.u5,NA,"Percentage of children under 5 years living in households with three or more children's books, both sexes",UNICEF,3,1,w_mean,Y_LT5,FALSE,4,33,4
 home.book.u5,NA,"Percentage of children under 5 years living in households with three or more children's books, both sexes",cedar,3,2,w_mean,Y_LT5,FALSE,4,33,4
 GER.02,GER_PT_L02__T__T_SCH_AGE_GROUP__T_INST_T__Z__Z__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Gross enrolment ratio in pre-primary education, both sexes",UIS,3,1,w_mean,L02,FALSE,4,33,5
@@ -94,101 +91,95 @@ adult.profinumeracy,NA,"Percentage of population (aged 16 -65) achieving at leas
 youth.profinumeracy,NA,"Percentage of youth (aged 16-24 ) achieving at least a fixed level of proficiency in functional numeracy skills (level2), both sexes",PIAAC,4,1,w_mean,Y15T24,TRUE,4,33,17
 LR.Ag15t24,LR_PT__Z__Z__T_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Youth literacy rate, both sexes",UIS,4,1,w_mean,Y15T24,FALSE,4,33,19
 LR.Ag15t99,LR_PT__Z__Z__T_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Adult literacy rate, both sexes",UIS,4,1,w_mean,Y_GE15,FALSE,4,33,20
-IllPop.Ag15t24,ILLPOP_PER__Z__Z__T_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Youth illiterate population, 15-24 years, both sexes (number)",UIS,4,1,sum,,NA,4,33,23
+IllPop.Ag15t24,ILLPOP_PER__Z__Z__T_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Youth illiterate population, 15-24 years, both sexes (number)",UIS,4,1,sum,NA,NA,4,33,23
 IllPop.Ag15t24.f.share,ILLPOP_PT__Z__Z_F_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Female proportion of illiterate population, 15+ years (%)",UIS,4,1,w_mean,Y_GE15_ILLPOP,FALSE,4,33,22
-IllPop.Ag15t99,ILLPOP_PER__Z__Z__T_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Adult illiterate population, 15+ years, both sexes (number)",UIS,4,1,sum,,NA,4,33,24
+IllPop.Ag15t99,ILLPOP_PER__Z__Z__T_Y_GE15__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Adult illiterate population, 15+ years, both sexes (number)",UIS,4,1,sum,NA,NA,4,33,24
 IllPop.Ag15t99.f.share,ILLPOP_PT__Z__Z_F_Y15T24__Z__Z__Z__Z__T__Z__Z__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Female proportion of illiterate population, 15-24 years (%)",UIS,4,1,w_mean,Y15T24_ILLPOP,FALSE,4,33,21
-CR.1.GPIA,CR_GPIA_L1__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, gender parity index (GPIA)",UIS,5,2,median,,NA,4,33,1
-CR.1.GPIA,NA,"Completion rate, primary education, gender parity index (GPIA)",cedar,5,1,median,,NA,4,33,1
-CR.2.GPIA,CR_GPIA_L2__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower secondary education, gender parity index (GPIA)",UIS,5,2,median,,NA,4,33,2
-CR.2.GPIA,NA,"Completion rate, lower secondary education, gender parity index (GPIA)",cedar,5,1,median,,NA,4,33,2
-CR.3.GPIA,CR_GPIA_L3__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper secondary education, gender parity index (GPIA)",UIS,5,2,median,,NA,4,33,3
-CR.3.GPIA,NA,"Completion rate, upper secondary education, gender parity index (GPIA)",cedar,5,1,median,,NA,4,33,3
-Read.Primary.GPIA,NA,"Percentage of students at the end of or during primary achieving at least a minimum proficiency level in reading, gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,4
-Math.Primary.GPIA,NA,"Percentage of students at the end of or during primary achieving at least a minimum proficiency level in mathematics, gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,5
-Read.LowerSec.GPIA,NA,"Percentage of students at the end of or during lower secondary achieving at least a minimum proficiency level in reading, gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,6
-Math.LowerSec.GPIA,NA,"Percentage of students at the end of or during lower secondary achieving at least a minimum proficiency level in mathematics, gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,7
-LR.Ag15t24.GPIA,NA,"Youth literacy rate, gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,8
-LR.Ag15t99.GPIA,NA,"Adult literacy rate, gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,9
-adult.profiliteracy.gpia,NA,"Percentage of population (aged 16 -65) achieving at least a fixed level of proficiency in functional literacy skills (level 2), GPIA",PIAAC,5,1,median,,NA,4,33,10
-adult.profinumeracy.gpia,NA,"Percentage of population (aged 16 -65) achieving at least a fixed level of proficiency in functional numeracy skills (level 2), GPIA",PIAAC,5,1,median,,NA,4,33,11
-GER.02.GPIA,,"Gross enrolment ratio, pre-primary, adjusted gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,12
-GER.1.GPIA,,"Gross enrolment ratio, primary, adjusted gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,13
-GER.2t3.GPIA,,"Gross enrolment ratio,secondary, adjusted gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,14
-GER.5t8.GPIA,,"Gross enrolment ratio, teriary, adjusted gender parity index (GPIA)",UIS,5,1,median,,NA,4,33,15
-chores.28plus.12t14,NA,Percentage of children (12-14) involved in household chores during the previous week (more than 28h),UNICEF,5,1,median,,NA,4,33,16
-chores.28plus.12t14.GPIA,NA,"Percentage of children (12-14) involved in household chores during the previous week (more than 28h), GPIA",UNICEF,5,1,median,,NA,4,33,17
-chores.28plus.12t14,NA,Percentage of children (12-14) involved in household chores during the previous week (more than 28h),cedar,5,2,median,,NA,4,33,16
-chores.28plus.12t14.GPIA,NA,"Percentage of children (12-14) involved in household chores during the previous week (more than 28h), GPIA",cedar,5,2,median,,NA,4,33,17
-CR.1.LPIA,CR_GLPIA_L1__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, rural/urban parity index (GLPIA)",UIS,5,2,median,,NA,4,33,18
-CR.1.LPIA,NA,"Completion rate, primary education, rural/urban parity index (GLPIA)",cedar,5,1,median,,NA,4,33,18
-CR.1.WPIA,CR_WPIA_L1__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, wealth parity index (WPIA)",UIS,5,2,median,,NA,4,33,19
-CR.1.WPIA,NA,"Completion rate, primary education, wealth parity index (WPIA)",cedar,5,1,median,,NA,4,33,19
-CR.1.q1.m,CR_PT_L1__T_M__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, poorest males",UIS,5,2,median,,NA,4,33,20
-CR.1.q1.m,NA,"Completion rate, primary education, poorest males",cedar,5,1,median,,NA,4,33,20
-CR.1.q1.f,CR_PT_L1__T_F__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, poorest females",UIS,5,2,median,,NA,4,33,21
-CR.1.q1.f,NA,"Completion rate, primary education, poorest females",cedar,5,1,median,,NA,4,33,21
-CR.2.LPIA,CR_GLPIA_L2__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower secondary education, rural/urban parity index (GLPIA)",UIS,5,2,median,,NA,4,33,22
-CR.2.LPIA,NA,"Completion rate, lower secondary education, rural/urban parity index (GLPIA)",cedar,5,1,median,,NA,4,33,22
-CR.2.WPIA,CR_WPIA_L2__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower secondary education, wealth parity index (WPIA)",UIS,5,2,median,,NA,4,33,23
-CR.2.WPIA,NA,"Completion rate, lower secondary education, wealth parity index (WPIA)",cedar,5,1,median,,NA,4,33,23
-CR.2.q1.m,CR_PT_L2__T_M__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower secondary  education, poorest males",UIS,5,2,median,,NA,4,33,24
-CR.2.q1.m,NA,"Completion rate, lower secondary  education, poorest males",cedar,5,1,median,,NA,4,33,24
-CR.2.q1.f,CR_PT_L2__T_F__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower secondary education, poorest females",UIS,5,2,median,,NA,4,33,25
-CR.2.q1.f,NA,"Completion rate, lower secondary education, poorest females",cedar,5,1,median,,NA,4,33,25
-CR.3.LPIA,CR_GLPIA_L3__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper secondary education, rural/urban parity index (GLPIA)",UIS,5,2,median,,NA,4,33,26
-CR.3.LPIA,NA,"Completion rate, upper secondary education, rural/urban parity index (GLPIA)",cedar,5,1,median,,NA,4,33,26
-CR.3.WPIA,CR_WPIA_L3__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper secondary education, wealth parity index (WPIA)",UIS,5,2,median,,NA,4,33,27
-CR.3.WPIA,NA,"Completion rate, upper secondary education, wealth parity index (WPIA)",cedar,5,1,median,,NA,4,33,27
-CR.3.q1.m,CR_PT_L3__T_M__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper secondary , poorest males",UIS,5,2,median,,NA,4,33,28
-CR.3.q1.m,NA,"Completion rate, upper secondary , poorest males",cedar,5,1,median,,NA,4,33,28
-CR.3.q1.f,CR_PT_L3__T_F__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper secondary , poorest females",UIS,5,2,median,,NA,4,33,29
-CR.3.q1.f,NA,"Completion rate, upper secondary , poorest females",cedar,5,1,median,,NA,4,33,29
-Read.Primary.WPIA,NA,"Percentage of students during or at the end of primary education achieving at least a minimum proficiency level in reading, wealth parity index (WPIA)",UIS,5,1,median,,NA,4,33,30
-Math.Primary.WPIA,NA,"Percentage of students during or at the end of primary education achieving at least a minimum proficiency level in mathematics, wealth parity index (WPIA)",UIS,5,1,median,,NA,4,33,31
-Read.LowerSec.WPIA,NA,"Percentage of students during or at the end of primary education achieving at least a minimum proficiency level in reading, wealth parity index (WPIA)",UIS,5,1,median,,NA,4,33,32
-Math.LowerSec.WPIA,NA,"Percentage of students during or at the end of primary education achieving at least a minimum proficiency level in mathematics, wealth parity index (WPIA)",UIS,5,1,median,,NA,4,33,33
-esd.curr.ge,NA,Inclusion in ESD and GCED issues in national curricular frameworks (gender equality),cedar,6,2,pc_true,,NA,4,33,1
-esd.curr.hr,NA,Inclusion in ESD and GCED issues in national curricular framework,cedar,6,2,pc_true,,NA,4,33,2
-esd.sus.dev,NA,Inclusion in ESD and GCED issues in national curricular frameworks (sustainable development),cedar,6,2,pc_true,,NA,4,33,3
-esd.curr.cit,NA,Inclusion in ESD and GCED issues in national curricular frameworks (global citizenship),cedar,6,2,pc_true,,NA,4,33,4
-SchBSP.1.sexedu     ,SCH_PT_L2__T__T__T__T_INST_T__Z__Z__T__T__T__Z_HIV_SEX_EDU__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of lower-secondary schools providing life skills-based HIV/AIDS education (all institutions),UIS,6,1,median,,NA,4,33,5
-sci.lowerSec,NA,Percentage of 15-year-old students performing at or above level 2 of proficiency in scientific literacy,PISA,6,1,,,NA,4,NA,6
-sci.lowerSec,NA,Percentage of grade 8 students meeting minimum intenational benchmark in scientific literacy,TIMSS,6,2,,,NA,4,NA,6
-hiv.prev.15t24,NA,"Comprehensive correct knowledge of HIV/AIDS, ages 15-24 (2 prevent ways and reject 3 misconceptions)",UNAIDS,6,1,median,,NA,4,33,7
-SchBSP.WPoWat,NA,Percentage of  schools with access to  drinking water from an improved source,UNICEF,6,1,median,,NA,4,33,8
-SchBSP.WToilssx,NA,"Percentage of  schools with improved facilities that are single-sex and usable (available, functional, private)",UNICEF,6,1,median,,NA,4,33,9
-SchBSP.WHwash,NA,Percentage of  schools with  basic handwashing services,UNICEF,6,1,median,,NA,4,33,10
-SchBSP.1.WElec,SCH_PT_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z_ELEC__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of primary schools with access to electricity (all institutions),UIS,6,1,median,,NA,4,33,11
-SchBSP.1.WIntern     ,SCH_PT_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z_NET_PP__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of primary schools with access to Internet for pedagogical purposes (all institutions),UIS,6,1,median,,NA,4,33,12
-SchBSP.1.Wcomput     ,SCH_PT_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z_COMP_PP__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of primary schools with access to computers for pedagogical purposes (all institutions),UIS,6,1,median,,NA,4,33,13
-SchBSP.1.adapt.disab   ,SCH_PT_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z_ADAPT_INFR_MAT_DIS__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of primary schools providing adapted infrastructure and materials for students with disabilities (all institutions),UIS,6,1,median,,NA,4,33,14
-stu.bully,NA,Percentage of students experiencing school-related bullying,Innocenti,6,1,,,NA,4,NA,15
-edattacks,NA,"Number of attacks involving education institutions, teachers or students",GCPEA,6,1,,,NA,4,NA,16
-odaflow.volumescholarship,NA,"Volume of official development assistance flows for scholarships,  Gross disbursements by beneficiary,  (constant US PPP)",OECD,6,1,sum,,NA,4,33,21
-odaflow.imputecost,NA,"Volume of official development assistance flows for scholarships and imputed student costs,  Gross disbursements by beneficiary,  (constant US PPP)",OECD,6,1,sum,,NA,4,33,22
-IE.5t8.40510,IE_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Total inbound internationally mobile tertiary students, all countries, both sexes (number)",UIS,6,1,sum,,NA,4,33,19
-MSEP.5t8,MSEP_PT_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Inbound student mobility rate, both sexes (%)",UIS,6,1,median,,NA,4,33,17
-OE.5t8.40510,OE_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Total outbound internationally mobile tertiary students studying abroad, all countries, both sexes (number)",UIS,6,1,sum,,NA,4,33,20
-MOR.5t8.40510,MOR_PT_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Outbound student mobility ratio, all regions, both sexes (%)",UIS,6,1,median,,NA,4,33,18
-teach.per.02,TEACH_PER_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teachers in pre-primary education, both sexes (number)",UIS,7,1,sum,,NA,4,33,1
-PTRHC.02,PTR_PER_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Pupil-teacher ratio in pre-primary education,UIS,7,1,median,,NA,4,33,2
-TRTP.02,TRTP_PT_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of trained teachers in pre-primary education, both sexes",UIS,7,1,median,,NA,4,33,3
-QUTP.02,QUTP_PT_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of qualified teachers in pre-primary education, both sexes",UIS,7,1,median,,NA,4,33,4
-tisp.02,TISP_PT_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Percentage of pre-primary teachers who received in-service training in the last 12 months,UIS,7,1,median,,NA,4,33,5
-TAttrR.02,TATTRR_PT_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teacher attrition rate from pre-primary education, both sexes",UIS,7,1,median,,NA,4,33,6
-sal.rel.02,NA,Ratio of pre-primary teacher salary relative to other professionals with equivalent academic qualification.,OECD,7,1,median,,NA,4,33,7
-teach.per.1,TEACH_PER_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teachers in primary education, both sexes (number)",UIS,7,1,sum,,NA,4,33,8
-PTRHC.1,PTR_PER_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Pupil-teacher ratio in primary education,UIS,7,1,median,,NA,4,33,9
-TRTP.1,TRTP_PT_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of trained teachers in primary education, both sexes",UIS,7,1,median,,NA,4,33,10
-QUTP.1,QUTP_PT_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of qualified teachers in primary education, both sexes",UIS,7,1,median,,NA,4,33,11
-tisp.1,TISP_PT_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Percentage of primary teachers who received in-service training in the last 12 months,UIS,7,1,median,,NA,4,33,12
-TAttrR.1,TATTRR_PT_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teacher attrition rate from  primary education, both sexes",UIS,7,1,median,,NA,4,33,13
-sal.rel.1,NA,Ratio of primary teacher salary relative to other professionals with equivalent academic qualification.,OECD,7,1,median,,NA,4,33,14
-teach.per.2t3,TEACH_PER_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teachers in secondary education, both sexes (number)",UIS,7,1,sum,,NA,4,33,15
-PTRHC.2t3,PTR_PER_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Pupil-teacher ratio in secondary education,UIS,7,1,median,,NA,4,33,16
-TRTP.2t3,TRTP_PT_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of trained teachers in secondary education, both sexes",UIS,7,1,median,,NA,4,33,17
-QUTP.2t3,QUTP_PT_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of qualified teachers in secondary education, both sexes",UIS,7,1,median,,NA,4,33,18
-tisp.2t3,TISP_PT_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Percentage of secondary teachers who received in-service training in the last 12 months,UIS,7,1,median,,NA,4,33,19
-TAttrR.2t3,TATTRR_PT_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teacher attrition rate from secondary education, both sexes",UIS,7,1,median,,NA,4,33,20
-sal.rel.2t3,NA,Ratio of secondary teacher salary relative to other professionals with equivalent academic qualification.,OECD,7,1,median,,NA,4,33,21
+CR.1.GPIA,CR_GPIA_L1__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, gender parity index (GPIA)",UIS,5,2,median,NA,NA,4,33,1
+CR.1.GPIA,NA,"Completion rate, primary education, gender parity index (GPIA)",WIDE,5,1,median,NA,NA,4,33,1
+CR.2.GPIA,CR_GPIA_L2__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower secondary education, gender parity index (GPIA)",UIS,5,2,median,NA,NA,4,33,2
+CR.2.GPIA,NA,"Completion rate, lower secondary education, gender parity index (GPIA)",WIDE,5,1,median,NA,NA,4,33,2
+CR.3.GPIA,CR_GPIA_L3__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper secondary education, gender parity index (GPIA)",UIS,5,2,median,NA,NA,4,33,3
+CR.3.GPIA,NA,"Completion rate, upper secondary education, gender parity index (GPIA)",WIDE,5,1,median,NA,NA,4,33,3
+Read.Primary.GPIA,NA,"Percentage of students at the end of or during primary achieving at least a minimum proficiency level in reading, gender parity index (GPIA)",UIS,5,1,median,NA,NA,4,33,4
+Math.Primary.GPIA,NA,"Percentage of students at the end of or during primary achieving at least a minimum proficiency level in mathematics, gender parity index (GPIA)",UIS,5,1,median,NA,NA,4,33,5
+Read.LowerSec.GPIA,NA,"Percentage of students at the end of or during lower secondary achieving at least a minimum proficiency level in reading, gender parity index (GPIA)",UIS,5,1,median,NA,NA,4,33,6
+Math.LowerSec.GPIA,NA,"Percentage of students at the end of or during lower secondary achieving at least a minimum proficiency level in mathematics, gender parity index (GPIA)",UIS,5,1,median,NA,NA,4,33,7
+LR.Ag15t24.GPIA,NA,"Youth literacy rate, gender parity index (GPIA)",UIS,5,1,median,NA,NA,4,33,8
+LR.Ag15t99.GPIA,NA,"Adult literacy rate, gender parity index (GPIA)",UIS,5,1,median,NA,NA,4,33,9
+adult.profiliteracy.gpia,NA,"Percentage of population (aged 16 -65) achieving at least a fixed level of proficiency in functional literacy skills (level 2), GPIA",PIAAC,5,1,median,NA,NA,4,33,10
+adult.profinumeracy.gpia,NA,"Percentage of population (aged 16 -65) achieving at least a fixed level of proficiency in functional numeracy skills (level 2), GPIA",PIAAC,5,1,median,NA,NA,4,33,11
+GER.02.GPIA,NA,"Gross enrolment ratio, pre-primary, adjusted gender parity index (GPIA)",UIS,5,1,median,NA,NA,4,33,12
+GER.1.GPIA,NA,"Gross enrolment ratio, primary, adjusted gender parity index (GPIA)",UIS,5,1,median,NA,NA,4,33,13
+GER.2t3.GPIA,NA,"Gross enrolment ratio,secondary, adjusted gender parity index (GPIA)",UIS,5,1,median,NA,NA,4,33,14
+GER.5t8.GPIA,NA,"Gross enrolment ratio, teriary, adjusted gender parity index (GPIA)",UIS,5,1,median,NA,NA,4,33,15
+chores.28plus.12t14,NA,Percentage of children (12-14) involved in household chores during the previous week (more than 28h),UNICEF,5,1,median,NA,NA,4,33,16
+chores.28plus.12t14.GPIA,NA,"Percentage of children (12-14) involved in household chores during the previous week (more than 28h), GPIA",UNICEF,5,1,median,NA,NA,4,33,17
+CR.1.LPIA,CR_GLPIA_L1__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, rural/urban parity index (GLPIA)",UIS,5,2,median,NA,NA,4,33,18
+CR.1.LPIA,NA,"Completion rate, primary education, rural/urban parity index (GLPIA)",WIDE,5,1,median,NA,NA,4,33,18
+CR.1.WPIA,CR_WPIA_L1__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, wealth parity index (WPIA)",UIS,5,2,median,NA,NA,4,33,19
+CR.1.WPIA,NA,"Completion rate, primary education, wealth parity index (WPIA)",WIDE,5,1,median,NA,NA,4,33,19
+CR.1.q1.m,CR_PT_L1__T_M__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, poorest males",UIS,5,2,median,NA,NA,4,33,20
+CR.1.q1.m,NA,"Completion rate, primary education, poorest males",WIDE,5,1,median,NA,NA,4,33,20
+CR.1.q1.f,CR_PT_L1__T_F__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, primary education, poorest females",UIS,5,2,median,NA,NA,4,33,21
+CR.1.q1.f,NA,"Completion rate, primary education, poorest females",WIDE,5,1,median,NA,NA,4,33,21
+CR.2.LPIA,CR_GLPIA_L2__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower secondary education, rural/urban parity index (GLPIA)",UIS,5,2,median,NA,NA,4,33,22
+CR.2.LPIA,NA,"Completion rate, lower secondary education, rural/urban parity index (GLPIA)",WIDE,5,1,median,NA,NA,4,33,22
+CR.2.WPIA,CR_WPIA_L2__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower secondary education, wealth parity index (WPIA)",UIS,5,2,median,NA,NA,4,33,23
+CR.2.WPIA,NA,"Completion rate, lower secondary education, wealth parity index (WPIA)",WIDE,5,1,median,NA,NA,4,33,23
+CR.2.q1.m,CR_PT_L2__T_M__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower secondary  education, poorest males",UIS,5,2,median,NA,NA,4,33,24
+CR.2.q1.m,NA,"Completion rate, lower secondary  education, poorest males",WIDE,5,1,median,NA,NA,4,33,24
+CR.2.q1.f,CR_PT_L2__T_F__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, lower secondary education, poorest females",UIS,5,2,median,NA,NA,4,33,25
+CR.2.q1.f,NA,"Completion rate, lower secondary education, poorest females",WIDE,5,1,median,NA,NA,4,33,25
+CR.3.LPIA,CR_GLPIA_L3__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper secondary education, rural/urban parity index (GLPIA)",UIS,5,2,median,NA,NA,4,33,26
+CR.3.LPIA,NA,"Completion rate, upper secondary education, rural/urban parity index (GLPIA)",WIDE,5,1,median,NA,NA,4,33,26
+CR.3.WPIA,CR_WPIA_L3__T__T__T_GLAST_INST_T__Z__T__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper secondary education, wealth parity index (WPIA)",UIS,5,2,median,NA,NA,4,33,27
+CR.3.WPIA,NA,"Completion rate, upper secondary education, wealth parity index (WPIA)",WIDE,5,1,median,NA,NA,4,33,27
+CR.3.q1.m,CR_PT_L3__T_M__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper secondary , poorest males",UIS,5,2,median,NA,NA,4,33,28
+CR.3.q1.m,NA,"Completion rate, upper secondary , poorest males",WIDE,5,1,median,NA,NA,4,33,28
+CR.3.q1.f,CR_PT_L3__T_F__T_GLAST_INST_T__Z_Q1__T__T__T__Z__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Completion rate, upper secondary , poorest females",UIS,5,2,median,NA,NA,4,33,29
+CR.3.q1.f,NA,"Completion rate, upper secondary , poorest females",WIDE,5,1,median,NA,NA,4,33,29
+Read.Primary.WPIA,NA,"Percentage of students during or at the end of primary education achieving at least a minimum proficiency level in reading, wealth parity index (WPIA)",UIS,5,1,median,NA,NA,4,33,30
+Math.Primary.WPIA,NA,"Percentage of students during or at the end of primary education achieving at least a minimum proficiency level in mathematics, wealth parity index (WPIA)",UIS,5,1,median,NA,NA,4,33,31
+Read.LowerSec.WPIA,NA,"Percentage of students during or at the end of primary education achieving at least a minimum proficiency level in reading, wealth parity index (WPIA)",UIS,5,1,median,NA,NA,4,33,32
+Math.LowerSec.WPIA,NA,"Percentage of students during or at the end of primary education achieving at least a minimum proficiency level in mathematics, wealth parity index (WPIA)",UIS,5,1,median,NA,NA,4,33,33
+SchBSP.1.sexedu,SCH_PT_L2__T__T__T__T_INST_T__Z__Z__T__T__T__Z_HIV_SEX_EDU__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of lower-secondary schools providing life skills-based HIV/AIDS education (all institutions),UIS,6,1,median,NA,NA,4,33,5
+sci.lowerSec,NA,Percentage of 15-year-old students performing at or above level 2 of proficiency in scientific literacy,PISA,6,1,NA,NA,NA,4,NA,6
+sci.lowerSec,NA,Percentage of grade 8 students meeting minimum intenational benchmark in scientific literacy,TIMSS,6,2,NA,NA,NA,4,NA,6
+hiv.prev.15t24,NA,"Comprehensive correct knowledge of HIV/AIDS, ages 15-24 (2 prevent ways and reject 3 misconceptions)",UNAIDS,6,1,median,NA,NA,4,33,7
+SchBSP.WPoWat,NA,Percentage of  schools with access to  drinking water from an improved source,UNICEF,6,1,median,NA,NA,4,33,8
+SchBSP.WToilssx,NA,"Percentage of  schools with improved facilities that are single-sex and usable (available, functional, private)",UNICEF,6,1,median,NA,NA,4,33,9
+SchBSP.WHwash,NA,Percentage of  schools with  basic handwashing services,UNICEF,6,1,median,NA,NA,4,33,10
+SchBSP.1.WElec,SCH_PT_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z_ELEC__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of primary schools with access to electricity (all institutions),UIS,6,1,median,NA,NA,4,33,11
+SchBSP.1.WIntern,SCH_PT_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z_NET_PP__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of primary schools with access to Internet for pedagogical purposes (all institutions),UIS,6,1,median,NA,NA,4,33,12
+SchBSP.1.Wcomput,SCH_PT_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z_COMP_PP__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of primary schools with access to computers for pedagogical purposes (all institutions),UIS,6,1,median,NA,NA,4,33,13
+SchBSP.1.adapt.disab,SCH_PT_L1__T__T__T__T_INST_T__Z__Z__T__T__T__Z_ADAPT_INFR_MAT_DIS__Z__Z__Z_W00_W00_NA_NA_NA,Percentage of primary schools providing adapted infrastructure and materials for students with disabilities (all institutions),UIS,6,1,median,NA,NA,4,33,14
+stu.bully,NA,Percentage of students experiencing school-related bullying,Innocenti,6,1,NA,NA,NA,4,NA,15
+edattacks,NA,"Number of attacks involving education institutions, teachers or students",GCPEA,6,1,NA,NA,NA,4,NA,16
+odaflow.volumescholarship,NA,"Volume of official development assistance flows for scholarships,  Gross disbursements by beneficiary,  (constant US PPP)",OECD,6,1,sum,NA,NA,4,33,21
+odaflow.imputecost,NA,"Volume of official development assistance flows for scholarships and imputed student costs,  Gross disbursements by beneficiary,  (constant US PPP)",OECD,6,1,sum,NA,NA,4,33,22
+IE.5t8.40510,IE_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Total inbound internationally mobile tertiary students, all countries, both sexes (number)",UIS,6,1,sum,NA,NA,4,33,19
+MSEP.5t8,MSEP_PT_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Inbound student mobility rate, both sexes (%)",UIS,6,1,median,NA,NA,4,33,17
+OE.5t8.40510,OE_PER_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Total outbound internationally mobile tertiary students studying abroad, all countries, both sexes (number)",UIS,6,1,sum,NA,NA,4,33,20
+MOR.5t8.40510,MOR_PT_L5T8__T__T__T__T_INST_T__Z__Z__T__T__T__T__Z__Z__Z__Z_W00_W00_NA_NA_NA,"Outbound student mobility ratio, all regions, both sexes (%)",UIS,6,1,median,NA,NA,4,33,18
+teach.per.02,TEACH_PER_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teachers in pre-primary education, both sexes (number)",UIS,7,1,sum,NA,NA,4,33,1
+PTRHC.02,PTR_PER_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Pupil-teacher ratio in pre-primary education,UIS,7,1,median,NA,NA,4,33,2
+TRTP.02,TRTP_PT_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of trained teachers in pre-primary education, both sexes",UIS,7,1,median,NA,NA,4,33,3
+QUTP.02,QUTP_PT_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of qualified teachers in pre-primary education, both sexes",UIS,7,1,median,NA,NA,4,33,4
+tisp.02,TISP_PT_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Percentage of pre-primary teachers who received in-service training in the last 12 months,UIS,7,1,median,NA,NA,4,33,5
+TAttrR.02,TATTRR_PT_L02__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teacher attrition rate from pre-primary education, both sexes",UIS,7,1,median,NA,NA,4,33,6
+sal.rel.02,NA,Ratio of pre-primary teacher salary relative to other professionals with equivalent academic qualification.,OECD,7,1,median,NA,NA,4,33,7
+teach.per.1,TEACH_PER_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teachers in primary education, both sexes (number)",UIS,7,1,sum,NA,NA,4,33,8
+PTRHC.1,PTR_PER_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Pupil-teacher ratio in primary education,UIS,7,1,median,NA,NA,4,33,9
+TRTP.1,TRTP_PT_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of trained teachers in primary education, both sexes",UIS,7,1,median,NA,NA,4,33,10
+QUTP.1,QUTP_PT_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of qualified teachers in primary education, both sexes",UIS,7,1,median,NA,NA,4,33,11
+tisp.1,TISP_PT_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Percentage of primary teachers who received in-service training in the last 12 months,UIS,7,1,median,NA,NA,4,33,12
+TAttrR.1,TATTRR_PT_L1__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teacher attrition rate from  primary education, both sexes",UIS,7,1,median,NA,NA,4,33,13
+sal.rel.1,NA,Ratio of primary teacher salary relative to other professionals with equivalent academic qualification.,OECD,7,1,median,NA,NA,4,33,14
+teach.per.2t3,TEACH_PER_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teachers in secondary education, both sexes (number)",UIS,7,1,sum,NA,NA,4,33,15
+PTRHC.2t3,PTR_PER_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Pupil-teacher ratio in secondary education,UIS,7,1,median,NA,NA,4,33,16
+TRTP.2t3,TRTP_PT_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of trained teachers in secondary education, both sexes",UIS,7,1,median,NA,NA,4,33,17
+QUTP.2t3,QUTP_PT_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Percentage of qualified teachers in secondary education, both sexes",UIS,7,1,median,NA,NA,4,33,18
+tisp.2t3,TISP_PT_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,Percentage of secondary teachers who received in-service training in the last 12 months,UIS,7,1,median,NA,NA,4,33,19
+TAttrR.2t3,TATTRR_PT_L2_3__T__T__T__T_INST_T__T__Z__T__T__T__T__Z__Z__T__T_W00_W00_NA_NA_NA,"Teacher attrition rate from secondary education, both sexes",UIS,7,1,median,NA,NA,4,33,20
+sal.rel.2t3,NA,Ratio of secondary teacher salary relative to other professionals with equivalent academic qualification.,OECD,7,1,median,NA,NA,4,33,21
